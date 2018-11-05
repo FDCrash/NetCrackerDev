@@ -1,4 +1,3 @@
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import daomodule.dao.daoImpl.FacultyDAOImpl;
 import daomodule.dao.daoImpl.SpecialityDAOImpl;
 import daomodule.dao.daoImpl.UserDAOImpl;
@@ -6,7 +5,6 @@ import daomodule.entities.FacultyEntity;
 import daomodule.entities.SpecialityEntity;
 import daomodule.entities.UserEntity;
 
-import java.util.List;
 
 public class ServiceSearchInfo {
     private UserDAOImpl userDAO;

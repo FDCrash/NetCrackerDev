@@ -1,3 +1,4 @@
+import javax.xml.ws.Service;
 import java.util.Scanner;
 
 public class Menu {
@@ -24,23 +25,34 @@ public class Menu {
     }
 
     public void registrationMenu(){
+        ServiceSystem serviceSystem=new ServiceSystem();
         Scanner scanner=new Scanner(System.in);
         int idStud;
-        String pass;
+        String pass,login;
         System.out.println("Введите свой номер студенченского билета:");
         idStud=scanner.nextInt();
-        System.out.println("Введите желаемый пароль:");
-        pass=scanner.next();
-
+        if (serviceSystem.checkId(idStud)) {
+            System.out.println("Введите желаемый логин:");
+            login = scanner.next();
+            System.out.println("Введите желаемый пароль:");
+            pass = scanner.next();
+            serviceSystem.registerStudent(idStud,login,pass);
+            System.out.println("Вы успещно зарегстрированы!");
+        }else{
+            System.out.println("Такого номера не существует!");
+        }
+        startMenu();
     }
 
     public void authentificationMenu(){
+        ServiceSystem serviceSystem=new ServiceSystem();
         Scanner scanner=new Scanner(System.in);
         String login,pass;
         System.out.println("Введите логин:");
         login=scanner.next();
         System.out.println("Введите пароль:");
         pass=scanner.next();
+        serviceSystem.authentificationUser(login,pass);
     }
 
     public void displayError(){}
