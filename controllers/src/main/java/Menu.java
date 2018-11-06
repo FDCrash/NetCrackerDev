@@ -1,4 +1,3 @@
-import javax.xml.ws.Service;
 import java.util.Scanner;
 
 public class Menu {
@@ -13,7 +12,7 @@ public class Menu {
             k=scanner.nextInt();
             switch (k) {
                 case 1:
-                    authentificationMenu();
+                    authenticationMenu();
                     break;
                 case 2:
                     registrationMenu();
@@ -25,34 +24,34 @@ public class Menu {
     }
 
     public void registrationMenu(){
-        ServiceSystem serviceSystem=new ServiceSystem();
+        UserService userService=new UserService();
         Scanner scanner=new Scanner(System.in);
         int idStud;
         String pass,login;
         System.out.println("Введите свой номер студенченского билета:");
         idStud=scanner.nextInt();
-        if (serviceSystem.checkId(idStud)) {
+        if (userService.checker(idStud)) {
             System.out.println("Введите желаемый логин:");
             login = scanner.next();
             System.out.println("Введите желаемый пароль:");
             pass = scanner.next();
-            serviceSystem.registerStudent(idStud,login,pass);
-            System.out.println("Вы успещно зарегстрированы!");
+            userService.registration(idStud,login,pass);
+            System.out.println("Вы успещно зарегистрированы!");
         }else{
             System.out.println("Такого номера не существует!");
         }
         startMenu();
     }
 
-    public void authentificationMenu(){
-        ServiceSystem serviceSystem=new ServiceSystem();
+    public void authenticationMenu(){
+        UserService serviceSystem=new UserService();
         Scanner scanner=new Scanner(System.in);
         String login,pass;
         System.out.println("Введите логин:");
         login=scanner.next();
         System.out.println("Введите пароль:");
         pass=scanner.next();
-        serviceSystem.authentificationUser(login,pass);
+        serviceSystem.authentication(login,pass);
     }
 
     public void displayError(){}
