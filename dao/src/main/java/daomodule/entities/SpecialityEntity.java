@@ -1,13 +1,13 @@
 package daomodule.entities;
 
-import java.util.List;
-
 public class SpecialityEntity extends BaseEntity {
     private String name;
     private FacultyEntity faculty;
-    private List<Integer> groupId;
 
-    public SpecialityEntity(){}
+    public SpecialityEntity(int id,String name){
+        this.setId(id);
+        this.name=name;
+    }
 
     public String getName() {
         return name;
@@ -25,12 +25,5 @@ public class SpecialityEntity extends BaseEntity {
         this.faculty = faculty;
     }
 
-    public List<Integer> getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(List<Integer> groupId) {
-        this.groupId = groupId;
-    }
 }
 

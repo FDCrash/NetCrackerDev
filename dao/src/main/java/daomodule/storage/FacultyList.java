@@ -2,11 +2,12 @@ package daomodule.storage;
 
 import daomodule.entities.FacultyEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FacultyList {
     private static FacultyList instance;
-    private List<FacultyEntity> faculties;
+    private List<FacultyEntity> faculties=new ArrayList<>();
 
     public static FacultyList getInstance() {
         if(instance==null){

@@ -4,7 +4,13 @@ public class EmployeeEntity extends UserEntity {
     private FacultyEntity faculty;
     private String name;
 
-    public EmployeeEntity(){}
+    public EmployeeEntity(int id,Role role,String login,String pass,String name){
+        this.setId(id);
+        this.setRole(role);
+        this.setLogin(login);
+        this.setPassword(pass);
+        this.name=name;
+    }
 
     public FacultyEntity getFaculty() {
         return faculty;

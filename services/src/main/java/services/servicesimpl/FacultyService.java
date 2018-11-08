@@ -1,7 +1,12 @@
+package services.servicesimpl;
+
 import daomodule.dao.daoImpl.FacultyDAOImpl;
 import daomodule.entities.FacultyEntity;
+import services.CRUDService;
 
-public class FacultyService implements Service<FacultyEntity>{
+import java.util.List;
+
+public class FacultyService implements CRUDService<FacultyEntity> {
     private FacultyDAOImpl facultyDAO;
     private FacultyEntity facultyEntity;
 
@@ -18,5 +23,15 @@ public class FacultyService implements Service<FacultyEntity>{
     @Override
     public void updateInfo(FacultyEntity facultyEntity, int id) {
 
+    }
+
+    @Override
+    public List<FacultyEntity> getAll() {
+        return null;
+    }
+
+    @Override
+    public FacultyEntity get(int id) {
+        return null;
     }
 }

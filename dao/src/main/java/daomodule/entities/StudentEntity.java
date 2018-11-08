@@ -1,17 +1,24 @@
 package daomodule.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentEntity extends UserEntity{
-    private int groupId;
-    private FacultyEntity faculty;
     private String name;
     private int studentId;
-    private String email;
-    private SpecialityEntity speciality;
-    private List<Integer> writeBook;
+    private int groupId;
+    private SpecialityEntity specialityEntity;
+    private List<Integer> writeBook ;
 
-    public StudentEntity(){
+    public StudentEntity(int id,Role role,String login, String pass,String name,int studentId,int groupId, List<Integer> writeBook) {
+        this.setId(id);
+        this.setRole(role);
+        this.setLogin(login);
+        this.setPassword(pass);
+        this.name=name;
+        this.studentId=studentId;
+        this.groupId=groupId;
+        this.writeBook=new ArrayList<>(writeBook);
     }
 
     public int getGroupId() {
@@ -20,14 +27,6 @@ public class StudentEntity extends UserEntity{
 
     public void setGroupId(int gtoupId) {
         this.groupId = gtoupId;
-    }
-
-    public void setFaculty(FacultyEntity faculty) {
-        this.faculty = faculty;
-    }
-
-    public FacultyEntity getFaculty() {
-        return faculty;
     }
 
     public void setName(String name) {
@@ -46,20 +45,12 @@ public class StudentEntity extends UserEntity{
         this.studentId = studentId;
     }
 
-    public String getEmail() {
-        return email;
+    public SpecialityEntity getSpecialityEntity() {
+        return specialityEntity;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public SpecialityEntity getSpeciality() {
-        return speciality;
-    }
-
-    public void setSpeciality(SpecialityEntity speciality) {
-        this.speciality = speciality;
+    public void setSpecialityEntity(SpecialityEntity speciality) {
+        this.specialityEntity = speciality;
     }
 
     public void setWriteBook(List<Integer> writeBook) {

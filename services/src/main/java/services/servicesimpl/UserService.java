@@ -1,7 +1,12 @@
+package services.servicesimpl;
+
 import daomodule.dao.daoImpl.UserDAOImpl;
 import daomodule.entities.UserEntity;
+import services.CRUDService;
 
-public class UserService implements Service<UserEntity>{
+import java.util.List;
+
+public class UserService implements CRUDService<UserEntity> {
     private UserDAOImpl userDAO;
     private UserEntity userEntity;
 
@@ -22,6 +27,16 @@ public class UserService implements Service<UserEntity>{
 
     }
 
+    @Override
+    public List<UserEntity> getAll() {
+        return null;
+    }
+
+    @Override
+    public UserEntity get(int id) {
+        return null;
+    }
+
     public void authentication(String login,String pass){
 
     }
@@ -33,4 +48,7 @@ public class UserService implements Service<UserEntity>{
     public boolean checker(int id){
         return false;
     }
+
+    public Enum getRoleForMenu(){return userEntity.getRole();}
+
 }

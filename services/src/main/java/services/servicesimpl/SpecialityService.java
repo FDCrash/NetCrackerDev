@@ -1,7 +1,12 @@
+package services.servicesimpl;
+
 import daomodule.dao.daoImpl.SpecialityDAOImpl;
 import daomodule.entities.SpecialityEntity;
+import services.CRUDService;
 
-public class SpecialityService implements Service<SpecialityEntity>{
+import java.util.List;
+
+public class SpecialityService implements CRUDService<SpecialityEntity> {
     private SpecialityDAOImpl specialityDAO;
     private SpecialityEntity specialityEntity;
 
@@ -19,5 +24,15 @@ public class SpecialityService implements Service<SpecialityEntity>{
     @Override
     public void updateInfo(SpecialityEntity specialityEntity, int id) {
 
+    }
+
+    @Override
+    public List<SpecialityEntity> getAll() {
+        return null;
+    }
+
+    @Override
+    public SpecialityEntity get(int id) {
+        return null;
     }
 }

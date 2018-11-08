@@ -2,11 +2,12 @@ package daomodule.storage;
 
 import daomodule.entities.AdminEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminList {
     private static AdminList instance;
-    private List<AdminEntity> admins;
+    private List<AdminEntity> admins = new ArrayList<>();
 
     public static AdminList getInstance() {
         if(instance==null){
@@ -16,7 +17,7 @@ public class AdminList {
     }
 
     public void setAdmins(List<AdminEntity> admins) {
-        this.admins = admins;
+        this.admins.addAll(admins);
     }
 
     public List<AdminEntity> getAdmins() {

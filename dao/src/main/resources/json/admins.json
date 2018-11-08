@@ -1,0 +1,16 @@
+[
+  {
+    "id":1,
+    "role": "ADMIN",
+    "login" : "fk",
+    "pass": "1234",
+    "status": false
+  },
+  {
+    "id":2,
+    "role": "ADMIN",
+    "login" : "bsuir",
+    "pass": "1234",
+    "status": false
+  }
+]

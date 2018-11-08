@@ -1,9 +1,11 @@
+package services.servicesimpl;
+
 import daomodule.dao.daoImpl.UserDAOImpl;
 import daomodule.entities.StudentEntity;
 
 import java.util.List;
 
-public class ServiceStudent {
+public class StudentService {
     private StudentEntity studentEntity;
     private UserDAOImpl userDAO;
 

@@ -1,3 +1,5 @@
+import services.servicesimpl.UserService;
+
 import java.util.Scanner;
 
 public class Menu {
@@ -20,7 +22,7 @@ public class Menu {
                 default:
                     System.out.println("Выберите позицию из списка");
             }
-        }while(k<1 && k>2);
+        }while(k<1 || k>2);
     }
 
     public void registrationMenu(){
@@ -36,7 +38,7 @@ public class Menu {
             System.out.println("Введите желаемый пароль:");
             pass = scanner.next();
             userService.registration(idStud,login,pass);
-            System.out.println("Вы успещно зарегистрированы!");
+            System.out.println("Регистрация произошла успешно!");
         }else{
             System.out.println("Такого номера не существует!");
         }
@@ -44,25 +46,38 @@ public class Menu {
     }
 
     public void authenticationMenu(){
-        UserService serviceSystem=new UserService();
+        UserService userService=new UserService();
+
         Scanner scanner=new Scanner(System.in);
         String login,pass;
         System.out.println("Введите логин:");
         login=scanner.next();
         System.out.println("Введите пароль:");
         pass=scanner.next();
-        serviceSystem.authentication(login,pass);
+        userService.authentication(login,pass);
+        Enum i = userService.getRoleForMenu();
+        if (daomodule.entities.Role.ADMIN.equals(i)) {
+            adminMenu();
+        } else if (daomodule.entities.Role.STUDENT.equals(i)) {
+            studentMenu();
+        } else if (daomodule.entities.Role.EMPLOYEE.equals(i)) {
+            employeeMenu();
+        }
     }
 
     public void displayError(){}
 
-    public void adminMenu(){}
+    public void adminMenu(){
+        System.out.println("Меню админа:");
+    }
 
-    public void studentMenu(){}
+    public void studentMenu(){
+        System.out.println("Меню студента:");
+    }
 
-    public void employeeMenu(){}
-
-    public void anonimMenu(){}
+    public void employeeMenu(){
+        System.out.println("Меню сотрудника:");
+    }
 
     public void editAdmin(){}
 

@@ -2,11 +2,12 @@ package daomodule.storage;
 
 import daomodule.entities.SpecialityEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpecialityList {
     private static SpecialityList instance;
-    private List<SpecialityEntity> specialities;
+    private List<SpecialityEntity> specialities=new ArrayList<>();
 
     public static SpecialityList getInstance() {
         if(instance==null){
@@ -20,6 +21,6 @@ public class SpecialityList {
     }
 
     public void setSpecialities(List<SpecialityEntity> specialities) {
-        this.specialities = specialities;
+        this.specialities.addAll(specialities);
     }
 }

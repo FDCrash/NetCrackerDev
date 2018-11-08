@@ -4,9 +4,12 @@ import java.util.List;
 
 public class FacultyEntity extends BaseEntity {
     private String name;
-    private List<String> speciality;
+    private List<SpecialityEntity> specialities;
 
-    public FacultyEntity(){}
+    public FacultyEntity(int id,String name){
+        this.setId(id);
+        this.name=name;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -16,11 +19,11 @@ public class FacultyEntity extends BaseEntity {
         return name;
     }
 
-    public void setSpeciality(List<String> speciality) {
-        this.speciality = speciality;
+    public void setSpeciality(List<SpecialityEntity> speciality) {
+        this.specialities = speciality;
     }
 
-    public List<String> getSpeciality() {
-        return speciality;
+    public List<SpecialityEntity> getSpeciality() {
+        return specialities;
     }
 }

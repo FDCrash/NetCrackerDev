@@ -1,3 +1,5 @@
+package services.servicesimpl;
+
 import daomodule.dao.daoImpl.FacultyDAOImpl;
 import daomodule.dao.daoImpl.SpecialityDAOImpl;
 import daomodule.dao.daoImpl.UserDAOImpl;
@@ -6,7 +8,7 @@ import daomodule.entities.SpecialityEntity;
 import daomodule.entities.UserEntity;
 
 
-public class ServiceSearchInfo {
+public class SearchInfoService {
     private UserDAOImpl userDAO;
     private SpecialityDAOImpl specialityDAO;
     private FacultyDAOImpl facultyDAO;

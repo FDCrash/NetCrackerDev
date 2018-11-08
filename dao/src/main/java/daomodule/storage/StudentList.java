@@ -2,11 +2,12 @@ package daomodule.storage;
 
 import daomodule.entities.StudentEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentList {
     private static StudentList instance;
-    private List<StudentEntity> students;
+    private List<StudentEntity> students=new ArrayList<>();
 
     public static StudentList getInstance() {
         if(instance==null){
@@ -20,6 +21,6 @@ public class StudentList {
     }
 
     public void setStudents(List<StudentEntity> students) {
-        this.students = students;
+        this.students.addAll(students);
     }
 }

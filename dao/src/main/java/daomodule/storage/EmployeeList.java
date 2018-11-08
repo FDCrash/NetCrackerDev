@@ -2,11 +2,12 @@ package daomodule.storage;
 
 import daomodule.entities.EmployeeEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeList {
     private static EmployeeList instance;
-    private List<EmployeeEntity> employees;
+    private List<EmployeeEntity> employees=new ArrayList<>();
 
     public static EmployeeList getInstance() {
         if(instance==null){
@@ -20,6 +21,6 @@ public class EmployeeList {
     }
 
     public void setEmployees(List<EmployeeEntity> employees) {
-        this.employees = employees;
+        this.employees.addAll(employees);
     }
 }
