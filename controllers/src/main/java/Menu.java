@@ -1,6 +1,11 @@
+import daomodule.entities.Role;
+import daomodule.storage.StudentList;
+import daomodule.storage.UserList;
 import services.servicesimpl.UserService;
 
 import java.util.Scanner;
+
+import static daomodule.entities.Role.*;
 
 public class Menu {
 
@@ -32,16 +37,11 @@ public class Menu {
         String pass,login;
         System.out.println("Введите свой номер студенченского билета:");
         idStud=scanner.nextInt();
-        if (userService.checker(idStud)) {
-            System.out.println("Введите желаемый логин:");
-            login = scanner.next();
-            System.out.println("Введите желаемый пароль:");
-            pass = scanner.next();
-            userService.registration(idStud,login,pass);
-            System.out.println("Регистрация произошла успешно!");
-        }else{
-            System.out.println("Такого номера не существует!");
-        }
+        System.out.println("Введите желаемый логин:");
+        login = scanner.next();
+        System.out.println("Введите желаемый пароль:");
+        pass = scanner.next();
+        System.out.println(userService.registration(idStud,login,pass));
         startMenu();
     }
 
@@ -54,15 +54,16 @@ public class Menu {
         login=scanner.next();
         System.out.println("Введите пароль:");
         pass=scanner.next();
-        userService.authentication(login,pass);
-        Enum i = userService.getRoleForMenu();
-        if (daomodule.entities.Role.ADMIN.equals(i)) {
-            adminMenu();
-        } else if (daomodule.entities.Role.STUDENT.equals(i)) {
-            studentMenu();
-        } else if (daomodule.entities.Role.EMPLOYEE.equals(i)) {
-            employeeMenu();
+        switch ((Role)userService.authentication(login,pass)){
+            case ADMIN: adminMenu();    userService.changeStatusAdmin(login);
+            break;
+            case EMPLOYEE: employeeMenu();
+            break;
+            case STUDENT: studentMenu();
+            break;
+            default: System.out.println("Неправильный логин или пароль");
         }
+
     }
 
     public void displayError(){}

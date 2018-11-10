@@ -10,7 +10,7 @@ public class StudentEntity extends UserEntity{
     private SpecialityEntity specialityEntity;
     private List<Integer> writeBook ;
 
-    public StudentEntity(int id,Role role,String login, String pass,String name,int studentId,int groupId, List<Integer> writeBook) {
+    public StudentEntity(int id,Role role,String login, String pass,String name,int studentId,int groupId,int specialityId, List<Integer> writeBook) {
         this.setId(id);
         this.setRole(role);
         this.setLogin(login);
@@ -18,6 +18,7 @@ public class StudentEntity extends UserEntity{
         this.name=name;
         this.studentId=studentId;
         this.groupId=groupId;
+        this.specialityEntity=new SpecialityEntity(specialityId,"",0);
         this.writeBook=new ArrayList<>(writeBook);
     }
 

@@ -7,6 +7,7 @@
     "name": "Павел Денисик",
     "studentId": 13,
     "groupId":620601,
+    "specialityId": 1,
     "writeBook": [
       "9","10","8","9"
     ]
@@ -19,6 +20,7 @@
     "name": "Житкевич Максим",
     "studentId": 14,
     "groupId":620601,
+    "specialityId": 2,
     "writeBook": [
       "9","10","8","9"
     ]

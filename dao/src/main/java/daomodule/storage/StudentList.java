@@ -21,6 +21,6 @@ public class StudentList {
     }
 
     public void setStudents(List<StudentEntity> students) {
-        this.students.addAll(students);
+        this.students=students;
     }
 }

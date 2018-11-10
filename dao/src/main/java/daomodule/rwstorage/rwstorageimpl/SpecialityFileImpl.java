@@ -28,7 +28,8 @@ public class SpecialityFileImpl implements RWStorage {
                 JSONObject jsonObject = (JSONObject) object;
                 int id = (int) (long) jsonObject.get("id");
                 String name = (String) jsonObject.get("name");
-                specialities.add(new SpecialityEntity(id,name));
+                int facultyId=(int)(long) jsonObject.get("facultyId");
+                specialities.add(new SpecialityEntity(id,name,facultyId));
             }
         } catch (IOException | ParseException e){
             e.printStackTrace();

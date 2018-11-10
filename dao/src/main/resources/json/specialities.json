@@ -1,10 +1,12 @@
 [
   {
     "id":1,
-    "name": "АСОИ"
+    "name": "АСОИ",
+    "facultyId": 1
   },
   {
     "id":2,
-    "name": "ИИ"
+    "name": "ИИ",
+    "facultyId": 1
   }
 ]

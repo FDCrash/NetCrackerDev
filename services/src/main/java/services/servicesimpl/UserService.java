@@ -1,5 +1,6 @@
 package services.servicesimpl;
 
+import daomodule.dao.daoImpl.SystemDAO;
 import daomodule.dao.daoImpl.UserDAOImpl;
 import daomodule.entities.UserEntity;
 import services.CRUDService;
@@ -9,8 +10,11 @@ import java.util.List;
 public class UserService implements CRUDService<UserEntity> {
     private UserDAOImpl userDAO;
     private UserEntity userEntity;
+    private SystemDAO systemDAO;
 
-    public UserService(){}
+    public UserService(){
+        systemDAO=new SystemDAO();
+    }
 
     @Override
     public void addNew(UserEntity userEntity) {
@@ -65,18 +69,24 @@ public class UserService implements CRUDService<UserEntity> {
         return userDAO;
     }
 
-    public void authentication(String login,String pass){
 
+
+    public String registration(int id,String login,String pass){
+        if(systemDAO.checkStudId(id)){
+            if(systemDAO.checkLogin(login)){
+                systemDAO.addNewLoginPass(id,login,pass);
+                return "Вы успешно зарегестрированы!";
+            }
+            return "Логин занят!";
+        }
+        return "Неверный номер стеденченского билета!";
     }
 
-    public void registration(int id,String login,String pass){
-
+    public Enum authentication(String login, String pass){
+        return systemDAO.checkLoginPass(login,pass);
     }
 
-    public boolean checker(int id){
-        return false;
+    public void changeStatusAdmin(String login){
+        systemDAO.changeStatus(login);
     }
-
-    public Enum getRoleForMenu(){return userEntity.getRole();}
-
 }

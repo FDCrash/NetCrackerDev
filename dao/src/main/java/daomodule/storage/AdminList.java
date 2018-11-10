@@ -17,7 +17,7 @@ public class AdminList {
     }
 
     public void setAdmins(List<AdminEntity> admins) {
-        this.admins.addAll(admins);
+        this.admins=admins;
     }
 
     public List<AdminEntity> getAdmins() {

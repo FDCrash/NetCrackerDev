@@ -39,6 +39,7 @@ public class StudentFileImpl implements RWStorage {
                  String name = (String) jsonObject.get("name");
                  int studentId = (int) (long) jsonObject.get("studentId");
                  int groupId = (int) (long) jsonObject.get("groupId");
+                 int specialityId=(int) (long) jsonObject.get("specialityId");
 
                  JSONArray marks = (JSONArray) jsonObject.get("writeBook");
                  Iterator<Integer> i = marks.iterator();
@@ -46,7 +47,7 @@ public class StudentFileImpl implements RWStorage {
                  while (i.hasNext()) {
                      writeBook.add(parseInt(String.valueOf(i.next())));
                  }
-                 students.add(new StudentEntity(id, role, login, pass, name, studentId, groupId, writeBook));
+                 students.add(new StudentEntity(id, role, login, pass, name, studentId, groupId, specialityId,writeBook));
              }
         } catch (IOException | ParseException e){
             e.printStackTrace();

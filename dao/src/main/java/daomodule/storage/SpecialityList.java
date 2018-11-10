@@ -21,6 +21,6 @@ public class SpecialityList {
     }
 
     public void setSpecialities(List<SpecialityEntity> specialities) {
-        this.specialities.addAll(specialities);
+        this.specialities=specialities;
     }
 }

@@ -1,5 +1,6 @@
 package daomodule.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FacultyEntity extends BaseEntity {
@@ -9,6 +10,7 @@ public class FacultyEntity extends BaseEntity {
     public FacultyEntity(int id,String name){
         this.setId(id);
         this.name=name;
+        specialities=new ArrayList<>();
     }
 
     public void setName(String name) {
@@ -19,8 +21,12 @@ public class FacultyEntity extends BaseEntity {
         return name;
     }
 
-    public void setSpeciality(List<SpecialityEntity> speciality) {
-        this.specialities = speciality;
+    public void setSpecialities(List<SpecialityEntity> specialities) {
+        this.specialities = specialities;
+    }
+
+    public void setSpeciality(SpecialityEntity speciality){
+        this.specialities.add(speciality);
     }
 
     public List<SpecialityEntity> getSpeciality() {

@@ -21,6 +21,6 @@ public class EmployeeList {
     }
 
     public void setEmployees(List<EmployeeEntity> employees) {
-        this.employees.addAll(employees);
+        this.employees=employees;
     }
 }
