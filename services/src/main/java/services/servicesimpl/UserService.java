@@ -37,6 +37,34 @@ public class UserService implements CRUDService<UserEntity> {
         return null;
     }
 
+    public UserDAOImpl getInfoByName(String name){
+        return userDAO;
+    }
+
+    public UserDAOImpl getInfoByGroup(int groupId){
+        return userDAO;
+    }
+
+    public UserDAOImpl getInfoByFaculty(String faculty){
+        return userDAO;
+    }
+
+    public UserDAOImpl getInfoBySpeciality(String speciality){
+        return userDAO;
+    }
+
+    public UserEntity readWriteBook(int id){
+        return userEntity;
+    }
+
+    public UserDAOImpl getAdmins(){
+        return userDAO;
+    }
+
+    public UserDAOImpl getEmployees(){
+        return userDAO;
+    }
+
     public void authentication(String login,String pass){
 
     }
