@@ -5,7 +5,6 @@ import daomodule.dao.DAO;
 import daomodule.entities.UserEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public class UserDAOImpl implements DAO<UserEntity> {
     private List<UserEntity> users;
@@ -13,8 +12,8 @@ public class UserDAOImpl implements DAO<UserEntity> {
     public UserDAOImpl(){    }
 
     @Override
-    public Optional<UserEntity> get(UserEntity userEntity) {
-        return Optional.empty();
+    public UserEntity get(int id) {
+        return users.get(id);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class AdminFileImpl implements RWStorage {
     public void fillStorage() {
         admins=new ArrayList<>();
         try {
-            obj = new JSONParser().parse(new FileReader("D:\\Java\\NetProject\\dao\\src\\main\\resources\\json\\admins.json"));
+            obj = new JSONParser().parse(new FileReader("dao/src/main/resources/json/admins.json"));
             jsonArray = (JSONArray) obj;
             for (Object object:jsonArray) {
                 JSONObject jsonObject = (JSONObject) object;

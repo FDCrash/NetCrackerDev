@@ -9,6 +9,9 @@ public class EmployeeList {
     private static EmployeeList instance;
     private List<EmployeeEntity> employees=new ArrayList<>();
 
+    private EmployeeList(){
+    }
+
     public static EmployeeList getInstance() {
         if(instance==null){
             instance=new EmployeeList();

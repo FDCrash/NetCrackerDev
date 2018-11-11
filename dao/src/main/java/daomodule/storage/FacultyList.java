@@ -9,6 +9,9 @@ public class FacultyList {
     private static FacultyList instance;
     private List<FacultyEntity> faculties=new ArrayList<>();
 
+    private FacultyList(){
+    }
+
     public static FacultyList getInstance() {
         if(instance==null){
             instance=new FacultyList();

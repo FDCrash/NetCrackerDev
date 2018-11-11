@@ -28,7 +28,7 @@ public class StudentFileImpl implements RWStorage {
     public void fillStorage(){
         students=new ArrayList<>();
         try {
-             obj = new JSONParser().parse(new FileReader("D:\\Java\\NetProject\\dao\\src\\main\\resources\\json\\students.json"));
+             obj = new JSONParser().parse(new FileReader("dao/src/main/resources/json/students.json"));
              jsonArray = (JSONArray) obj;
              for (Object object:jsonArray) {
                  JSONObject jsonObject = (JSONObject) object;

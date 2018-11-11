@@ -12,6 +12,9 @@ public class UserList {
     private static UserList instance;
     private List<UserEntity> users=new ArrayList<>();
 
+    private UserList(){
+    }
+
     public static UserList getInstance() {
         if(instance==null){
             instance=new UserList();

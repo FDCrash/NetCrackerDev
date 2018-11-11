@@ -9,6 +9,9 @@ public class StudentList {
     private static StudentList instance;
     private List<StudentEntity> students=new ArrayList<>();
 
+    private StudentList(){
+    }
+
     public static StudentList getInstance() {
         if(instance==null){
             instance=new StudentList();

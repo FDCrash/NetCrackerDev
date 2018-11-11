@@ -4,16 +4,16 @@ import daomodule.dao.DAO;
 import daomodule.entities.FacultyEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public class FacultyDAOImpl implements DAO<FacultyEntity> {
     private List<FacultyEntity> faculties;
 
     public FacultyDAOImpl(){}
 
+
     @Override
-    public Optional<FacultyEntity> get(FacultyEntity facultyEntity) {
-        return Optional.empty();
+    public FacultyEntity get(int id) {
+        return faculties.get(id);
     }
 
     @Override

@@ -9,6 +9,9 @@ public class SpecialityList {
     private static SpecialityList instance;
     private List<SpecialityEntity> specialities=new ArrayList<>();
 
+    private SpecialityList(){
+    }
+
     public static SpecialityList getInstance() {
         if(instance==null){
             instance=new SpecialityList();

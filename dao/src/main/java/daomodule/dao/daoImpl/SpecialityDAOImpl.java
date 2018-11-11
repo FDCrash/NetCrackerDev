@@ -4,7 +4,6 @@ import daomodule.dao.DAO;
 import daomodule.entities.SpecialityEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
     private List<SpecialityEntity> specialities;
@@ -12,8 +11,8 @@ public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
     public SpecialityDAOImpl(){}
 
     @Override
-    public Optional<SpecialityEntity> get(SpecialityEntity specialityEntity) {
-        return Optional.empty();
+    public SpecialityEntity get(int id) {
+        return specialities.get(id);
     }
 
     @Override

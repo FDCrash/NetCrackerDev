@@ -9,6 +9,9 @@ public class AdminList {
     private static AdminList instance;
     private List<AdminEntity> admins = new ArrayList<>();
 
+    private AdminList(){
+    }
+
     public static AdminList getInstance() {
         if(instance==null){
             instance=new AdminList();

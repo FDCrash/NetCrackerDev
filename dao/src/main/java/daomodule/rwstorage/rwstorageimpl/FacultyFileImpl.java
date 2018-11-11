@@ -22,7 +22,7 @@ public class FacultyFileImpl implements RWStorage {
     public void fillStorage() {
         faculties=new ArrayList<>();
         try {
-            obj = new JSONParser().parse(new FileReader("D:\\Java\\NetProject\\dao\\src\\main\\resources\\json\\faculties.json"));
+            obj = new JSONParser().parse(new FileReader("dao/src/main/resources/json/faculties.json"));
             jsonArray = (JSONArray) obj;
             for (Object object:jsonArray) {
                 JSONObject jsonObject = (JSONObject) object;
