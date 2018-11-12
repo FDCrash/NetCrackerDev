@@ -4,8 +4,10 @@ public class SpecialityEntity extends BaseEntity {
     private String name;
     private FacultyEntity faculty;
 
+    public SpecialityEntity(){};
+
     public SpecialityEntity(int id,String name,int facultyId){
-        this.setId(id);
+        super(id);
         this.name=name;
         faculty=new FacultyEntity(facultyId,"");
     }

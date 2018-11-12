@@ -7,8 +7,10 @@ public class FacultyEntity extends BaseEntity {
     private String name;
     private List<SpecialityEntity> specialities;
 
+    public FacultyEntity(){}
+
     public FacultyEntity(int id,String name){
-        this.setId(id);
+        super(id);
         this.name=name;
         specialities=new ArrayList<>();
     }

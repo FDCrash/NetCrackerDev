@@ -1,12 +1,12 @@
-package daomodule.entities;
+package dto;
 
-public class AdminEntity extends UserEntity {
+public class AdminDTO extends UserDTO {
     private boolean status;
 
-    public AdminEntity(){}
+    public AdminDTO(){}
 
-    public AdminEntity(int id,Role role,String login,String pass){
-        super(id,role,login,pass);
+    public AdminDTO(int id, RoleDTO roleDTO, String login, String pass){
+        super(id, roleDTO,login,pass);
         this.status=false;
     }
 
@@ -17,4 +17,5 @@ public class AdminEntity extends UserEntity {
     public boolean getStatus(){
         return status;
     }
+
 }

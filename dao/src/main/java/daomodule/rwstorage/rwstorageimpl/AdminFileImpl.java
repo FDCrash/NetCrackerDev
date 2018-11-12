@@ -32,9 +32,8 @@ public class AdminFileImpl implements RWStorage {
                 String login = (String) jsonObject.get("login");
                 String pass = (String) jsonObject.get("pass");
                 String name = (String) jsonObject.get("name");
-                boolean status=(boolean) jsonObject.get("status");
 
-                admins.add(new AdminEntity(id, role, login, pass, status));
+                admins.add(new AdminEntity(id, role, login, pass));
             }
         } catch (IOException | ParseException e){
             e.printStackTrace();

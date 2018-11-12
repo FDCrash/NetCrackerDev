@@ -3,21 +3,23 @@ package services.servicesimpl;
 import daomodule.dao.daoImpl.SystemDAO;
 import daomodule.dao.daoImpl.UserDAOImpl;
 import daomodule.entities.UserEntity;
+import dto.AdminDTO;
+import dto.UserDTO;
 import services.CRUDService;
 
 import java.util.List;
 
-public class UserService implements CRUDService<UserEntity> {
+public class UserService implements CRUDService<UserDTO> {
     private UserDAOImpl userDAO;
-    private UserEntity userEntity;
     private SystemDAO systemDAO;
 
     public UserService(){
         systemDAO=new SystemDAO();
+        userDAO= new UserDAOImpl();
     }
 
     @Override
-    public void addNew(UserEntity userEntity) {
+    public void addNew(UserDTO userDTO) {
 
     }
 
@@ -27,17 +29,23 @@ public class UserService implements CRUDService<UserEntity> {
     }
 
     @Override
-    public void updateInfo(UserEntity userEntity, int id) {
+    public void updateInfo(UserDTO userDTO, int id) {
 
     }
 
     @Override
-    public List<UserEntity> getAll() {
+    public List<UserDTO> getAll() {
+        return null;
+    }
+
+
+    public List<AdminDTO> getAllAdmins(){
+        userDAO.getAdmins();
         return null;
     }
 
     @Override
-    public UserEntity get(int id) {
+    public UserDTO get(int id) {
         return null;
     }
 
@@ -57,25 +65,15 @@ public class UserService implements CRUDService<UserEntity> {
         return userDAO;
     }
 
-    public UserEntity readWriteBook(int id){
-        return userEntity;
+    public UserEntity readWriteBook(int id) {
+        return null;
     }
-
-    public UserDAOImpl getAdmins(){
-        return userDAO;
-    }
-
-    public UserDAOImpl getEmployees(){
-        return userDAO;
-    }
-
-
 
     public String registration(int id,String login,String pass){
         if(systemDAO.checkStudId(id)){
             if(systemDAO.checkLogin(login)){
                 systemDAO.addNewLoginPass(id,login,pass);
-                return "Вы успешно зарегестрированы!";
+                return "Вы успешно зарегистрированы!";
             }
             return "Логин занят!";
         }

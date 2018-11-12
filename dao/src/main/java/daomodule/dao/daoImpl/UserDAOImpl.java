@@ -2,7 +2,10 @@ package daomodule.dao.daoImpl;
 
 
 import daomodule.dao.DAO;
+import daomodule.entities.AdminEntity;
 import daomodule.entities.UserEntity;
+import daomodule.storage.AdminList;
+import daomodule.storage.UserList;
 
 import java.util.List;
 
@@ -18,7 +21,11 @@ public class UserDAOImpl implements DAO<UserEntity> {
 
     @Override
     public List<UserEntity> getAll() {
-        return users;
+        return UserList.getInstance().getUsers();
+    }
+
+    public List<AdminEntity> getAdmins(){
+        return AdminList.getInstance().getAdmins();
     }
 
     @Override

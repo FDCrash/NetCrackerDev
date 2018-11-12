@@ -10,11 +10,10 @@ public class StudentEntity extends UserEntity{
     private SpecialityEntity specialityEntity;
     private List<Integer> writeBook ;
 
+    public StudentEntity(){}
+
     public StudentEntity(int id,Role role,String login, String pass,String name,int studentId,int groupId,int specialityId, List<Integer> writeBook) {
-        this.setId(id);
-        this.setRole(role);
-        this.setLogin(login);
-        this.setPassword(pass);
+        super(id,role,login,pass);
         this.name=name;
         this.studentId=studentId;
         this.groupId=groupId;

@@ -25,6 +25,7 @@
         <module>dao</module>
         <module>services</module>
         <module>controllers</module>
+        <module>dto</module>
     </modules>
 
 

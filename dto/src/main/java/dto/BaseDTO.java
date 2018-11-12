@@ -1,12 +1,11 @@
-package daomodule.entities;
+package dto;
 
-public abstract class BaseEntity {
+public abstract class BaseDTO {
     private int id;
 
-    public BaseEntity() {
-    }
+    public BaseDTO(){}
 
-    public BaseEntity(int id){
+    public BaseDTO(int id){
         this.id=id;
     }
 

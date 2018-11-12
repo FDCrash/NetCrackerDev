@@ -1,25 +1,26 @@
-package daomodule.entities;
+package dto;
 
-public class UserEntity extends BaseEntity{
-    private Role role;
+public class UserDTO extends BaseDTO{
+    private RoleDTO roleDTO;
     private String password;
     private String login;
 
-    public UserEntity(){
-    }
+    public UserDTO(){}
 
-    public UserEntity(int id,Role role,String login,String password){
+    public UserDTO(int id, RoleDTO roleDTO, String password, String login){
         super(id);
-        this.role=role;
-        this.login=login;
+        this.roleDTO = roleDTO;
         this.password=password;
+        this.login=login;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleDTO(RoleDTO roleDTO) {
+        this.roleDTO = roleDTO;
     }
 
-    public Enum getRole(){return role;}
+    public Enum getRoleDTO(){
+        return roleDTO;
+    }
 
     public String getLogin() {
         return login;
@@ -37,4 +38,3 @@ public class UserEntity extends BaseEntity{
         this.password = password;
     }
 }
-

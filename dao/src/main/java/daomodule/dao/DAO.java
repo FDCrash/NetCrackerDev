@@ -4,15 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DAO<T> {
-
-    public T get(int id);
-
-    public List<T> getAll();
-
-    public void add(T t);
-
-    public void update(T t);
-
-    public void delete(T t);
-
+    T get(int id);
+    List<T> getAll();
+    void add(T t);
+    void update(T t);
+    void delete(T t);
 }

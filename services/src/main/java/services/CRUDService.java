@@ -3,9 +3,9 @@ package services;
 import java.util.List;
 
 public interface CRUDService<T> {
-    public void addNew(T t);
-    public void deleteInfo(int id);
-    public void updateInfo(T t,int id);
-    public List<T> getAll();
-    public T get(int id);
+    void addNew(T t);
+    void deleteInfo(int id);
+    void updateInfo(T t,int id);
+    List<T> getAll();
+    T get(int id);
 }
