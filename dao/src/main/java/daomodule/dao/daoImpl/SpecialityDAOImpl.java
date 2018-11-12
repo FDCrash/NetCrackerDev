@@ -2,6 +2,7 @@ package daomodule.dao.daoImpl;
 
 import daomodule.dao.DAO;
 import daomodule.entities.SpecialityEntity;
+import daomodule.storage.SpecialityList;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
 
     @Override
     public List<SpecialityEntity> getAll() {
-        return specialities;
+        return SpecialityList.getInstance().getSpecialities();
     }
 
     @Override

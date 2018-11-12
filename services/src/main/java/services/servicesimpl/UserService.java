@@ -1,5 +1,6 @@
 package services.servicesimpl;
 
+import converters.AdminConverter;
 import daomodule.dao.daoImpl.SystemDAO;
 import daomodule.dao.daoImpl.UserDAOImpl;
 import daomodule.entities.UserEntity;
@@ -8,14 +9,17 @@ import dto.UserDTO;
 import services.CRUDService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserService implements CRUDService<UserDTO> {
     private UserDAOImpl userDAO;
     private SystemDAO systemDAO;
+    private AdminConverter adminConverter;
 
     public UserService(){
         systemDAO=new SystemDAO();
         userDAO= new UserDAOImpl();
+        adminConverter = new AdminConverter();
     }
 
     @Override
@@ -40,8 +44,7 @@ public class UserService implements CRUDService<UserDTO> {
 
 
     public List<AdminDTO> getAllAdmins(){
-        userDAO.getAdmins();
-        return null;
+        return userDAO.getAdmins().stream().map(admin->adminConverter.convert(admin)).collect(Collectors.toList());
     }
 
     @Override

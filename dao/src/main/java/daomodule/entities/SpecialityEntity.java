@@ -6,6 +6,12 @@ public class SpecialityEntity extends BaseEntity {
 
     public SpecialityEntity(){};
 
+    public SpecialityEntity(int id,String name,FacultyEntity faculty){
+        super(id);
+        this.name=name;
+        this.faculty=faculty;
+    }
+
     public SpecialityEntity(int id,String name,int facultyId){
         super(id);
         this.name=name;

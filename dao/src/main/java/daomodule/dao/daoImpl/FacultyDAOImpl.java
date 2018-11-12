@@ -2,6 +2,7 @@ package daomodule.dao.daoImpl;
 
 import daomodule.dao.DAO;
 import daomodule.entities.FacultyEntity;
+import daomodule.storage.FacultyList;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
 
     @Override
     public List<FacultyEntity> getAll() {
-        return faculties;
+        return FacultyList.getInstance().getFaculties();
     }
 
     @Override

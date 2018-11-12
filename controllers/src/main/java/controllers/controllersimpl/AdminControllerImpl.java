@@ -31,7 +31,7 @@ public class AdminControllerImpl implements ControllerMD {
 
     @Override
     public void getAll(){
-        userService.getAllAdmins();
+        System.out.println(userService.getAllAdmins().get(1).getLogin());
     }
 
     @Override

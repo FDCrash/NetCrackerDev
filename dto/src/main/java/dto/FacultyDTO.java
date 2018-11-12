@@ -9,7 +9,7 @@ public class FacultyDTO extends BaseDTO {
 
     public FacultyDTO(){}
 
-    public FacultyDTO(int id,String name,List<String> specialities){
+    public FacultyDTO(int id,String name){
         super(id);
         this.name=name;
         this.specialities=new ArrayList<>(specialities);
