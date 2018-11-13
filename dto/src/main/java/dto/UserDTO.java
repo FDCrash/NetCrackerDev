@@ -37,4 +37,9 @@ public class UserDTO extends BaseDTO{
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String toString(){
+        return "Логин:" +getLogin() + "\nРоль:"
+                + getRoleDTO().name() + "\n";
+    }
 }

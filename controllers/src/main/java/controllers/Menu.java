@@ -31,6 +31,7 @@ public class Menu {
         do{
             System.out.println("1.Войти");
             System.out.println("2.Зарегистрироваться");
+            System.out.println("0.Выйти");
             k=scanner.nextInt();
             switch (k) {
                 case 1:
@@ -39,10 +40,12 @@ public class Menu {
                 case 2:
                     registrationMenu();
                     break;
+                case 0:
+                    break;
                 default:
                     System.out.println("Выберите позицию из списка");
             }
-        }while(k<1 || k>2);
+        }while(k<0 || k>2);
     }
 
     public void registrationMenu(){

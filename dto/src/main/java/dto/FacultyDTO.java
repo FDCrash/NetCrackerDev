@@ -30,4 +30,12 @@ public class FacultyDTO extends BaseDTO {
     public List<String> getSpecialities() {
         return specialities;
     }
+
+    public String toString(){
+        String s="\n";
+        for(int i=0;i<getSpecialities().size();i++){
+            s+=i+". " +specialities.get(i) + "\n";
+        }
+        return "Факультет: " + getName() + s;
+    }
 }

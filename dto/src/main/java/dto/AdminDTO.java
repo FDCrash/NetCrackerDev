@@ -5,9 +5,9 @@ public class AdminDTO extends UserDTO {
 
     public AdminDTO(){}
 
-    public AdminDTO(int id, RoleDTO roleDTO, String login, String pass){
+    public AdminDTO(int id, RoleDTO roleDTO, String login, String pass, boolean status){
         super(id, roleDTO,login,pass);
-        this.status=false;
+        this.status=status;
     }
 
     public void setStatus(boolean status) {
@@ -18,4 +18,8 @@ public class AdminDTO extends UserDTO {
         return status;
     }
 
+    public String toString(){
+        return "Логин: " +getLogin() + "\nРоль: " + getRoleDTO().name()
+                + "\nСтатус: " + getStatus() + "\n";
+    }
 }

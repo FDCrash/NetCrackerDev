@@ -17,4 +17,9 @@ public class EmployeeDTO extends UserDTO {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String toString(){
+        return "Имя: " + getName() + "\nЛогин: " +getLogin() + "\nРоль: "
+                + getRoleDTO().name() + "\n";
+    }
 }

@@ -3,8 +3,10 @@ package daomodule.dao.daoImpl;
 
 import daomodule.dao.DAO;
 import daomodule.entities.AdminEntity;
+import daomodule.entities.StudentEntity;
 import daomodule.entities.UserEntity;
 import daomodule.storage.AdminList;
+import daomodule.storage.StudentList;
 import daomodule.storage.UserList;
 
 import java.util.List;
@@ -28,13 +30,16 @@ public class UserDAOImpl implements DAO<UserEntity> {
         return AdminList.getInstance().getAdmins();
     }
 
+    public List<StudentEntity> getStudents(){
+        return StudentList.getInstance().getStudents();
+    }
+
     @Override
     public void add(UserEntity user) {
     }
 
     @Override
     public void update(UserEntity user) {
-
     }
 
     @Override

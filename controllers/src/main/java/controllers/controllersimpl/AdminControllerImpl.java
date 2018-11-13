@@ -1,6 +1,8 @@
 package controllers.controllersimpl;
 
 import controllers.ControllerMD;
+import daomodule.storage.AdminList;
+import dto.AdminDTO;
 import services.servicesimpl.UserService;
 
 import java.util.Scanner;
@@ -31,12 +33,21 @@ public class AdminControllerImpl implements ControllerMD {
 
     @Override
     public void getAll(){
-        System.out.println(userService.getAllAdmins().get(1).getLogin());
+        System.out.println("Адинистраторы:");
+        for(AdminDTO adminDTO:userService.getAllAdmins()){
+            String s = adminDTO.toString();
+            System.out.println(s);
+        }
+        editMenu();
     }
 
     @Override
     public void add(){
-
+        do {
+            System.out.println("Новый администратор");
+            System.out.println("Введите id");
+            userService.addNew(new AdminDTO());
+        }while(true);
     }
 
     @Override
@@ -48,5 +59,4 @@ public class AdminControllerImpl implements ControllerMD {
     public void delete() {
 
     }
-
 }

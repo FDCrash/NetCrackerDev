@@ -11,11 +11,11 @@ public class AdminConverter {
 
     public AdminEntity convert(AdminDTO adminDTO){
         return new AdminEntity(adminDTO.getId(),Role.valueOf(adminDTO.getRoleDTO().name()),adminDTO.getLogin(),
-                adminDTO.getPassword());
+                adminDTO.getPassword(),adminDTO.getStatus());
     }
 
     public AdminDTO convert(AdminEntity adminEntity){
         return new AdminDTO(adminEntity.getId(),RoleDTO.valueOf(adminEntity.getRole().name()),adminEntity.getLogin(),
-                adminEntity.getPassword());
+                adminEntity.getPassword(),adminEntity.getStatus());
     }
 }
