@@ -30,4 +30,16 @@ public class StudentControllerImpl implements ControllerMD {
     public void delete() {
 
     }
+
+    public void showWriteBook(){
+
+    }
+
+    public void getAllByGroup(){
+
+    }
+
+    public void getAllBySpeciality(){
+
+    }
 }

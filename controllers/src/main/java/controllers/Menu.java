@@ -140,11 +140,11 @@ public class Menu {
             System.out.println("0.Выйти");
             k=scanner.nextInt();
             switch (k){
-                case 1: searchInfo();
+                case 1: studentController.showWriteBook();
                     break;
-                case 2: studentController.editMenu();
+                case 2: studentController.getAllByGroup();
                     break;
-                case 3: specialityController.editMenu();
+                case 3: studentController.getAllBySpeciality();
                     break;
                 case 0: startMenu();
                 default:
