@@ -10,12 +10,12 @@ public class AdminConverter {
     private RoleDTO roleDTO;
 
     public AdminEntity convert(AdminDTO adminDTO){
-        return new AdminEntity(adminDTO.getId(),(Role) adminDTO.getRoleDTO(),adminDTO.getLogin(),
+        return new AdminEntity(adminDTO.getId(),Role.valueOf(adminDTO.getRoleDTO().name()),adminDTO.getLogin(),
                 adminDTO.getPassword());
     }
 
     public AdminDTO convert(AdminEntity adminEntity){
-        return new AdminDTO(adminEntity.getId(),(RoleDTO) adminEntity.getRole(),adminEntity.getLogin(),
+        return new AdminDTO(adminEntity.getId(),RoleDTO.valueOf(adminEntity.getRole().name()),adminEntity.getLogin(),
                 adminEntity.getPassword());
     }
 }

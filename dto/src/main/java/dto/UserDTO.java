@@ -7,7 +7,7 @@ public class UserDTO extends BaseDTO{
 
     public UserDTO(){}
 
-    public UserDTO(int id, RoleDTO roleDTO, String password, String login){
+    public UserDTO(int id, RoleDTO roleDTO, String login, String password){
         super(id);
         this.roleDTO = roleDTO;
         this.password=password;
