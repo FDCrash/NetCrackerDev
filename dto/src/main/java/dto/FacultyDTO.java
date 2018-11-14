@@ -9,7 +9,7 @@ public class FacultyDTO extends BaseDTO {
 
     public FacultyDTO(){}
 
-    public FacultyDTO(int id,String name){
+    public FacultyDTO(int id,String name, List<String> specialities){
         super(id);
         this.name=name;
         this.specialities=new ArrayList<>(specialities);
@@ -33,8 +33,8 @@ public class FacultyDTO extends BaseDTO {
 
     public String toString(){
         String s="\n";
-        for(int i=0;i<getSpecialities().size();i++){
-            s+=i+". " +specialities.get(i) + "\n";
+        for(int i=1;i<=getSpecialities().size();i++){
+            s+=i+". " +specialities.get(i-1) + "\n";
         }
         return "Факультет: " + getName() + s;
     }

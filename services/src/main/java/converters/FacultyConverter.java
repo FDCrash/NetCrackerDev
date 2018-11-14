@@ -21,12 +21,11 @@ public class FacultyConverter {
     }
 
     public FacultyDTO convert(FacultyEntity facultyEntity){
-        FacultyDTO facultyDTO=new FacultyDTO(facultyEntity.getId(),facultyEntity.getName());
         List<String> specilities=new ArrayList<>();
-        for(int i=0;i<facultyEntity.getSpeciality().size();i++){
-            specilities.add(facultyEntity.getSpeciality().get(i).getName());
+        for(int i=0;i<facultyEntity.getSpecialities().size();i++){
+            specilities.add(facultyEntity.getSpecialities().get(i).getName());
         }
-        facultyDTO.setSpecialities(specilities);
+        FacultyDTO facultyDTO=new FacultyDTO(facultyEntity.getId(),facultyEntity.getName(),specilities);
         return facultyDTO;
     }
 }

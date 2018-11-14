@@ -159,6 +159,8 @@ public class Menu {
             System.out.println("2.Просмотреть группу");
             System.out.println("3.Просмотреть специальность");
             System.out.println("0.Выйти");
+            ///
+            //try
             k=scanner.nextInt();
             switch (k){
                 case 1: studentController.showWriteBook();

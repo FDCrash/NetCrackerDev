@@ -35,7 +35,7 @@ public class SpecialityControllerImpl implements ControllerMD {
 
     @Override
     public void getAll() {
-        System.out.println("Адинистраторы:");
+        System.out.println("Специальности:");
         for(SpecialityDTO specialityDTO:specialityService.getAll()){
             String s =specialityDTO.toString();
             System.out.println(s);
@@ -56,11 +56,36 @@ public class SpecialityControllerImpl implements ControllerMD {
 
     @Override
     public void update() {
-
+        System.out.println("Специальности:");
+        int i=1;
+        for(SpecialityDTO specialityDTO:specialityService.getAll()){
+            String s =specialityDTO.toString();
+            System.out.println(1+". "+s);
+            i++;
+        }
+        System.out.println("Выберите позицию для изменения: ");
+        int k=scanner.nextInt();
+        SpecialityDTO specialityDTO=specialityService.get(k-1);
+        System.out.println("Введите название специальности: ");
+        String name=scanner.next();
+        System.out.println("Введите название факультета: ");
+        String faculty =scanner.next();
+        specialityService.updateInfo(new SpecialityDTO(specialityDTO.getId(),name,faculty));
+        editMenu();
     }
 
     @Override
     public void delete() {
-
+        System.out.println("Специальности:");
+        int i=1;
+        for(SpecialityDTO specialityDTO:specialityService.getAll()){
+            String s = specialityDTO.toString();
+            System.out.println(i+". " + s);
+            i++;
+        }
+        System.out.println("Выберите позицию для удаления: ");
+        int k=scanner.nextInt();
+        specialityService.deleteInfo(k-1);
+        editMenu();
     }
 }

@@ -31,7 +31,7 @@ public class FacultyEntity extends BaseEntity {
         this.specialities.add(speciality);
     }
 
-    public List<SpecialityEntity> getSpeciality() {
+    public List<SpecialityEntity> getSpecialities() {
         return specialities;
     }
 }

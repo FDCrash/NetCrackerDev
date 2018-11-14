@@ -7,14 +7,13 @@ import daomodule.storage.FacultyList;
 import java.util.List;
 
 public class FacultyDAOImpl implements DAO<FacultyEntity> {
-    private List<FacultyEntity> faculties;
 
     public FacultyDAOImpl(){}
 
 
     @Override
     public FacultyEntity get(int id) {
-        return faculties.get(id);
+        return FacultyList.getInstance().get().get(id);
     }
 
     @Override
@@ -23,17 +22,23 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
     }
 
     @Override
-    public void add(FacultyEntity faculty) {
-
+    public void add(FacultyEntity facultyEntity) {
+        FacultyList.getInstance().add(facultyEntity);
     }
 
     @Override
     public void update(FacultyEntity faculty) {
-
+        for(FacultyEntity facultyEntity:FacultyList.getInstance().get()){
+            if(faculty.getId()==facultyEntity.getId()){
+                facultyEntity.setName(faculty.getName());
+                facultyEntity.setSpecialities(faculty.getSpecialities());
+                break;
+            }
+        }
     }
 
     @Override
     public void delete(int id) {
-
+        FacultyList.getInstance().get().remove(id);
     }
 }
