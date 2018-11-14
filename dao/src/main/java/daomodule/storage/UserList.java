@@ -38,14 +38,14 @@ public class UserList implements Storage<UserEntity>{
     }
 
     public void setStudents(List<StudentEntity> students){
-        this.users.addAll(students);
+
     }
 
     public void setEmployees(List<EmployeeEntity> employees){
-        this.users.addAll(employees);
+
     }
 
     public void setAdmins(List<AdminEntity> admins){
-        this.users.addAll(admins);
+
     }
 }

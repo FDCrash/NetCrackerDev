@@ -2,7 +2,7 @@ package services.servicesimpl;
 
 import converters.SpecialityConverter;
 import daomodule.dao.daoImpl.SpecialityDAOImpl;
-import daomodule.entities.SpecialityEntity;
+
 import dto.SpecialityDTO;
 import services.CRUDService;
 
@@ -14,8 +14,7 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
     private SpecialityConverter specialityConverter;
 
     public SpecialityServiceImpl(){
-        specialityDAO = new SpecialityDAOImpl();
-        specialityConverter = new SpecialityConverter();
+
     }
 
     @Override
@@ -35,7 +34,7 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
 
     @Override
     public List<SpecialityDTO> getAll() {
-        return specialityDAO.getAll().stream().map(speciality->specialityConverter.convert(speciality)).collect(Collectors.toList());
+        return null;
     }
 
     @Override

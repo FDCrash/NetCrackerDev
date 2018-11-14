@@ -2,11 +2,9 @@ package daomodule.dao.daoImpl;
 
 
 import daomodule.dao.DAO;
-import daomodule.entities.AdminEntity;
-import daomodule.entities.StudentEntity;
+
 import daomodule.entities.UserEntity;
-import daomodule.storage.AdminList;
-import daomodule.storage.StudentList;
+
 import daomodule.storage.UserList;
 
 import java.util.List;
@@ -41,29 +39,17 @@ public class UserDAOImpl implements DAO<UserEntity> {
     }
 
     public boolean checkId(int id){
-        for(UserEntity userEntity:UserList.getInstance().get()){
-            if(userEntity.getId()==id){
-                return false;
-            }
-        }
+
         return true;
     }
 
     public Enum checkLoginPass(String login,String pass){
-        for(UserEntity userEntity: UserList.getInstance().get()){
-            if(userEntity.getLogin().equals(login) && userEntity.getPassword().equals(pass)){
-                return userEntity.getRole();
-            }
-        }
+
         return null;
     }
 
     public boolean checkLogin(String login){
-        for(UserEntity userEntity: UserList.getInstance().get()){
-            if(userEntity.getLogin().equals(login)){
-                return false;
-            }
-        }
+
         return true;
     }
 }

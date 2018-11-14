@@ -23,22 +23,16 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
 
     @Override
     public void add(FacultyEntity facultyEntity) {
-        FacultyList.getInstance().add(facultyEntity);
+
     }
 
     @Override
     public void update(FacultyEntity faculty) {
-        for(FacultyEntity facultyEntity:FacultyList.getInstance().get()){
-            if(faculty.getId()==facultyEntity.getId()){
-                facultyEntity.setName(faculty.getName());
-                facultyEntity.setSpecialities(faculty.getSpecialities());
-                break;
-            }
-        }
+
     }
 
     @Override
     public void delete(int id) {
-        FacultyList.getInstance().get().remove(id);
+
     }
 }
