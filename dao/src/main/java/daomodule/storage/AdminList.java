@@ -5,7 +5,7 @@ import daomodule.entities.AdminEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminList {
+public class AdminList implements Storage<AdminEntity>{
     private static AdminList instance;
     private List<AdminEntity> admins = new ArrayList<>();
 
@@ -19,11 +19,18 @@ public class AdminList {
         return instance;
     }
 
-    public void setAdmins(List<AdminEntity> admins) {
+    @Override
+    public List<AdminEntity> get() {
+        return admins;
+    }
+
+    @Override
+    public void set(List<AdminEntity> admins) {
         this.admins=admins;
     }
 
-    public List<AdminEntity> getAdmins() {
-        return admins;
+    @Override
+    public void add(AdminEntity adminEntity) {
+        this.admins.add(adminEntity);
     }
 }

@@ -22,8 +22,8 @@ public class FullFillImpl implements RWStorage {
     }
 
     private void connectStudentSpeciality(){
-        for (StudentEntity studentEntity: StudentList.getInstance().getStudents()) {
-            for (SpecialityEntity specialityEntity : SpecialityList.getInstance().getSpecialities()) {
+        for (StudentEntity studentEntity: StudentList.getInstance().get()) {
+            for (SpecialityEntity specialityEntity : SpecialityList.getInstance().get()) {
                 if (studentEntity.getSpecialityEntity().getId() ==specialityEntity.getId()){
                     studentEntity.setSpecialityEntity(specialityEntity);
                 }
@@ -31,8 +31,8 @@ public class FullFillImpl implements RWStorage {
         }
     }
     private void connectSpecialityFaculty(){
-        for (SpecialityEntity specialityEntity : SpecialityList.getInstance().getSpecialities()) {
-            for (FacultyEntity facultyEntity: FacultyList.getInstance().getFaculties()) {
+        for (SpecialityEntity specialityEntity : SpecialityList.getInstance().get()) {
+            for (FacultyEntity facultyEntity: FacultyList.getInstance().get()) {
                 if (specialityEntity.getFaculty().getId() ==facultyEntity.getId()){
                     specialityEntity.setFaculty(facultyEntity);
                     facultyEntity.setSpeciality(specialityEntity);

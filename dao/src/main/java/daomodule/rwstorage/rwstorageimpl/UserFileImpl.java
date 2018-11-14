@@ -9,8 +9,8 @@ import daomodule.storage.UserList;
 public class UserFileImpl implements RWStorage {
     @Override
     public void fillStorage() {
-        UserList.getInstance().setAdmins(AdminList.getInstance().getAdmins());
-        UserList.getInstance().setEmployees(EmployeeList.getInstance().getEmployees());
-        UserList.getInstance().setStudents(StudentList.getInstance().getStudents());
+        UserList.getInstance().setAdmins(AdminList.getInstance().get());
+        UserList.getInstance().setEmployees(EmployeeList.getInstance().get());
+        UserList.getInstance().setStudents(StudentList.getInstance().get());
     }
 }

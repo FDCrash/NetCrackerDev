@@ -1,19 +1,22 @@
 package controllers.controllersimpl;
 
 import controllers.ControllerMD;
-import daomodule.storage.AdminList;
 import dto.AdminDTO;
-import services.servicesimpl.UserService;
+import dto.RoleDTO;
+import services.servicesimpl.AdminServiceImpl;
+import services.servicesimpl.UserServiceImpl;
 
 import java.util.Scanner;
 
 public class AdminControllerImpl implements ControllerMD {
-    private UserService userService;
+    private AdminServiceImpl adminService;
     private Scanner scanner;
+    private UserServiceImpl userService;
 
     public AdminControllerImpl(){
         scanner = new Scanner(System.in);
-        userService = new UserService();
+        adminService = new AdminServiceImpl();
+        userService = new UserServiceImpl();
     }
 
     @Override
@@ -34,7 +37,7 @@ public class AdminControllerImpl implements ControllerMD {
     @Override
     public void getAll(){
         System.out.println("Адинистраторы:");
-        for(AdminDTO adminDTO:userService.getAllAdmins()){
+        for(AdminDTO adminDTO:adminService.getAll()){
             String s = adminDTO.toString();
             System.out.println(s);
         }
@@ -43,20 +46,50 @@ public class AdminControllerImpl implements ControllerMD {
 
     @Override
     public void add(){
-        do {
-            System.out.println("Новый администратор");
-            System.out.println("Введите id");
-            userService.addNew(new AdminDTO());
-        }while(true);
+        System.out.println("Новый администратор");
+        System.out.println("Введите логин: ");
+        String login=scanner.next();
+        System.out.println("Введите пароль: ");
+        String password =scanner.next();
+        adminService.addNew(new AdminDTO(userService.generateId(1000),RoleDTO.ADMIN,
+                login,password,false));
+        editMenu();
     }
 
     @Override
     public void update(){
-
+        System.out.println("Адинистраторы:");
+        int i=1;
+        AdminDTO admin;
+        for(AdminDTO adminDTO:adminService.getAll()){
+            String s = adminDTO.toString();
+            System.out.println(i+". " + s);
+            i++;
+        }
+        System.out.println("Выберите позицию для изменения: ");
+        int k=scanner.nextInt();
+        admin=adminService.get(k-1);
+        System.out.println(admin.toString());
+        System.out.println("Введите логин: ");
+        String login=scanner.next();
+        System.out.println("Введите пароль: ");
+        String password =scanner.next();
+        adminService.updateInfo(new AdminDTO(admin.getId(),RoleDTO.ADMIN,login,password,false));
+        editMenu();
     }
 
     @Override
     public void delete() {
-
+        System.out.println("Адинистраторы:");
+        int i=1;
+        for(AdminDTO adminDTO:adminService.getAll()){
+            String s = adminDTO.toString();
+            System.out.println(i+". " + s);
+            i++;
+        }
+        System.out.println("Выберите позицию для удаления: ");
+        int k=scanner.nextInt();
+        adminService.deleteInfo(k-1);
+        editMenu();
     }
 }

@@ -38,7 +38,7 @@ public class AdminFileImpl implements RWStorage {
         } catch (IOException | ParseException e){
             e.printStackTrace();
         }
-        AdminList.getInstance().setAdmins(admins);
+        AdminList.getInstance().set(admins);
 
     }
 }

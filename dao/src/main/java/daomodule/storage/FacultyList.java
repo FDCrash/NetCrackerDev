@@ -5,7 +5,7 @@ import daomodule.entities.FacultyEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FacultyList {
+public class FacultyList implements Storage<FacultyEntity>{
     private static FacultyList instance;
     private List<FacultyEntity> faculties=new ArrayList<>();
 
@@ -19,11 +19,19 @@ public class FacultyList {
         return instance;
     }
 
-    public void setFaculties(List<FacultyEntity> faculties) {
-        this.faculties = faculties;
+
+    @Override
+    public List<FacultyEntity> get() {
+        return faculties;
     }
 
-    public List<FacultyEntity> getFaculties() {
-        return faculties;
+    @Override
+    public void set(List<FacultyEntity> faculties) {
+        this.faculties=faculties;
+    }
+
+    @Override
+    public void add(FacultyEntity facultyEntity) {
+        this.faculties.add(facultyEntity);
     }
 }

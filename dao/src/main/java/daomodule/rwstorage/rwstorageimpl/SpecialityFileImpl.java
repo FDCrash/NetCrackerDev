@@ -34,6 +34,6 @@ public class SpecialityFileImpl implements RWStorage {
         } catch (IOException | ParseException e){
             e.printStackTrace();
         }
-        SpecialityList.getInstance().setSpecialities(specialities);
+        SpecialityList.getInstance().set(specialities);
     }
 }

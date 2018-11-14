@@ -5,7 +5,7 @@ import daomodule.entities.EmployeeEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeList {
+public class EmployeeList implements Storage<EmployeeEntity>{
     private static EmployeeList instance;
     private List<EmployeeEntity> employees=new ArrayList<>();
 
@@ -13,17 +13,24 @@ public class EmployeeList {
     }
 
     public static EmployeeList getInstance() {
-        if(instance==null){
-            instance=new EmployeeList();
+        if (instance == null) {
+            instance = new EmployeeList();
         }
         return instance;
     }
 
-    public List<EmployeeEntity> getEmployees() {
+    @Override
+    public List<EmployeeEntity> get() {
         return employees;
     }
 
-    public void setEmployees(List<EmployeeEntity> employees) {
+    @Override
+    public void set(List<EmployeeEntity> employees) {
         this.employees=employees;
+    }
+
+    @Override
+    public void add(EmployeeEntity employeeEntity) {
+        this.employees.add(employeeEntity);
     }
 }

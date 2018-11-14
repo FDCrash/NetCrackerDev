@@ -6,7 +6,7 @@ import services.CRUDService;
 
 import java.util.List;
 
-public class FacultyService implements CRUDService<FacultyEntity> {
+public class FacultyServiceImpl implements CRUDService<FacultyEntity> {
     private FacultyDAOImpl facultyDAO;
     private FacultyEntity facultyEntity;
 
@@ -21,7 +21,7 @@ public class FacultyService implements CRUDService<FacultyEntity> {
     }
 
     @Override
-    public void updateInfo(FacultyEntity facultyEntity, int id) {
+    public void updateInfo(FacultyEntity facultyEntity) {
 
     }
 

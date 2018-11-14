@@ -12,26 +12,19 @@ import daomodule.storage.UserList;
 import java.util.List;
 
 public class UserDAOImpl implements DAO<UserEntity> {
-    private List<UserEntity> users;
 
-    public UserDAOImpl(){    }
+    public UserDAOImpl(){
+
+    }
 
     @Override
     public UserEntity get(int id) {
-        return users.get(id);
+        return null;
     }
 
     @Override
     public List<UserEntity> getAll() {
-        return UserList.getInstance().getUsers();
-    }
-
-    public List<AdminEntity> getAdmins(){
-        return AdminList.getInstance().getAdmins();
-    }
-
-    public List<StudentEntity> getStudents(){
-        return StudentList.getInstance().getStudents();
+        return UserList.getInstance().get();
     }
 
     @Override
@@ -43,7 +36,34 @@ public class UserDAOImpl implements DAO<UserEntity> {
     }
 
     @Override
-    public void delete(UserEntity user) {
+    public void delete(int id) {
 
+    }
+
+    public boolean checkId(int id){
+        for(UserEntity userEntity:UserList.getInstance().get()){
+            if(userEntity.getId()==id){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Enum checkLoginPass(String login,String pass){
+        for(UserEntity userEntity: UserList.getInstance().get()){
+            if(userEntity.getLogin().equals(login) && userEntity.getPassword().equals(pass)){
+                return userEntity.getRole();
+            }
+        }
+        return null;
+    }
+
+    public boolean checkLogin(String login){
+        for(UserEntity userEntity: UserList.getInstance().get()){
+            if(userEntity.getLogin().equals(login)){
+                return false;
+            }
+        }
+        return true;
     }
 }

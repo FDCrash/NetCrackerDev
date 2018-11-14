@@ -1,10 +1,10 @@
 package controllers.controllersimpl;
 
 import controllers.ControllerMD;
-import services.servicesimpl.FacultyService;
+import services.servicesimpl.FacultyServiceImpl;
 
 public class FacultyControllerImpl implements ControllerMD {
-    private FacultyService facultyService;
+    private FacultyServiceImpl facultyService;
 
     @Override
     public void editMenu() {

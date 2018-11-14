@@ -8,7 +8,7 @@ import daomodule.entities.UserEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserList {
+public class UserList implements Storage<UserEntity>{
     private static UserList instance;
     private List<UserEntity> users=new ArrayList<>();
 
@@ -22,12 +22,19 @@ public class UserList {
         return instance;
     }
 
-    public List<UserEntity> getUsers() {
+    @Override
+    public List<UserEntity> get() {
         return users;
     }
 
-    public void setUsers(List<UserEntity> users) {
+    @Override
+    public void set(List<UserEntity> users) {
         this.users=users;
+    }
+
+    @Override
+    public void add(UserEntity userEntity) {
+        this.users.add(userEntity);
     }
 
     public void setStudents(List<StudentEntity> students){

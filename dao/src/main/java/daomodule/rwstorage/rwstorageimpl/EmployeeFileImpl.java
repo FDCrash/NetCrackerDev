@@ -39,7 +39,7 @@ public class EmployeeFileImpl implements RWStorage {
         } catch (IOException | ParseException e){
             e.printStackTrace();
         }
-        EmployeeList.getInstance().setEmployees(employees);
+        EmployeeList.getInstance().set(employees);
 
     }
 }

@@ -7,18 +7,15 @@ import daomodule.storage.SpecialityList;
 import java.util.List;
 
 public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
-    private List<SpecialityEntity> specialities;
-
-    public SpecialityDAOImpl(){}
 
     @Override
     public SpecialityEntity get(int id) {
-        return specialities.get(id);
+        return SpecialityList.getInstance().get().get(id);
     }
 
     @Override
     public List<SpecialityEntity> getAll() {
-        return SpecialityList.getInstance().getSpecialities();
+        return SpecialityList.getInstance().get();
     }
 
     @Override
@@ -30,6 +27,6 @@ public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
     }
 
     @Override
-    public void delete(SpecialityEntity speciality) {
+    public void delete(int id) {
     }
 }

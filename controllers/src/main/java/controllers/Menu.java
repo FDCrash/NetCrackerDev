@@ -2,27 +2,43 @@ package controllers;
 
 import controllers.controllersimpl.*;
 import daomodule.entities.Role;
-import services.servicesimpl.UserService;
+import services.servicesimpl.AdminServiceImpl;
+import services.servicesimpl.UserServiceImpl;
 
 import java.util.Scanner;
 
+import static daomodule.entities.Role.ADMIN;
+import static daomodule.entities.Role.EMPLOYEE;
+import static daomodule.entities.Role.STUDENT;
+
 public class Menu {
-    private UserService userService;
+    private Role role;
+    private UserServiceImpl userService;
     private Scanner scanner;
     private StudentControllerImpl studentController;
     private EmployeeControllerImpl employeeController;
     private AdminControllerImpl adminController;
     private SpecialityControllerImpl specialityController;
     private FacultyControllerImpl facultyController;
+    private AdminServiceImpl adminService;
+    private static Menu instance;
 
-    public Menu(){
-        userService = new UserService();
+    public static Menu getInstance(){
+        if(instance==null){
+            instance=new Menu();
+        }
+        return instance;
+    }
+
+    private Menu(){
+        userService = new UserServiceImpl();
         scanner = new Scanner(System.in);
         studentController = new StudentControllerImpl();
         employeeController = new EmployeeControllerImpl();
         adminController = new AdminControllerImpl();
         facultyController = new FacultyControllerImpl();
         specialityController = new SpecialityControllerImpl();
+        adminService = new AdminServiceImpl();
     }
 
     public void startMenu() {
@@ -68,11 +84,11 @@ public class Menu {
         System.out.println("Введите пароль:");
         pass=scanner.next();
         switch ((Role)userService.authentication(login,pass)){
-            case ADMIN: userService.changeStatusAdmin(login); adminMenu();
+            case ADMIN: adminService.changeStatusAdmin(login); setRole(ADMIN); adminMenu();
             break;
-            case EMPLOYEE: employeeMenu();
+            case EMPLOYEE: setRole(EMPLOYEE); employeeMenu();
             break;
-            case STUDENT: studentMenu();
+            case STUDENT: setRole(STUDENT); studentMenu();
             break;
             default: System.out.println("Неправильный логин или пароль");
         }
@@ -104,6 +120,7 @@ public class Menu {
                 case 6: specialityController.editMenu();
                     break;
                 case 0: startMenu();
+                    break;
                 default:
                     System.out.println("Выберите позицию из списка");
             }
@@ -127,6 +144,7 @@ public class Menu {
                 case 3: specialityController.editMenu();
                     break;
                 case 0: startMenu();
+                    break;
                 default:
                     System.out.println("Выберите позицию из списка");
             }
@@ -150,10 +168,19 @@ public class Menu {
                 case 3: studentController.getAllBySpeciality();
                     break;
                 case 0: startMenu();
+                    break;
                 default:
                     System.out.println("Выберите позицию из списка");
             }
         }while(k<0 || k>3);
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public void searchInfo(){}

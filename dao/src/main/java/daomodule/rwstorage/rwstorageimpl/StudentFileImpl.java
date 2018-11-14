@@ -52,7 +52,7 @@ public class StudentFileImpl implements RWStorage {
         } catch (IOException | ParseException e){
             e.printStackTrace();
         }
-        StudentList.getInstance().setStudents(students);
+        StudentList.getInstance().set(students);
     }
 
 }

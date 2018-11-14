@@ -1,30 +1,31 @@
 package services.servicesimpl;
 
 import converters.AdminConverter;
-import daomodule.dao.daoImpl.SystemDAO;
+import converters.UserConverter;
+import daomodule.dao.daoImpl.StudentDAOImpl;
 import daomodule.dao.daoImpl.UserDAOImpl;
 import daomodule.entities.UserEntity;
-import dto.AdminDTO;
 import dto.UserDTO;
 import services.CRUDService;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.SplittableRandom;
 
-public class UserService implements CRUDService<UserDTO> {
+public class UserServiceImpl implements CRUDService<UserDTO> {
     private UserDAOImpl userDAO;
-    private SystemDAO systemDAO;
     private AdminConverter adminConverter;
+    private UserConverter userConverter;
+    private StudentDAOImpl studentDAO;
 
-    public UserService(){
-        systemDAO=new SystemDAO();
+    public UserServiceImpl(){
         userDAO= new UserDAOImpl();
-        adminConverter = new AdminConverter();
+        userConverter = new UserConverter();
+        studentDAO = new StudentDAOImpl();
     }
 
     @Override
     public void addNew(UserDTO userDTO) {
-
+        UserEntity userEntity= userConverter.convert(userDTO);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class UserService implements CRUDService<UserDTO> {
     }
 
     @Override
-    public void updateInfo(UserDTO userDTO, int id) {
+    public void updateInfo(UserDTO userDTO) {
 
     }
 
@@ -42,10 +43,6 @@ public class UserService implements CRUDService<UserDTO> {
         return null;
     }
 
-
-    public List<AdminDTO> getAllAdmins(){
-        return userDAO.getAdmins().stream().map(admin->adminConverter.convert(admin)).collect(Collectors.toList());
-    }
 
     @Override
     public UserDTO get(int id) {
@@ -72,10 +69,20 @@ public class UserService implements CRUDService<UserDTO> {
         return null;
     }
 
+    public int generateId(int bound){
+            SplittableRandom splittableRandom=new SplittableRandom();
+            int k;
+            do{
+                k=splittableRandom.nextInt(1,bound);
+
+            }while (!userDAO.checkId(k));
+            return k;
+    }
+
     public String registration(int id,String login,String pass){
-        if(systemDAO.checkStudId(id)){
-            if(systemDAO.checkLogin(login)){
-                systemDAO.addNewLoginPass(id,login,pass);
+        if(studentDAO.checkStudId(id)){
+            if(userDAO.checkLogin(login)){
+                studentDAO.addNewLoginPass(id,login,pass);
                 return "Вы успешно зарегистрированы!";
             }
             return "Логин занят!";
@@ -84,10 +91,8 @@ public class UserService implements CRUDService<UserDTO> {
     }
 
     public Enum authentication(String login, String pass){
-        return systemDAO.checkLoginPass(login,pass);
+        return userDAO.checkLoginPass(login,pass);
     }
 
-    public void changeStatusAdmin(String login){
-        systemDAO.changeStatus(login);
-    }
+
 }

@@ -19,7 +19,7 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
 
     @Override
     public List<FacultyEntity> getAll() {
-        return FacultyList.getInstance().getFaculties();
+        return FacultyList.getInstance().get();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
     }
 
     @Override
-    public void delete(FacultyEntity faculty) {
+    public void delete(int id) {
 
     }
 }

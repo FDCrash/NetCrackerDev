@@ -5,7 +5,7 @@ import daomodule.entities.StudentEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentList {
+public class StudentList implements Storage<StudentEntity>{
     private static StudentList instance;
     private List<StudentEntity> students=new ArrayList<>();
 
@@ -19,11 +19,18 @@ public class StudentList {
         return instance;
     }
 
-    public List<StudentEntity> getStudents() {
+    @Override
+    public List<StudentEntity> get() {
         return students;
     }
 
-    public void setStudents(List<StudentEntity> students) {
+    @Override
+    public void set(List<StudentEntity> students) {
         this.students=students;
+    }
+
+    @Override
+    public void add(StudentEntity studentEntity) {
+        this.students.add(studentEntity);
     }
 }
