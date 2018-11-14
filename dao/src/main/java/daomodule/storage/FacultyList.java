@@ -27,11 +27,11 @@ public class FacultyList implements Storage<FacultyEntity>{
 
     @Override
     public void set(List<FacultyEntity> faculties) {
-        this.faculties=faculties;
+
     }
 
     @Override
     public void add(FacultyEntity facultyEntity) {
-        this.faculties.add(facultyEntity);
+
     }
 }

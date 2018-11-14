@@ -29,12 +29,12 @@ public class UserList implements Storage<UserEntity>{
 
     @Override
     public void set(List<UserEntity> users) {
-        this.users=users;
+
     }
 
     @Override
     public void add(UserEntity userEntity) {
-        this.users.add(userEntity);
+
     }
 
     public void setStudents(List<StudentEntity> students){

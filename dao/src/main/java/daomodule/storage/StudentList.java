@@ -26,11 +26,11 @@ public class StudentList implements Storage<StudentEntity>{
 
     @Override
     public void set(List<StudentEntity> students) {
-        this.students=students;
+
     }
 
     @Override
     public void add(StudentEntity studentEntity) {
-        this.students.add(studentEntity);
+
     }
 }

@@ -26,11 +26,11 @@ public class AdminList implements Storage<AdminEntity>{
 
     @Override
     public void set(List<AdminEntity> admins) {
-        this.admins=admins;
+
     }
 
     @Override
     public void add(AdminEntity adminEntity) {
-        this.admins.add(adminEntity);
+
     }
 }

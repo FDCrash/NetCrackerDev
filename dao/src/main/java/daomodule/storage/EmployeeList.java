@@ -26,11 +26,11 @@ public class EmployeeList implements Storage<EmployeeEntity>{
 
     @Override
     public void set(List<EmployeeEntity> employees) {
-        this.employees=employees;
+
     }
 
     @Override
     public void add(EmployeeEntity employeeEntity) {
-        this.employees.add(employeeEntity);
+
     }
 }

@@ -27,11 +27,11 @@ public class SpecialityList implements Storage<SpecialityEntity>{
 
     @Override
     public void set(List<SpecialityEntity> specialities) {
-        this.specialities=specialities;
+
     }
 
     @Override
     public void add(SpecialityEntity specialityEntity) {
-        this.specialities.add(specialityEntity);
+
     }
 }
