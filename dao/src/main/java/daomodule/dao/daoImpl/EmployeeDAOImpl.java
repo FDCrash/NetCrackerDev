@@ -24,7 +24,7 @@ public class EmployeeDAOImpl implements DAO<EmployeeEntity> {
 
     @Override
     public void update(EmployeeEntity employee) {
-        for(EmployeeEntity employeeEntity: EmployeeList.getInstance().get() ){
+        for(EmployeeEntity employeeEntity: getAll()){
             if(employee.getId()==employeeEntity.getId()){
                 employeeEntity.setLogin(employee.getLogin());
                 employeeEntity.setPassword(employee.getPassword());

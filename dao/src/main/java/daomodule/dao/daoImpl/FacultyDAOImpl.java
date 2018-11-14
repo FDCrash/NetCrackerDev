@@ -28,7 +28,7 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
 
     @Override
     public void update(FacultyEntity faculty) {
-        for(FacultyEntity facultyEntity:FacultyList.getInstance().get()){
+        for(FacultyEntity facultyEntity:getAll()){
             if(faculty.getId()==facultyEntity.getId()){
                 facultyEntity.setName(faculty.getName());
                 facultyEntity.setSpecialities(faculty.getSpecialities());

@@ -24,7 +24,7 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
 
     @Override
     public void update(StudentEntity student) {
-        for(StudentEntity studentEntity: StudentList.getInstance().get()){
+        for(StudentEntity studentEntity: getAll()){
             if(studentEntity.getId()==student.getId()){
                 studentEntity.setName(student.getName());
                 studentEntity.setGroupId(student.getGroupId());
@@ -42,7 +42,7 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
     }
 
     public boolean checkStudId(int id){
-        for (StudentEntity studentEntity: StudentList.getInstance().get()) {
+        for (StudentEntity studentEntity: getAll()) {
             if(studentEntity.getStudentId()==id){
                 return true;
             }
@@ -51,7 +51,7 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
     }
 
     public void addNewLoginPass(int id,String login, String pass){
-        for (StudentEntity studentEntity: StudentList.getInstance().get()) {
+        for (StudentEntity studentEntity: getAll()) {
             if(studentEntity.getStudentId()==id){
                 studentEntity.setLogin(login);
                 studentEntity.setPassword(pass);

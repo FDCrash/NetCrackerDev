@@ -24,7 +24,7 @@ public class AdminDAOImpl implements DAO<AdminEntity> {
 
     @Override
     public void update(AdminEntity admin) {
-        for(AdminEntity adminEntity:AdminList.getInstance().get()){
+        for(AdminEntity adminEntity:getAll()){
             if(admin.getId()==adminEntity.getId()){
                 adminEntity.setLogin(admin.getLogin());
                 adminEntity.setPassword(admin.getPassword());
@@ -41,7 +41,7 @@ public class AdminDAOImpl implements DAO<AdminEntity> {
     }
 
     public void changeStatus(String login){
-        for(AdminEntity adminEntity: AdminList.getInstance().get()){
+        for(AdminEntity adminEntity: getAll()){
             if(adminEntity.getLogin().equals(login)){
                 adminEntity.setStatus(true);
                 break;

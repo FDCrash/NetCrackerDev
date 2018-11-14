@@ -20,22 +20,26 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
 
     @Override
     public void addNew(SpecialityDTO specialityDTO) {
-
+        SpecialityEntity specialityEntity= specialityConverter.convert(specialityDTO);
+        specialityDAO.add(specialityEntity);
     }
 
     @Override
     public void deleteInfo(int id) {
-
+        specialityDAO.delete(id);
     }
 
     @Override
     public void updateInfo(SpecialityDTO specialityDTO) {
-
+        SpecialityEntity specialityEntity= specialityConverter.convert(specialityDTO);
+        specialityDAO.update(specialityEntity);
     }
 
     @Override
     public List<SpecialityDTO> getAll() {
-        return specialityDAO.getAll().stream().map(speciality->specialityConverter.convert(speciality)).collect(Collectors.toList());
+        return specialityDAO.getAll().stream()
+                .map(speciality->specialityConverter.convert(speciality))
+                .collect(Collectors.toList());
     }
 
     @Override

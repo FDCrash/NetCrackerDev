@@ -50,7 +50,7 @@ public class UserDAOImpl implements DAO<UserEntity> {
     }
 
     public Enum checkLoginPass(String login,String pass){
-        for(UserEntity userEntity: UserList.getInstance().get()){
+        for(UserEntity userEntity: getAll()){
             if(userEntity.getLogin().equals(login) && userEntity.getPassword().equals(pass)){
                 return userEntity.getRole();
             }
@@ -59,7 +59,7 @@ public class UserDAOImpl implements DAO<UserEntity> {
     }
 
     public boolean checkLogin(String login){
-        for(UserEntity userEntity: UserList.getInstance().get()){
+        for(UserEntity userEntity: getAll()){
             if(userEntity.getLogin().equals(login)){
                 return false;
             }

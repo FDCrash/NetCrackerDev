@@ -20,13 +20,21 @@ public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
 
     @Override
     public void add(SpecialityEntity speciality) {
+        SpecialityList.getInstance().add(speciality);
     }
 
     @Override
     public void update(SpecialityEntity speciality) {
+        for(SpecialityEntity specialityEntity: getAll()){
+            if(specialityEntity.getId()==speciality.getId()){
+                specialityEntity.setName(speciality.getName());
+                specialityEntity.setFaculty(speciality.getFaculty());
+            }
+        }
     }
 
     @Override
     public void delete(int id) {
+        SpecialityList.getInstance().get().remove(id);
     }
 }

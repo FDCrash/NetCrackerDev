@@ -29,7 +29,7 @@ public class SpecialityDTO extends BaseDTO {
     }
 
     public String toString(){
-        return "Название специальности " + getName()
+        return "Название специальности: " + getName()
                 + "\nФакультет: " + getFaculty() + "\n";
     }
 }
