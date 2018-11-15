@@ -7,7 +7,6 @@ public class EmployeeDTO extends UserDTO {
 
     public EmployeeDTO(int id, RoleDTO roleDTO, String login, String pass, String name){
         super(id, roleDTO,login,pass);
-        this.name=name;
     }
 
     public String getName() {
