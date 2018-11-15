@@ -3,6 +3,7 @@ package daomodule.dao.daoImpl;
 import daomodule.dao.DAO;
 import daomodule.entities.StudentEntity;
 import daomodule.storage.StudentList;
+import daomodule.storage.UserList;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
     @Override
     public void add(StudentEntity studentEntity) {
         StudentList.getInstance().add(studentEntity);
+        UserList.getInstance().addStudent(studentEntity);
     }
 
     @Override

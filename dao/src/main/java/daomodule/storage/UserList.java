@@ -37,6 +37,18 @@ public class UserList implements Storage<UserEntity>{
         this.users.add(userEntity);
     }
 
+    public void addAdmin(AdminEntity adminEntity) {
+        this.users.add(adminEntity);
+    }
+
+    public void addEmployee(EmployeeEntity employeeEntity) {
+        this.users.add(employeeEntity);
+    }
+
+    public void addStudent(StudentEntity studentEntity) {
+        this.users.add(studentEntity);
+    }
+
     public void setStudents(List<StudentEntity> students){
         this.users.addAll(students);
     }

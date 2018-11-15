@@ -18,7 +18,7 @@ public class UserDTO extends BaseDTO{
         this.roleDTO = roleDTO;
     }
 
-    public Enum getRoleDTO(){
+    public RoleDTO getRoleDTO(){
         return roleDTO;
     }
 

@@ -2,7 +2,9 @@ package services.servicesimpl;
 
 import converters.EmployeeConverter;
 import daomodule.dao.daoImpl.EmployeeDAOImpl;
+import daomodule.dao.daoImpl.UserDAOImpl;
 import daomodule.entities.EmployeeEntity;
+import daomodule.entities.UserEntity;
 import dto.EmployeeDTO;
 import services.CRUDService;
 
@@ -12,27 +14,32 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements CRUDService<EmployeeDTO> {
     private EmployeeDAOImpl employeeDAO;
     private EmployeeConverter employeeConverter;
+    private UserDAOImpl userDAO;
 
     public EmployeeServiceImpl(){
         employeeDAO=new EmployeeDAOImpl();
         employeeConverter= new EmployeeConverter();
+        userDAO = new UserDAOImpl();
     }
 
     @Override
     public void addNew(EmployeeDTO employeeDTO) {
-        EmployeeEntity employeeEntity= employeeConverter.convert(employeeDTO);
-        employeeDAO.add(employeeEntity);
+        employeeDAO.add(employeeConverter.convert(employeeDTO));
     }
 
     @Override
     public void deleteInfo(int id) {
         employeeDAO.delete(id);
+        userDAO.deleteById(get(id).getId());
     }
 
     @Override
     public void updateInfo(EmployeeDTO employeeDTO) {
         EmployeeEntity employeeEntity= employeeConverter.convert(employeeDTO);
         employeeDAO.update(employeeEntity);
+        userDAO.update(new UserEntity(employeeEntity.getId(),employeeEntity.getRole(),
+                employeeEntity.getLogin(),employeeEntity.getPassword()));
+
     }
 
     @Override

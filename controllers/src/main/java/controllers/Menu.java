@@ -13,6 +13,7 @@ import static daomodule.entities.Role.STUDENT;
 
 public class Menu {
     private Role role;
+    private String login;
     private UserServiceImpl userService;
     private Scanner scanner;
     private StudentControllerImpl studentController;
@@ -22,6 +23,7 @@ public class Menu {
     private FacultyControllerImpl facultyController;
     private AdminServiceImpl adminService;
     private static Menu instance;
+    private UserControllerImpl userController;
 
     public static Menu getInstance(){
         if(instance==null){
@@ -39,6 +41,7 @@ public class Menu {
         facultyController = new FacultyControllerImpl();
         specialityController = new SpecialityControllerImpl();
         adminService = new AdminServiceImpl();
+        userController = new UserControllerImpl();
     }
 
     public void startMenu() {
@@ -78,7 +81,7 @@ public class Menu {
     }
 
     public void authenticationMenu(){
-        String login,pass;
+        String pass;
         System.out.println("Введите логин:");
         login=scanner.next();
         System.out.println("Введите пароль:");
@@ -98,22 +101,22 @@ public class Menu {
         int k;
         do {
             System.out.println("Меню админа:");
-            System.out.println("1.Поиск информации");
-            System.out.println("2.CRUD Админов");
-            System.out.println("3.CRUD Сотрудников");
-            System.out.println("4.CRUD Студентов");
+            System.out.println("1.CRUD Админов");
+            System.out.println("2.CRUD Сотрудников");
+            System.out.println("3.CRUD Студентов");
+            System.out.println("4.CRUD Пользователей");
             System.out.println("5.CRUD Факультетов");
             System.out.println("6.CRUD Специальностей");
            System.out.println("0.Выйти");
             k=scanner.nextInt();
             switch (k){
-                case 1: searchInfo();
+                case 1: adminController.editMenu();
                     break;
-                case 2: adminController.editMenu();
+                case 2: employeeController.editMenu();
                     break;
-                case 3: employeeController.editMenu();
+                case 3: studentController.editMenu();
                     break;
-                case 4: studentController.editMenu();
+                case 4: userController.editMenu();
                     break;
                 case 5: facultyController.editMenu();
                     break;
@@ -124,31 +127,28 @@ public class Menu {
                 default:
                     System.out.println("Выберите позицию из списка");
             }
-        }while(k<0 || k>6);
+        }while(k<0 || k>5);
     }
 
     public void employeeMenu(){
         int k;
         do {
             System.out.println("Меню сотрудника:");
-            System.out.println("1.Поиск информации");
-            System.out.println("2.CRUD Студентов");
-            System.out.println("3.CRUD Специальностей");
+            System.out.println("1.CRUD Студентов");
+            System.out.println("2.CRUD Специальностей");
             System.out.println("0.Выйти");
             k=scanner.nextInt();
             switch (k){
-                case 1: searchInfo();
+                case 1: studentController.editMenu();
                     break;
-                case 2: studentController.editMenu();
-                    break;
-                case 3: specialityController.editMenu();
+                case 2: specialityController.editMenu();
                     break;
                 case 0: startMenu();
                     break;
                 default:
                     System.out.println("Выберите позицию из списка");
             }
-        }while(k<0 || k>3);
+        }while(k<0 || k>2);
     }
 
     public void studentMenu(){
@@ -185,5 +185,4 @@ public class Menu {
         return role;
     }
 
-    public void searchInfo(){}
 }

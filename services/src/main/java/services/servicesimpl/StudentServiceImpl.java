@@ -2,7 +2,9 @@ package services.servicesimpl;
 
 import converters.StudentConverter;
 import daomodule.dao.daoImpl.StudentDAOImpl;
+import daomodule.dao.daoImpl.UserDAOImpl;
 import daomodule.entities.StudentEntity;
+import daomodule.entities.UserEntity;
 import dto.StudentDTO;
 import services.CRUDService;
 
@@ -12,10 +14,12 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl implements CRUDService<StudentDTO> {
     private StudentDAOImpl studentDAO;
     private StudentConverter studentConverter;
+    private UserDAOImpl userDAO;
 
     public StudentServiceImpl(){
         studentConverter = new StudentConverter();
         studentDAO = new StudentDAOImpl();
+        userDAO = new UserDAOImpl();
     }
 
     public List<Integer> getMarksOfControl(int id){return null;}
@@ -24,19 +28,21 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
 
     @Override
     public void addNew(StudentDTO studentDTO) {
-        StudentEntity studentEntity= studentConverter.convert(studentDTO);
-        studentDAO.add(studentEntity);
+        studentDAO.add(studentConverter.convert(studentDTO));
+
     }
 
     @Override
     public void deleteInfo(int id) {
         studentDAO.delete(id);
+        userDAO.deleteById(get(id).getId());
     }
 
     @Override
     public void updateInfo(StudentDTO studentDTO) {
         StudentEntity studentEntity=studentConverter.convert(studentDTO);
         studentDAO.update(studentEntity);
+
     }
 
 

@@ -1,6 +1,5 @@
 package services.servicesimpl;
 
-import converters.AdminConverter;
 import converters.UserConverter;
 import daomodule.dao.daoImpl.StudentDAOImpl;
 import daomodule.dao.daoImpl.UserDAOImpl;
@@ -10,10 +9,10 @@ import services.CRUDService;
 
 import java.util.List;
 import java.util.SplittableRandom;
+import java.util.stream.Collectors;
 
 public class UserServiceImpl implements CRUDService<UserDTO> {
     private UserDAOImpl userDAO;
-    private AdminConverter adminConverter;
     private UserConverter userConverter;
     private StudentDAOImpl studentDAO;
 
@@ -26,27 +25,29 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
     @Override
     public void addNew(UserDTO userDTO) {
         UserEntity userEntity= userConverter.convert(userDTO);
+        userDAO.add(userEntity);
     }
 
     @Override
     public void deleteInfo(int id) {
-
+        userDAO.delete(id);
     }
 
     @Override
     public void updateInfo(UserDTO userDTO) {
-
+        UserEntity userEntity= userConverter.convert(userDTO);
+        userDAO.update(userEntity);
     }
 
     @Override
     public List<UserDTO> getAll() {
-        return null;
+        return userDAO.getAll().stream().map(user->userConverter.convert(user)).collect(Collectors.toList());
     }
 
 
     @Override
     public UserDTO get(int id) {
-        return null;
+        return userConverter.convert(userDAO.get(id));
     }
 
     public UserDAOImpl getInfoByName(String name){

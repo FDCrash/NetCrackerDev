@@ -3,6 +3,7 @@ package daomodule.dao.daoImpl;
 import daomodule.dao.DAO;
 import daomodule.entities.EmployeeEntity;
 import daomodule.storage.EmployeeList;
+import daomodule.storage.UserList;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class EmployeeDAOImpl implements DAO<EmployeeEntity> {
     @Override
     public void add(EmployeeEntity employeeEntity) {
         EmployeeList.getInstance().add(employeeEntity);
+        UserList.getInstance().addEmployee(employeeEntity);
     }
 
     @Override

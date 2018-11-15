@@ -19,7 +19,7 @@ public class UserEntity extends BaseEntity{
         this.role = role;
     }
 
-    public Enum getRole(){return role;}
+    public Role getRole(){return role;}
 
     public String getLogin() {
         return login;

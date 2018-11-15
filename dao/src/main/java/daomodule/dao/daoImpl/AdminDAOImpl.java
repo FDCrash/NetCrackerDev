@@ -3,6 +3,7 @@ package daomodule.dao.daoImpl;
 import daomodule.dao.DAO;
 import daomodule.entities.AdminEntity;
 import daomodule.storage.AdminList;
+import daomodule.storage.UserList;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class AdminDAOImpl implements DAO<AdminEntity> {
     @Override
     public void add(AdminEntity adminEntity) {
         AdminList.getInstance().add(adminEntity);
+        UserList.getInstance().addAdmin(adminEntity);
     }
 
     @Override

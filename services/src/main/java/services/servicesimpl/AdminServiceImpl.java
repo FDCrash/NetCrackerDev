@@ -2,7 +2,9 @@ package services.servicesimpl;
 
 import converters.AdminConverter;
 import daomodule.dao.daoImpl.AdminDAOImpl;
+import daomodule.dao.daoImpl.UserDAOImpl;
 import daomodule.entities.AdminEntity;
+import daomodule.entities.UserEntity;
 import dto.AdminDTO;
 import services.CRUDService;
 
@@ -12,27 +14,31 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements CRUDService<AdminDTO> {
     private AdminConverter adminConverter;
     private AdminDAOImpl adminDAO;
+    private UserDAOImpl userDAO;
 
     public AdminServiceImpl(){
         adminConverter = new AdminConverter();
         adminDAO = new AdminDAOImpl();
+        userDAO = new UserDAOImpl();
     }
 
     @Override
     public void addNew(AdminDTO adminDTO) {
-        AdminEntity adminEntity=adminConverter.convert(adminDTO);
-        adminDAO.add(adminEntity);
+        adminDAO.add(adminConverter.convert(adminDTO));
     }
 
     @Override
     public void deleteInfo(int id) {
         adminDAO.delete(id);
+        userDAO.deleteById(get(id).getId());
     }
 
     @Override
     public void updateInfo(AdminDTO adminDTO) {
         AdminEntity adminEntity=adminConverter.convert(adminDTO);
-        adminDAO.update(adminEntity);
+        adminDAO.update(adminConverter.convert(adminDTO));
+        userDAO.update(new UserEntity(adminEntity.getId(),adminEntity.getRole(),
+                adminEntity.getLogin(),adminEntity.getPassword()));
     }
 
     @Override
@@ -42,8 +48,7 @@ public class AdminServiceImpl implements CRUDService<AdminDTO> {
 
     @Override
     public AdminDTO get(int id) {
-        AdminDTO adminDTO= adminConverter.convert(adminDAO.get(id));
-        return adminDTO;
+        return adminConverter.convert(adminDAO.get(id));
     }
 
     public void changeStatusAdmin(String login){
