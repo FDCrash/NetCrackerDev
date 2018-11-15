@@ -7,8 +7,7 @@ public class AdminDTO extends UserDTO {
 
     public AdminDTO(int id, RoleDTO roleDTO, String login, String pass, boolean status){
         super(id, roleDTO,login,pass);
-        this.status=status;
-    }
+        }
 
     public void setStatus(boolean status) {
         this.status = status;
