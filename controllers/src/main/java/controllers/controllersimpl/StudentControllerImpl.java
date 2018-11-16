@@ -101,9 +101,9 @@ public class StudentControllerImpl implements ControllerMD {
         }
         studentService.updateInfo(new StudentDTO(studentDTO.getId(),RoleDTO.STUDENT,
                 studentDTO.getLogin(),studentDTO.getPassword(),name,number,group,speciality,writeBook));
-        editMenu();
         userService.updateInfo(new UserDTO(studentDTO.getId(),RoleDTO.STUDENT,
                 studentDTO.getLogin(),studentDTO.getPassword()));
+        editMenu();
     }
 
     @Override

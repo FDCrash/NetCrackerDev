@@ -10,7 +10,7 @@ import java.util.List;
 public class EmployeeDAOImpl implements DAO<EmployeeEntity> {
     @Override
     public EmployeeEntity get(int id) {
-        return EmployeeList.getInstance().get().get(id);
+        return getAll().get(id);
     }
 
     @Override
@@ -36,8 +36,16 @@ public class EmployeeDAOImpl implements DAO<EmployeeEntity> {
         }
     }
 
+    public void deleteById(int id){
+        for(EmployeeEntity employeeEntity:getAll()){
+            if(employeeEntity.getId()==id){
+                getAll().remove(employeeEntity);
+            }
+        }
+    }
+
     @Override
     public void delete(int id) {
-        EmployeeList.getInstance().get().remove(id);
+        getAll().remove(id);
     }
 }

@@ -21,8 +21,7 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
 
     @Override
     public void addNew(SpecialityDTO specialityDTO) {
-        SpecialityEntity specialityEntity= specialityConverter.convert(specialityDTO);
-        specialityDAO.add(specialityEntity);
+        specialityDAO.add(specialityConverter.convert(specialityDTO));
 
     }
 

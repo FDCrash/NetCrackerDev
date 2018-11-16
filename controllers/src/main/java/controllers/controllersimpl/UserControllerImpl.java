@@ -69,7 +69,7 @@ public class UserControllerImpl implements ControllerMD {
         }
         if(role.equals("student")){
             studentService.addNew(new StudentDTO(k,RoleDTO.STUDENT,login,password,""
-                    ,0,0,"",null));
+                    ,0,0,"",new ArrayList<>()));
         }
         userService.addNew(new UserDTO(k,RoleDTO.valueOf(role.toUpperCase()),
                 login,password));
@@ -92,14 +92,25 @@ public class UserControllerImpl implements ControllerMD {
         int k=scanner.nextInt();
         userDTO=userService.get(k-1);
         System.out.println(userDTO.toString());
-        System.out.println("Введите роль(admin/employee/student):");
+        System.out.println("Введите роль(admin/employee):");
         String role=scanner.next();
         if(role.equals("admin")){
             System.out.println("Введите логин: ");
             login=scanner.next();
             System.out.println("Введите пароль: ");
             password =scanner.next();
-            adminService.updateInfo(new AdminDTO(userDTO.getId(),RoleDTO.ADMIN,login,password,false));
+            if(userDTO.getRoleDTO().equals(RoleDTO.ADMIN)) {
+                adminService.updateInfo(new AdminDTO(userDTO.getId(), RoleDTO.ADMIN, login, password, false));
+                userService.updateInfo(new UserDTO(userDTO.getId(),RoleDTO.valueOf(role.toUpperCase()),login,password));
+            }else {
+                if (userDTO.getRoleDTO().equals(RoleDTO.EMPLOYEE)) {
+                    employeeService.deleteInfoById(userDTO.getId());
+                }
+                if (userDTO.getRoleDTO().equals(RoleDTO.STUDENT)) {
+                    studentService.deleteInfoById(userDTO.getId());
+                }
+                adminService.addNew(new AdminDTO(userDTO.getId(), RoleDTO.ADMIN, login, password, false));
+            }
         }
         if(role.equals("employee")){
             System.out.println("Введите имя: ");
@@ -108,28 +119,20 @@ public class UserControllerImpl implements ControllerMD {
             login=scanner.next();
             System.out.println("Введите пароль: ");
             password =scanner.next();
-            employeeService.updateInfo(new EmployeeDTO(userDTO.getId(),RoleDTO.EMPLOYEE,login,password,name));
-        }
-        if(role.equals("student")){
-            System.out.println("Введите имя: ");
-            String name=scanner.next();
-            System.out.println("Введите номер студенченского билета: ");
-            int number=scanner.nextInt();
-            System.out.println("Введите номер группы: ");
-            int group=scanner.nextInt();
-            System.out.println("Введите специальность: ");
-            String speciality =scanner.next();
-            System.out.println("Введите колво оценок: ");
-            List<Integer> writeBook=new ArrayList<>();
-            int n=scanner.nextInt();
-            for(int i=1;i<=n;i++){
-                System.out.print(i + ". ");
-                writeBook.add(scanner.nextInt());
+            if(userDTO.getRoleDTO().equals(RoleDTO.EMPLOYEE)) {
+                employeeService.updateInfo(new EmployeeDTO(userDTO.getId(), RoleDTO.EMPLOYEE, login, password, name));
+                userService.updateInfo(new UserDTO(userDTO.getId(),RoleDTO.valueOf(role.toUpperCase()),login,password));
+            }else{
+                if(userDTO.getRoleDTO().equals(RoleDTO.ADMIN)){
+                    adminService.deleteInfoById(userDTO.getId());
+                }
+                if (userDTO.getRoleDTO().equals(RoleDTO.STUDENT)) {
+                    studentService.deleteInfoById(userDTO.getId());
+                }
+                employeeService.addNew(new EmployeeDTO(userDTO.getId(), RoleDTO.EMPLOYEE, login, password, name));
             }
-            studentService.updateInfo(new StudentDTO(userDTO.getId(),RoleDTO.STUDENT,
-                    "","", name,number,group,speciality,writeBook));
         }
-        userService.updateInfo(new UserDTO(userDTO.getId(),RoleDTO.valueOf(role.toUpperCase()),login,password));
+
         editMenu();
     }
 

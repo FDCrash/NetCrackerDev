@@ -14,7 +14,7 @@ public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
 
     @Override
     public SpecialityEntity get(int id) {
-        return SpecialityList.getInstance().get().get(id);
+        return getAll().get(id);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
 
     @Override
     public void delete(int id) {
-        SpecialityEntity specialityEntity=SpecialityList.getInstance().get().get(id);
+        SpecialityEntity specialityEntity=getAll().get(id);
         for(FacultyEntity facultyEntity:FacultyList.getInstance().get()){
             if(facultyEntity.getId()==specialityEntity.getFaculty().getId()){
                 facultyEntity.getSpecialities().remove(specialityEntity);
@@ -58,7 +58,7 @@ public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
                 studentEntity.setSpecialityEntity(new SpecialityEntity(0,"Переводится", 0));
             }
         }
-        SpecialityList.getInstance().get().remove(specialityEntity);
+        getAll().remove(specialityEntity);
     }
     public boolean checkId(int id) {
         for (SpecialityEntity specialityEntity : getAll()) {

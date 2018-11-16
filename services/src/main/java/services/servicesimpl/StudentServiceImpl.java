@@ -3,8 +3,6 @@ package services.servicesimpl;
 import converters.StudentConverter;
 import daomodule.dao.daoImpl.StudentDAOImpl;
 import daomodule.dao.daoImpl.UserDAOImpl;
-import daomodule.entities.StudentEntity;
-import daomodule.entities.UserEntity;
 import dto.StudentDTO;
 import services.CRUDService;
 
@@ -22,9 +20,6 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
         userDAO = new UserDAOImpl();
     }
 
-    public List<Integer> getMarksOfControl(int id){return null;}
-
-    public void setMarksOfControl(List<Integer> marks){}
 
     @Override
     public void addNew(StudentDTO studentDTO) {
@@ -35,6 +30,11 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
     public void deleteInfo(int id) {
         studentDAO.delete(id);
         userDAO.deleteById(get(id).getId());
+    }
+
+    public void deleteInfoById(int id){
+        studentDAO.deleteById(id);
+        userDAO.deleteById(id);
     }
 
     @Override

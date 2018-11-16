@@ -17,7 +17,7 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
 
     @Override
     public FacultyEntity get(int id) {
-        return FacultyList.getInstance().get().get(id);
+        return getAll().get(id);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
                 studentEntity.setSpecialityEntity(null);
             }
         }
-        FacultyList.getInstance().get().remove(id);
+        getAll().remove(id);
     }
 
     public boolean checkId(int id){

@@ -11,7 +11,7 @@ import java.util.List;
 public class StudentDAOImpl implements DAO<StudentEntity> {
     @Override
     public StudentEntity get(int id) {
-        return StudentList.getInstance().get().get(id);
+        return getAll().get(id);
     }
 
     @Override
@@ -41,7 +41,15 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
 
     @Override
     public void delete(int id) {
-        StudentList.getInstance().get().remove(id);
+        getAll().remove(id);
+    }
+
+    public void deleteById(int id){
+        for(StudentEntity studentEntity:getAll()){
+            if(studentEntity.getId()==id){
+                getAll().remove(studentEntity);
+            }
+        }
     }
 
     public boolean checkStudId(int id){

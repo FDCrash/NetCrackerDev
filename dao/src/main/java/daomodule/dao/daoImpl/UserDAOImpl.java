@@ -19,7 +19,7 @@ public class UserDAOImpl implements DAO<UserEntity> {
 
     @Override
     public UserEntity get(int id) {
-        return UserList.getInstance().get().get(id);
+        return getAll().get(id);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class UserDAOImpl implements DAO<UserEntity> {
 
     @Override
     public void delete(int id) {
-        UserEntity userEntity=UserList.getInstance().get().get(id);
+        UserEntity userEntity=getAll().get(id);
         if(userEntity.getRole().equals(Role.STUDENT)){
             for (StudentEntity studentEntity:StudentList.getInstance().get()) {
                 if(userEntity.getId()==studentEntity.getId()) {
@@ -63,14 +63,13 @@ public class UserDAOImpl implements DAO<UserEntity> {
                 }
             }
         }
-        UserList.getInstance().get().remove(id);
-
+        getAll().remove(id);
     }
 
     public void deleteById(int id){
         for(UserEntity userEntity:getAll()){
             if(userEntity.getId()==id){
-                UserList.getInstance().get().remove(userEntity);
+                getAll().remove(userEntity);
                 break;
             }
         }

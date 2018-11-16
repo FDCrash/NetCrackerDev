@@ -10,7 +10,7 @@ import java.util.List;
 public class AdminDAOImpl implements DAO<AdminEntity> {
     @Override
     public AdminEntity get(int id) {
-        return AdminList.getInstance().get().get(id);
+        return getAll().get(id);
     }
 
     @Override
@@ -35,10 +35,18 @@ public class AdminDAOImpl implements DAO<AdminEntity> {
         }
     }
 
+    public void deleteById(int id){
+        for(AdminEntity adminEntity:getAll()){
+            if(adminEntity.getId()==id){
+                getAll().remove(adminEntity);
+            }
+        }
+    }
+
     @Override
     public void delete(int id) {
-        if(!AdminList.getInstance().get().get(id).getStatus()){
-            AdminList.getInstance().get().remove(id);
+        if(!getAll().get(id).getStatus()){
+            getAll().remove(id);
         }
     }
 

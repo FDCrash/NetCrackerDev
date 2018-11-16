@@ -1,16 +1,1 @@
-[
-  {
-    "id":9,
-    "role": "EMPLOYEE",
-    "login" : "fitu",
-    "pass": "1234",
-    "name": "Трофимович"
-  },
-  {
-    "id":10,
-    "role": "EMPLOYEE",
-    "login" : "fksis",
-    "pass": "1234",
-    "name": "Гриневич"
-  }
-]
+[{"role":"EMPLOYEE","pass":"1234","name":"Трофимович","id":9,"login":"fitu"},{"role":"EMPLOYEE","pass":"1234","name":"Гриневич","id":10,"login":"fksis"},{"role":"EMPLOYEE","pass":"1234","name":"Гуринович","id":702,"login":"fitu2"}]

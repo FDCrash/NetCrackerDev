@@ -33,6 +33,11 @@ public class AdminServiceImpl implements CRUDService<AdminDTO> {
         userDAO.deleteById(get(id).getId());
     }
 
+    public void deleteInfoById(int id){
+        adminDAO.deleteById(id);
+        userDAO.deleteById(id);
+    }
+
     @Override
     public void updateInfo(AdminDTO adminDTO) {
         adminDAO.update(adminConverter.convert(adminDTO));
