@@ -2,6 +2,7 @@ package daomodule.dao.daoImpl;
 
 import daomodule.dao.DAO;
 import daomodule.entities.StudentEntity;
+import daomodule.entities.UserEntity;
 import daomodule.storage.StudentList;
 import daomodule.storage.UserList;
 
@@ -53,10 +54,19 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
     }
 
     public void addNewLoginPass(int id,String login, String pass){
+        int k=0;
         for (StudentEntity studentEntity: getAll()) {
             if(studentEntity.getStudentId()==id){
                 studentEntity.setLogin(login);
                 studentEntity.setPassword(pass);
+                k=studentEntity.getId();
+                break;
+            }
+        }
+        for(UserEntity userEntity: UserList.getInstance().get()){
+            if(userEntity.getId()==k){
+                userEntity.setLogin(login);
+                userEntity.setPassword(pass);
                 break;
             }
         }

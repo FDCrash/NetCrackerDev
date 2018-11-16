@@ -35,8 +35,8 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
 
     @Override
     public void updateInfo(UserDTO userDTO) {
-        UserEntity userEntity= userConverter.convert(userDTO);
-        userDAO.update(userEntity);
+
+        userDAO.update(userConverter.convert(userDTO));
     }
 
     @Override
@@ -88,12 +88,10 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
             }
             return "Логин занят!";
         }
-        return "Неверный номер стеденченского билета!";
+        return "Неверный номер студенченского билета!";
     }
 
     public Enum authentication(String login, String pass){
         return userDAO.checkLoginPass(login,pass);
     }
-
-
 }

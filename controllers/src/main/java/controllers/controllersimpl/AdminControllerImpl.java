@@ -3,6 +3,7 @@ package controllers.controllersimpl;
 import controllers.ControllerMD;
 import dto.AdminDTO;
 import dto.RoleDTO;
+import dto.UserDTO;
 import services.servicesimpl.AdminServiceImpl;
 import services.servicesimpl.UserServiceImpl;
 
@@ -12,6 +13,7 @@ public class AdminControllerImpl implements ControllerMD {
     private AdminServiceImpl adminService;
     private Scanner scanner;
     private UserServiceImpl userService;
+
 
     public AdminControllerImpl(){
         scanner = new Scanner(System.in);
@@ -75,6 +77,7 @@ public class AdminControllerImpl implements ControllerMD {
         System.out.println("Введите пароль: ");
         String password =scanner.next();
         adminService.updateInfo(new AdminDTO(adminDTO.getId(),RoleDTO.ADMIN,login,password,false));
+        userService.updateInfo(new UserDTO(adminDTO.getId(),RoleDTO.ADMIN,login,password));
         editMenu();
     }
 

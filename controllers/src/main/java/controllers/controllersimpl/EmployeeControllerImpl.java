@@ -3,6 +3,7 @@ package controllers.controllersimpl;
 import controllers.ControllerMD;
 import dto.EmployeeDTO;
 import dto.RoleDTO;
+import dto.UserDTO;
 import services.servicesimpl.EmployeeServiceImpl;
 import services.servicesimpl.UserServiceImpl;
 
@@ -79,7 +80,8 @@ public class EmployeeControllerImpl implements ControllerMD {
         String login=scanner.next();
         System.out.println("Введите пароль: ");
         String password =scanner.next();
-        employeeService.updateInfo(new EmployeeDTO(employeeDTO.getId(),RoleDTO.ADMIN,login,password,name));
+        employeeService.updateInfo(new EmployeeDTO(employeeDTO.getId(),RoleDTO.EMPLOYEE,login,password,name));
+        userService.updateInfo(new UserDTO(employeeDTO.getId(),RoleDTO.EMPLOYEE,login,password));
         editMenu();
     }
 

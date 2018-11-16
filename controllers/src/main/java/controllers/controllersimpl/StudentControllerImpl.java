@@ -3,6 +3,7 @@ package controllers.controllersimpl;
 import controllers.ControllerMD;
 import dto.RoleDTO;
 import dto.StudentDTO;
+import dto.UserDTO;
 import services.servicesimpl.StudentServiceImpl;
 import services.servicesimpl.UserServiceImpl;
 
@@ -33,9 +34,6 @@ public class StudentControllerImpl implements ControllerMD {
             System.out.println("0.Выйти");
             k=scanner.nextInt();
             switchChange(k);
-            if(k==0){
-
-            }
         }while(k<0 || k>4);
     }
 
@@ -104,6 +102,8 @@ public class StudentControllerImpl implements ControllerMD {
         studentService.updateInfo(new StudentDTO(studentDTO.getId(),RoleDTO.STUDENT,
                 studentDTO.getLogin(),studentDTO.getPassword(),name,number,group,speciality,writeBook));
         editMenu();
+        userService.updateInfo(new UserDTO(studentDTO.getId(),RoleDTO.STUDENT,
+                studentDTO.getLogin(),studentDTO.getPassword()));
     }
 
     @Override

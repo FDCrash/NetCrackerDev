@@ -2,7 +2,11 @@ package daomodule.dao.daoImpl;
 
 import daomodule.dao.DAO;
 import daomodule.entities.FacultyEntity;
+import daomodule.entities.SpecialityEntity;
+import daomodule.entities.StudentEntity;
 import daomodule.storage.FacultyList;
+import daomodule.storage.SpecialityList;
+import daomodule.storage.StudentList;
 
 import java.util.List;
 
@@ -24,6 +28,7 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
     @Override
     public void add(FacultyEntity facultyEntity) {
         FacultyList.getInstance().add(facultyEntity);
+        SpecialityList.getInstance().addAll(facultyEntity.getSpecialities());
     }
 
     @Override
@@ -31,7 +36,6 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
         for(FacultyEntity facultyEntity:getAll()){
             if(faculty.getId()==facultyEntity.getId()){
                 facultyEntity.setName(faculty.getName());
-                facultyEntity.setSpecialities(faculty.getSpecialities());
                 break;
             }
         }
@@ -39,6 +43,24 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
 
     @Override
     public void delete(int id) {
+        FacultyEntity facultyEntity=FacultyList.getInstance().get().get(id);
+        for(SpecialityEntity specialityEntity:facultyEntity.getSpecialities()){
+            SpecialityList.getInstance().get().remove(specialityEntity);
+        }
+        for(StudentEntity studentEntity: StudentList.getInstance().get()){
+            if(studentEntity.getSpecialityEntity().getFaculty().getId()==facultyEntity.getId()){
+                studentEntity.setSpecialityEntity(null);
+            }
+        }
         FacultyList.getInstance().get().remove(id);
+    }
+
+    public boolean checkId(int id){
+        for(FacultyEntity facultyEntity:getAll()){
+            if(facultyEntity.getId()==id){
+                return false;
+            }
+        }
+        return true;
     }
 }

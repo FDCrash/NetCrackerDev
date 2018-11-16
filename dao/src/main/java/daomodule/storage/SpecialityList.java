@@ -34,4 +34,8 @@ public class SpecialityList implements Storage<SpecialityEntity>{
     public void add(SpecialityEntity specialityEntity) {
         this.specialities.add(specialityEntity);
     }
+
+    public void addAll(List<SpecialityEntity> specialityEntities){
+        this.specialities.addAll(specialityEntities);
+    }
 }

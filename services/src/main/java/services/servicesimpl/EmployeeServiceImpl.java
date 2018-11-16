@@ -35,11 +35,7 @@ public class EmployeeServiceImpl implements CRUDService<EmployeeDTO> {
 
     @Override
     public void updateInfo(EmployeeDTO employeeDTO) {
-        EmployeeEntity employeeEntity= employeeConverter.convert(employeeDTO);
-        employeeDAO.update(employeeEntity);
-        userDAO.update(new UserEntity(employeeEntity.getId(),employeeEntity.getRole(),
-                employeeEntity.getLogin(),employeeEntity.getPassword()));
-
+        employeeDAO.update(employeeConverter.convert(employeeDTO));
     }
 
     @Override
@@ -50,7 +46,6 @@ public class EmployeeServiceImpl implements CRUDService<EmployeeDTO> {
 
     @Override
     public EmployeeDTO get(int id) {
-        EmployeeDTO employeeDTO= employeeConverter.convert(employeeDAO.get(id));
-        return employeeDTO;
+        return employeeConverter.convert(employeeDAO.get(id));
     }
 }

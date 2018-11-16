@@ -59,8 +59,7 @@ public class Menu {
                 case 2:
                     registrationMenu();
                     break;
-                case 0:
-                    break;
+                case 0: return;
                 default:
                     System.out.println("Выберите позицию из списка");
             }
@@ -107,7 +106,7 @@ public class Menu {
             System.out.println("4.CRUD Пользователей");
             System.out.println("5.CRUD Факультетов");
             System.out.println("6.CRUD Специальностей");
-           System.out.println("0.Выйти");
+            System.out.println("0.Выйти");
             k=scanner.nextInt();
             switch (k){
                 case 1: adminController.editMenu();
@@ -127,7 +126,7 @@ public class Menu {
                 default:
                     System.out.println("Выберите позицию из списка");
             }
-        }while(k<0 || k>5);
+        }while(k<0 || k>6);
     }
 
     public void employeeMenu(){

@@ -61,4 +61,5 @@ public class StudentEntity extends UserEntity{
     public List<Integer> getWriteBook() {
         return writeBook;
     }
+
 }

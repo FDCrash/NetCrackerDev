@@ -3,6 +3,7 @@ package controllers.controllersimpl;
 import controllers.ControllerMD;
 import dto.FacultyDTO;
 import services.servicesimpl.FacultyServiceImpl;
+import services.servicesimpl.SpecialityServiceImpl;
 import services.servicesimpl.UserServiceImpl;
 
 import java.util.ArrayList;
@@ -12,12 +13,12 @@ import java.util.Scanner;
 public class FacultyControllerImpl implements ControllerMD {
     private FacultyServiceImpl facultyService;
     private Scanner scanner;
-    private UserServiceImpl userService;
+    private SpecialityServiceImpl specialityService;
 
     public FacultyControllerImpl(){
         facultyService=new FacultyServiceImpl();
         scanner=new Scanner(System.in);
-        userService= new UserServiceImpl();
+        specialityService= new SpecialityServiceImpl();
     }
 
     @Override
@@ -37,7 +38,7 @@ public class FacultyControllerImpl implements ControllerMD {
 
     @Override
     public void getAll() {
-        System.out.println("Специальности:");
+        System.out.println("Факультеты:");
         for(FacultyDTO facultyDTO:facultyService.getAll()){
             String s =facultyDTO.toString();
             System.out.println(s);
@@ -52,12 +53,15 @@ public class FacultyControllerImpl implements ControllerMD {
         String name=scanner.next();
         System.out.println("Введите количество специальностей: ");
         List<String> specialities=new ArrayList<>();
+        List<Integer> specialitiesId=new ArrayList<>();
         int n=scanner.nextInt();
         for(int i=1;i<=n;i++){
             System.out.print(i + ". ");
             specialities.add(scanner.next());
+            specialitiesId.add(specialityService.generateId(50));
         }
-        facultyService.addNew(new FacultyDTO(userService.generateId(50),name,specialities));
+        facultyService.addNew(new FacultyDTO(facultyService.generateId(50),
+                name,specialities,specialitiesId));
         editMenu();
     }
 
@@ -76,14 +80,8 @@ public class FacultyControllerImpl implements ControllerMD {
         facultyDTO=facultyService.get(k-1);
         System.out.println("Введите название факультета: ");
         String name=scanner.next();
-        System.out.println("Введите количество специальностей: ");
-        List<String> specialities=new ArrayList<>();
-        int n=scanner.nextInt();
-        for(int i=1;i<=n;i++){
-            System.out.print(i + ". ");
-            specialities.add(scanner.next());
-        }
-        facultyService.updateInfo(new FacultyDTO(facultyDTO.getId(),name,specialities));
+        facultyService.updateInfo(new FacultyDTO(facultyDTO.getId(),name,
+                facultyDTO.getSpecialities(),facultyDTO.getSpecialitiesId()));
         editMenu();
     }
 

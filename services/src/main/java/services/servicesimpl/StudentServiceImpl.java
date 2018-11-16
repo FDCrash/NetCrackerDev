@@ -29,7 +29,6 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
     @Override
     public void addNew(StudentDTO studentDTO) {
         studentDAO.add(studentConverter.convert(studentDTO));
-
     }
 
     @Override
@@ -40,9 +39,7 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
 
     @Override
     public void updateInfo(StudentDTO studentDTO) {
-        StudentEntity studentEntity=studentConverter.convert(studentDTO);
-        studentDAO.update(studentEntity);
-
+        studentDAO.update(studentConverter.convert(studentDTO));
     }
 
 
@@ -53,7 +50,6 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
 
     @Override
     public StudentDTO get(int id) {
-        StudentDTO studentDTO=studentConverter.convert(studentDAO.get(id));
-        return studentDTO;
+        return studentConverter.convert(studentDAO.get(id));
     }
 }

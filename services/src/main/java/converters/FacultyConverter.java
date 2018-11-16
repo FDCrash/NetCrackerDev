@@ -1,6 +1,5 @@
 package converters;
 
-import daomodule.dao.daoImpl.SpecialityDAOImpl;
 import daomodule.entities.FacultyEntity;
 import daomodule.entities.SpecialityEntity;
 import dto.FacultyDTO;
@@ -10,22 +9,28 @@ import java.util.List;
 
 public class FacultyConverter {
     public FacultyEntity convert(FacultyDTO facultyDTO) {
-        FacultyEntity facultyEntity = new FacultyEntity(facultyDTO.getId(), facultyDTO.getName());
-        int k = new SpecialityDAOImpl().getAll().size();
-        List<SpecialityEntity> specialityEntities=new ArrayList<>();
-        for(int i=0;i<facultyDTO.getSpecialities().size();i++){
-            specialityEntities.add(new SpecialityEntity(k-i,facultyDTO.getSpecialities().get(i),facultyEntity));
+        List<SpecialityEntity> specialityEntities= new ArrayList<>();
+        int n=0;
+        n=facultyDTO.getSpecialities().size();
+        for(int i=0;i<n;i++){
+            specialityEntities.add(new SpecialityEntity(facultyDTO.getSpecialitiesId().get(i),
+                    facultyDTO.getSpecialities().get(i), facultyDTO.getId()));
         }
-        facultyEntity.setSpecialities(specialityEntities);
+        FacultyEntity facultyEntity=new FacultyEntity(facultyDTO.getId(),
+                facultyDTO.getName(),specialityEntities);
+        for(int i=0;i<n;i++){
+            specialityEntities.get(i).setFaculty(facultyEntity);
+        }
         return facultyEntity;
     }
 
     public FacultyDTO convert(FacultyEntity facultyEntity){
         List<String> specilities=new ArrayList<>();
+        List<Integer> specialitiesId= new ArrayList<>();
         for(int i=0;i<facultyEntity.getSpecialities().size();i++){
             specilities.add(facultyEntity.getSpecialities().get(i).getName());
+            specialitiesId.add(facultyEntity.getSpecialities().get(i).getId());
         }
-        FacultyDTO facultyDTO=new FacultyDTO(facultyEntity.getId(),facultyEntity.getName(),specilities);
-        return facultyDTO;
+        return new FacultyDTO(facultyEntity.getId(),facultyEntity.getName(),specilities,specialitiesId);
     }
 }

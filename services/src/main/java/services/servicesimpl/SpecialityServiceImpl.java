@@ -7,6 +7,7 @@ import dto.SpecialityDTO;
 import services.CRUDService;
 
 import java.util.List;
+import java.util.SplittableRandom;
 import java.util.stream.Collectors;
 
 public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
@@ -22,6 +23,7 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
     public void addNew(SpecialityDTO specialityDTO) {
         SpecialityEntity specialityEntity= specialityConverter.convert(specialityDTO);
         specialityDAO.add(specialityEntity);
+
     }
 
     @Override
@@ -44,6 +46,16 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
 
     @Override
     public SpecialityDTO get(int id) {
-        return null;
+        return specialityConverter.convert(specialityDAO.get(id));
+    }
+
+    public int generateId(int bound) {
+        SplittableRandom splittableRandom = new SplittableRandom();
+        int k;
+        do {
+            k = splittableRandom.nextInt(1, bound);
+
+        } while (!specialityDAO.checkId(k));
+        return k;
     }
 }

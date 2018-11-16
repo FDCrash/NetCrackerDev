@@ -35,10 +35,7 @@ public class AdminServiceImpl implements CRUDService<AdminDTO> {
 
     @Override
     public void updateInfo(AdminDTO adminDTO) {
-        AdminEntity adminEntity=adminConverter.convert(adminDTO);
         adminDAO.update(adminConverter.convert(adminDTO));
-        userDAO.update(new UserEntity(adminEntity.getId(),adminEntity.getRole(),
-                adminEntity.getLogin(),adminEntity.getPassword()));
     }
 
     @Override

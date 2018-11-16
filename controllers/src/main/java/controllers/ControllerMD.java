@@ -1,8 +1,5 @@
 package controllers;
 
-import daomodule.entities.Role;
-import static daomodule.entities.Role.*;
-
 public interface ControllerMD {
     default void switchChange(int k){
         switch (k){
@@ -14,7 +11,8 @@ public interface ControllerMD {
                 break;
             case 4: delete();
                 break;
-            case 0: switch (Menu.getInstance().getRole()){
+            case 0:
+                switch (Menu.getInstance().getRole()){
                 case ADMIN: Menu.getInstance().adminMenu();
                     break;
                 case EMPLOYEE: Menu.getInstance().employeeMenu();

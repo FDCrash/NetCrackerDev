@@ -2,8 +2,12 @@ package daomodule.dao.daoImpl;
 
 
 import daomodule.dao.DAO;
+import daomodule.entities.EmployeeEntity;
 import daomodule.entities.Role;
+import daomodule.entities.StudentEntity;
 import daomodule.entities.UserEntity;
+import daomodule.storage.EmployeeList;
+import daomodule.storage.StudentList;
 import daomodule.storage.UserList;
 
 import java.util.List;
@@ -42,21 +46,38 @@ public class UserDAOImpl implements DAO<UserEntity> {
 
     @Override
     public void delete(int id) {
-        if(!UserList.getInstance().get().get(id).getRole().equals(Role.ADMIN)){
-            UserList.getInstance().get().remove(id);
+        UserEntity userEntity=UserList.getInstance().get().get(id);
+        if(userEntity.getRole().equals(Role.STUDENT)){
+            for (StudentEntity studentEntity:StudentList.getInstance().get()) {
+                if(userEntity.getId()==studentEntity.getId()) {
+                    StudentList.getInstance().get().remove(studentEntity);
+                    break;
+                }
+            }
         }
+        if(userEntity.getRole().equals(Role.EMPLOYEE)){
+            for (EmployeeEntity employeeEntity:EmployeeList.getInstance().get()) {
+                if(userEntity.getId()==employeeEntity.getId()) {
+                    EmployeeList.getInstance().get().remove(employeeEntity);
+                    break;
+                }
+            }
+        }
+        UserList.getInstance().get().remove(id);
+
     }
 
     public void deleteById(int id){
-        for(UserEntity userEntity:UserList.getInstance().get()){
+        for(UserEntity userEntity:getAll()){
             if(userEntity.getId()==id){
                 UserList.getInstance().get().remove(userEntity);
+                break;
             }
         }
     }
 
     public boolean checkId(int id){
-        for(UserEntity userEntity:UserList.getInstance().get()){
+        for(UserEntity userEntity:getAll()){
             if(userEntity.getId()==id){
                 return false;
             }

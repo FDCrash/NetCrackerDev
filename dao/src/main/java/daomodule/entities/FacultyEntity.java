@@ -15,6 +15,12 @@ public class FacultyEntity extends BaseEntity {
         specialities=new ArrayList<>();
     }
 
+    public FacultyEntity(int id,String name,List<SpecialityEntity> specialities){
+        super(id);
+        this.name=name;
+        this.specialities=new ArrayList<>(specialities);
+    }
+
     public void setName(String name) {
         this.name = name;
     }

@@ -60,7 +60,7 @@ public class SpecialityControllerImpl implements ControllerMD {
         int i=1;
         for(SpecialityDTO specialityDTO:specialityService.getAll()){
             String s =specialityDTO.toString();
-            System.out.println(1+". "+s);
+            System.out.println(i+". "+s);
             i++;
         }
         System.out.println("Выберите позицию для изменения: ");
