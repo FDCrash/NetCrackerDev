@@ -9,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,5 +36,25 @@ public class SpecialityFileImpl implements RWStorage {
             e.printStackTrace();
         }
         SpecialityList.getInstance().set(specialities);
+    }
+
+    @Override
+    public void writeFile() {
+        jsonArray = new JSONArray();
+        for(SpecialityEntity specialityEntity:SpecialityList.getInstance().get()){
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("id" , specialityEntity.getId());
+            jsonObject.put("name", specialityEntity.getName());
+            jsonObject.put("facultyId", specialityEntity.getFaculty().getId());
+            jsonArray.add(jsonObject);
+        }
+        try{
+            FileWriter file=new FileWriter("dao/src/main/resources/json/specialities.json");
+            file.write(jsonArray.toJSONString());
+            file.flush();
+            file.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

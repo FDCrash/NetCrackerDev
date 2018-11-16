@@ -10,6 +10,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -53,6 +54,36 @@ public class StudentFileImpl implements RWStorage {
             e.printStackTrace();
         }
         StudentList.getInstance().set(students);
+    }
+
+    @Override
+    public void writeFile() {
+        jsonArray = new JSONArray();
+        for(StudentEntity studentEntity:StudentList.getInstance().get()){
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("id" , studentEntity.getId());
+            jsonObject.put("role", "STUDENT");
+            jsonObject.put("login", studentEntity.getLogin());
+            jsonObject.put("pass", studentEntity.getPassword());
+            jsonObject.put("name", studentEntity.getName());
+            jsonObject.put("studentId", studentEntity.getStudentId());
+            jsonObject.put("groupId" , studentEntity.getGroupId());
+            jsonObject.put("specialityId", studentEntity.getSpecialityEntity().getId());
+            JSONArray marks=new JSONArray();
+            for(int i: studentEntity.getWriteBook()){
+                marks.add(String.valueOf(i));
+            }
+            jsonObject.put("writeBook", marks);
+            jsonArray.add(jsonObject);
+        }
+        try{
+            FileWriter file=new FileWriter("dao/src/main/resources/json/students.json");
+            file.write(jsonArray.toJSONString());
+            file.flush();
+            file.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 }

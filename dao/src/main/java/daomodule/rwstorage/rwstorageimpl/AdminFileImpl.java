@@ -10,6 +10,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,26 @@ public class AdminFileImpl implements RWStorage {
             e.printStackTrace();
         }
         AdminList.getInstance().set(admins);
+    }
 
+    @Override
+    public void writeFile() {
+        jsonArray = new JSONArray();
+        for(AdminEntity adminEntity:AdminList.getInstance().get()){
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("id" , adminEntity.getId());
+            jsonObject.put("role", "ADMIN");
+            jsonObject.put("login", adminEntity.getLogin());
+            jsonObject.put("pass", adminEntity.getPassword());
+            jsonArray.add(jsonObject);
+        }
+        try{
+            FileWriter file=new FileWriter("dao/src/main/resources/json/admins.json");
+            file.write(jsonArray.toJSONString());
+            file.flush();
+            file.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

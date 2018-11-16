@@ -21,6 +21,15 @@ public class FullFillImpl implements RWStorage {
         new UserFileImpl().fillStorage();
     }
 
+    @Override
+    public void writeFile() {
+        new EmployeeFileImpl().writeFile();
+        new AdminFileImpl().writeFile();
+        new StudentFileImpl().writeFile();
+        new SpecialityFileImpl().writeFile();
+        new FacultyFileImpl().writeFile();
+    }
+
     private void connectStudentSpeciality(){
         for (StudentEntity studentEntity: StudentList.getInstance().get()) {
             for (SpecialityEntity specialityEntity : SpecialityList.getInstance().get()) {
