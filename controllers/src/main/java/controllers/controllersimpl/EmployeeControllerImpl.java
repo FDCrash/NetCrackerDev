@@ -1,6 +1,7 @@
 package controllers.controllersimpl;
 
 import controllers.ControllerMD;
+import controllers.Menu;
 import dto.EmployeeDTO;
 import dto.RoleDTO;
 import dto.UserDTO;
@@ -53,10 +54,14 @@ public class EmployeeControllerImpl implements ControllerMD {
         String name=scanner.next();
         System.out.println("Введите логин: ");
         String login=scanner.next();
-        System.out.println("Введите пароль: ");
-        String password =scanner.next();
-        employeeService.addNew(new EmployeeDTO(userService.generateId(1000),RoleDTO.EMPLOYEE,
-                login,password,name));
+        if(userService.checkLogin(login)) {
+            System.out.println("Введите пароль: ");
+            String password = scanner.next();
+            employeeService.addNew(new EmployeeDTO(userService.generateId(1000), RoleDTO.EMPLOYEE,
+                    login, password, name));
+        }else{
+            System.out.println("Логин занят");
+        }
         editMenu();
     }
 
@@ -71,17 +76,21 @@ public class EmployeeControllerImpl implements ControllerMD {
             i++;
         }
         System.out.println("Выберите позицию для изменения: ");
-        int k=scanner.nextInt();
+        int k=Integer.parseInt(scanner.next());
         employeeDTO=employeeService.get(k-1);
         System.out.println(employeeDTO);
         System.out.println("Введите имя: ");
         String name=scanner.next();
         System.out.println("Введите логин: ");
         String login=scanner.next();
-        System.out.println("Введите пароль: ");
-        String password =scanner.next();
-        employeeService.updateInfo(new EmployeeDTO(employeeDTO.getId(),RoleDTO.EMPLOYEE,login,password,name));
-        userService.updateInfo(new UserDTO(employeeDTO.getId(),RoleDTO.EMPLOYEE,login,password));
+        if(login.equals(employeeDTO.getName()) || userService.checkLogin(login)) {
+            System.out.println("Введите пароль: ");
+            String password = scanner.next();
+            employeeService.updateInfo(new EmployeeDTO(employeeDTO.getId(), RoleDTO.EMPLOYEE, login, password, name));
+            userService.updateInfo(new UserDTO(employeeDTO.getId(), RoleDTO.EMPLOYEE, login, password));
+        }else{
+            System.out.println("Новый логин занят");
+        }
         editMenu();
     }
 
@@ -95,7 +104,7 @@ public class EmployeeControllerImpl implements ControllerMD {
             i++;
         }
         System.out.println("Выберите позиция для удаления: ");
-        int k=scanner.nextInt();
+        int k=Integer.parseInt(scanner.next());
         employeeService.deleteInfo(k-1);
         editMenu();
     }

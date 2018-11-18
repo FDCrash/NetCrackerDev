@@ -6,6 +6,7 @@ import daomodule.entities.UserEntity;
 import daomodule.storage.StudentList;
 import daomodule.storage.UserList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDAOImpl implements DAO<StudentEntity> {
@@ -52,6 +53,15 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
         }
     }
 
+    public StudentEntity getByLogin(String login){
+        for (StudentEntity studentEntity: getAll()){
+            if(login.equals(studentEntity.getLogin())){
+                return studentEntity;
+            }
+        }
+        return null;
+    }
+
     public boolean checkStudId(int id){
         for (StudentEntity studentEntity: getAll()) {
             if(studentEntity.getStudentId()==id){
@@ -78,5 +88,25 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
                 break;
             }
         }
+    }
+
+    public List<StudentEntity> getAllByGroup(int id){
+        List<StudentEntity> studentEntities=new ArrayList<>();
+        for(StudentEntity studentEntity:getAll()){
+            if(studentEntity.getGroupId()==id){
+                studentEntities.add(studentEntity);
+            }
+        }
+        return studentEntities;
+    }
+
+    public List<StudentEntity> getAllBySpeciality(String speciality){
+        List<StudentEntity> studentEntities=new ArrayList<>();
+        for(StudentEntity studentEntity:getAll()){
+            if(speciality.equals(studentEntity.getSpecialityEntity().getName())){
+                studentEntities.add(studentEntity);
+            }
+        }
+        return studentEntities;
     }
 }

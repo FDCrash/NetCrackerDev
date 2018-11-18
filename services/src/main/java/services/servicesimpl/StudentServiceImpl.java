@@ -3,6 +3,7 @@ package services.servicesimpl;
 import converters.StudentConverter;
 import daomodule.dao.daoImpl.StudentDAOImpl;
 import daomodule.dao.daoImpl.UserDAOImpl;
+import daomodule.entities.StudentEntity;
 import dto.StudentDTO;
 import services.CRUDService;
 
@@ -35,6 +36,20 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
     public void deleteInfoById(int id){
         studentDAO.deleteById(id);
         userDAO.deleteById(id);
+    }
+
+    public StudentDTO getByLogin(String login){
+        return studentConverter.convert(studentDAO.getByLogin(login));
+    }
+
+    public List<StudentDTO> getAllByGroup(int number){
+        return studentDAO.getAllByGroup(number)
+                .stream().map(student->studentConverter.convert(student)).collect(Collectors.toList());
+    }
+
+    public List<StudentDTO> getAllBySpeciality(String speciality){
+        return studentDAO.getAllBySpeciality(speciality).
+                stream().map(student->studentConverter.convert(student)).collect(Collectors.toList());
     }
 
     @Override

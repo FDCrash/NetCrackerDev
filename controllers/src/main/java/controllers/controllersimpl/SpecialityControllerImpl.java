@@ -64,7 +64,7 @@ public class SpecialityControllerImpl implements ControllerMD {
             i++;
         }
         System.out.println("Выберите позицию для изменения: ");
-        int k=scanner.nextInt();
+        int k=Integer.parseInt(scanner.next());
         SpecialityDTO specialityDTO=specialityService.get(k-1);
         System.out.println("Введите название специальности: ");
         String name=scanner.next();
@@ -84,7 +84,7 @@ public class SpecialityControllerImpl implements ControllerMD {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k=scanner.nextInt();
+        int k=Integer.parseInt(scanner.next());
         specialityService.deleteInfo(k-1);
         editMenu();
     }

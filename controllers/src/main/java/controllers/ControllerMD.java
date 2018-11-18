@@ -25,6 +25,7 @@ public interface ControllerMD {
                 System.out.println("Выберите позицию из списка");
         }
     }
+
     void editMenu();
     void getAll();
     void add();

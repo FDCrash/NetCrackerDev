@@ -54,7 +54,7 @@ public class FacultyControllerImpl implements ControllerMD {
         System.out.println("Введите количество специальностей: ");
         List<String> specialities=new ArrayList<>();
         List<Integer> specialitiesId=new ArrayList<>();
-        int n=scanner.nextInt();
+        int n=Integer.parseInt(scanner.next());
         for(int i=1;i<=n;i++){
             System.out.print(i + ". ");
             specialities.add(scanner.next());
@@ -76,7 +76,7 @@ public class FacultyControllerImpl implements ControllerMD {
             z++;
         }
         System.out.println("Выберите позицию для изменения");
-        int k=scanner.nextInt();
+        int k=Integer.parseInt(scanner.next());
         facultyDTO=facultyService.get(k-1);
         System.out.println("Введите название факультета: ");
         String name=scanner.next();
@@ -95,7 +95,7 @@ public class FacultyControllerImpl implements ControllerMD {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k=scanner.nextInt();
+        int k=Integer.parseInt(scanner.next());
         facultyService.deleteInfo(k-1);
         editMenu();
     }

@@ -58,21 +58,27 @@ public class UserControllerImpl implements ControllerMD {
         String role=scanner.next();
         System.out.println("Введите логин: ");
         String login=scanner.next();
-        System.out.println("Введите пароль: ");
-        String password =scanner.next();
-        int k=userService.generateId(1000);
-        if(role.equals("admin")){
-            adminService.addNew(new AdminDTO(k,RoleDTO.ADMIN,login,password,false));
+        if(userService.checkLogin(login)) {
+            System.out.println("Введите пароль: ");
+            String password = scanner.next();
+            int k = userService.generateId(1000);
+            switch (role) {
+                case "admin":
+                    adminService.addNew(new AdminDTO(k, RoleDTO.ADMIN, login, password, false));
+                    break;
+                case "employee":
+                    employeeService.addNew(new EmployeeDTO(k, RoleDTO.EMPLOYEE, login, password, ""));
+                    break;
+                case "student":
+                    studentService.addNew(new StudentDTO(k, RoleDTO.STUDENT, login, password, ""
+                            , 0, 0, "", new ArrayList<>()));
+                    break;
+            }
+            userService.addNew(new UserDTO(k, RoleDTO.valueOf(role.toUpperCase()),
+                    login, password));
+        }else{
+            System.out.println("Логин занят");
         }
-        if(role.equals("employee")){
-            employeeService.addNew(new EmployeeDTO(k,RoleDTO.EMPLOYEE,login,password,""));
-        }
-        if(role.equals("student")){
-            studentService.addNew(new StudentDTO(k,RoleDTO.STUDENT,login,password,""
-                    ,0,0,"",new ArrayList<>()));
-        }
-        userService.addNew(new UserDTO(k,RoleDTO.valueOf(role.toUpperCase()),
-                login,password));
         editMenu();
     }
 
@@ -80,8 +86,7 @@ public class UserControllerImpl implements ControllerMD {
     public void update() {
         System.out.println("Пользователи:");
         int z=1;
-        String login="";
-        String password="";
+        String password;
         UserDTO userDTO;
         for(UserDTO user:userService.getAll()){
             String s = user.toString();
@@ -89,50 +94,56 @@ public class UserControllerImpl implements ControllerMD {
             z++;
         }
         System.out.println("Выберите позицию для изменения: ");
-        int k=scanner.nextInt();
+        int k=Integer.parseInt(scanner.next());
         userDTO=userService.get(k-1);
         System.out.println(userDTO.toString());
-        System.out.println("Введите роль(admin/employee):");
+        System.out.println("Введите роль (admin/employee):");
         String role=scanner.next();
-        if(role.equals("admin")){
-            System.out.println("Введите логин: ");
-            login=scanner.next();
-            System.out.println("Введите пароль: ");
-            password =scanner.next();
-            if(userDTO.getRoleDTO().equals(RoleDTO.ADMIN)) {
-                adminService.updateInfo(new AdminDTO(userDTO.getId(), RoleDTO.ADMIN, login, password, false));
-                userService.updateInfo(new UserDTO(userDTO.getId(),RoleDTO.valueOf(role.toUpperCase()),login,password));
-            }else {
-                if (userDTO.getRoleDTO().equals(RoleDTO.EMPLOYEE)) {
-                    employeeService.deleteInfoById(userDTO.getId());
-                }
-                if (userDTO.getRoleDTO().equals(RoleDTO.STUDENT)) {
-                    studentService.deleteInfoById(userDTO.getId());
-                }
-                adminService.addNew(new AdminDTO(userDTO.getId(), RoleDTO.ADMIN, login, password, false));
+        System.out.println("Введите логин: ");
+        String login = scanner.next();
+        if(login.equals(userDTO.getLogin()) || userService.checkLogin(login)) {
+            switch (role) {
+                case "admin":
+                    System.out.println("Введите пароль: ");
+                    password = scanner.next();
+                    if (userDTO.getRoleDTO().equals(RoleDTO.ADMIN)) {
+                        adminService.updateInfo(new AdminDTO(userDTO.getId(), RoleDTO.ADMIN, login, password, false));
+                        userService.updateInfo(new UserDTO(userDTO.getId(), RoleDTO.valueOf(role.toUpperCase()), login, password));
+                    } else {
+                        if (userDTO.getRoleDTO().equals(RoleDTO.EMPLOYEE)) {
+                            employeeService.deleteInfoById(userDTO.getId());
+                        }
+                        if (userDTO.getRoleDTO().equals(RoleDTO.STUDENT)) {
+                            studentService.deleteInfoById(userDTO.getId());
+                        }
+                        adminService.addNew(new AdminDTO(userDTO.getId(), RoleDTO.ADMIN, login, password, false));
+                    }
+                    break;
+                case "employee":
+                    System.out.println("Введите имя: ");
+                    String name = scanner.next();
+                    System.out.println("Введите пароль: ");
+                    password = scanner.next();
+                    if (userDTO.getRoleDTO().equals(RoleDTO.EMPLOYEE)) {
+                        employeeService.updateInfo(new EmployeeDTO(userDTO.getId(), RoleDTO.EMPLOYEE, login, password, name));
+                        userService.updateInfo(new UserDTO(userDTO.getId(), RoleDTO.valueOf(role.toUpperCase()), login, password));
+                    } else {
+                        if (userDTO.getRoleDTO().equals(RoleDTO.ADMIN)) {
+                            adminService.deleteInfoById(userDTO.getId());
+                        }
+                        if (userDTO.getRoleDTO().equals(RoleDTO.STUDENT)) {
+                            studentService.deleteInfoById(userDTO.getId());
+                        }
+                        employeeService.addNew(new EmployeeDTO(userDTO.getId(), RoleDTO.EMPLOYEE, login, password, name));
+                    }
+                    break;
+                default:
+                    System.out.println("Неверно введена роль!");
+                    break;
             }
+        }else {
+            System.out.println("Логин занят");
         }
-        if(role.equals("employee")){
-            System.out.println("Введите имя: ");
-            String name=scanner.next();
-            System.out.println("Введите логин: ");
-            login=scanner.next();
-            System.out.println("Введите пароль: ");
-            password =scanner.next();
-            if(userDTO.getRoleDTO().equals(RoleDTO.EMPLOYEE)) {
-                employeeService.updateInfo(new EmployeeDTO(userDTO.getId(), RoleDTO.EMPLOYEE, login, password, name));
-                userService.updateInfo(new UserDTO(userDTO.getId(),RoleDTO.valueOf(role.toUpperCase()),login,password));
-            }else{
-                if(userDTO.getRoleDTO().equals(RoleDTO.ADMIN)){
-                    adminService.deleteInfoById(userDTO.getId());
-                }
-                if (userDTO.getRoleDTO().equals(RoleDTO.STUDENT)) {
-                    studentService.deleteInfoById(userDTO.getId());
-                }
-                employeeService.addNew(new EmployeeDTO(userDTO.getId(), RoleDTO.EMPLOYEE, login, password, name));
-            }
-        }
-
         editMenu();
     }
 
@@ -146,7 +157,7 @@ public class UserControllerImpl implements ControllerMD {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k=scanner.nextInt();
+        int k=Integer.parseInt(scanner.next());
         if(userService.get(k-1).getRoleDTO().equals(RoleDTO.ADMIN)){
             System.out.println("Вы хотите удалить админа, перейдите в CRUD админов!");
         }else {

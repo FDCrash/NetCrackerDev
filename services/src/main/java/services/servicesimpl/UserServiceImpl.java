@@ -50,26 +50,6 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
         return userConverter.convert(userDAO.get(id));
     }
 
-    public UserDAOImpl getInfoByName(String name){
-        return userDAO;
-    }
-
-    public UserDAOImpl getInfoByGroup(int groupId){
-        return userDAO;
-    }
-
-    public UserDAOImpl getInfoByFaculty(String faculty){
-        return userDAO;
-    }
-
-    public UserDAOImpl getInfoBySpeciality(String speciality){
-        return userDAO;
-    }
-
-    public UserEntity readWriteBook(int id) {
-        return null;
-    }
-
     public int generateId(int bound){
             SplittableRandom splittableRandom=new SplittableRandom();
             int k;
@@ -89,6 +69,10 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
             return "Логин занят!";
         }
         return "Неверный номер студенченского билета!";
+    }
+
+    public boolean checkLogin(String login){
+        return userDAO.checkLogin(login);
     }
 
     public Enum authentication(String login, String pass){

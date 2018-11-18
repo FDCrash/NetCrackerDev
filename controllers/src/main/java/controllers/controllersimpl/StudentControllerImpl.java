@@ -1,6 +1,7 @@
 package controllers.controllersimpl;
 
 import controllers.ControllerMD;
+import controllers.Menu;
 import dto.RoleDTO;
 import dto.StudentDTO;
 import dto.UserDTO;
@@ -53,17 +54,17 @@ public class StudentControllerImpl implements ControllerMD {
         System.out.println("Введите имя: ");
         String name=scanner.next();
         System.out.println("Введите номер студенченского билета: ");
-        int number=scanner.nextInt();
+        int number=Integer.parseInt(scanner.next());
         System.out.println("Введите номер группы: ");
-        int group=scanner.nextInt();
+        int group=Integer.parseInt(scanner.next());
         System.out.println("Введите специальность: ");
         String speciality =scanner.next();
         System.out.println("Введите колво оценок: ");
         List<Integer> writeBook=new ArrayList<>();
-        int n=scanner.nextInt();
+        int n=Integer.parseInt(scanner.next());
         for(int i=1;i<=n;i++){
             System.out.print(i + ". ");
-            writeBook.add(scanner.nextInt());
+            writeBook.add(Integer.parseInt(scanner.next()));
         }
         studentService.addNew(new StudentDTO(userService.generateId(1000),RoleDTO.STUDENT,
                 "","", name,number,group,speciality,writeBook));
@@ -81,23 +82,23 @@ public class StudentControllerImpl implements ControllerMD {
             z++;
         }
         System.out.println("Выберите позицию для изменения: ");
-        int k=scanner.nextInt();
+        int k=Integer.parseInt(scanner.next());
         studentDTO=studentService.get(k-1);
         System.out.println(studentDTO);
         System.out.println("Введите имя: ");
         String name=scanner.next();
         System.out.println("Введите номер студенченского билета: ");
-        int number=scanner.nextInt();
+        int number=Integer.parseInt(scanner.next());
         System.out.println("Введите номер группы: ");
-        int group=scanner.nextInt();
+        int group=Integer.parseInt(scanner.next());
         System.out.println("Введите специальность: ");
         String speciality =scanner.next();
         System.out.println("Введите колво оценок: ");
         List<Integer> writeBook=new ArrayList<>();
-        int n=scanner.nextInt();
+        int n=Integer.parseInt(scanner.next());
         for(int i=1;i<=n;i++){
             System.out.print(i + ". ");
-            writeBook.add(scanner.nextInt());
+            writeBook.add(Integer.parseInt(scanner.next()));
         }
         studentService.updateInfo(new StudentDTO(studentDTO.getId(),RoleDTO.STUDENT,
                 studentDTO.getLogin(),studentDTO.getPassword(),name,number,group,speciality,writeBook));
@@ -116,20 +117,39 @@ public class StudentControllerImpl implements ControllerMD {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k=scanner.nextInt();
+        int k=Integer.parseInt(scanner.next());
         studentService.deleteInfo(k-1);
         editMenu();
     }
 
     public void showWriteBook(){
-
+        StudentDTO studentDTO=studentService.getByLogin(Menu.getInstance().getLogin());
+        System.out.println("Зачетка студента " + studentDTO.getName()+ ":");
+        for(Integer i:studentDTO.getWriteBook()){
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        Menu.getInstance().studentMenu();
     }
 
     public void getAllByGroup(){
-
+        int k=studentService.getByLogin(Menu.getInstance().getLogin()).getGroupId();
+        System.out.println("Студенты группы: " + k);
+        for(StudentDTO studentDTO:studentService.getAllByGroup(k)){
+            System.out.println("Студент: " + studentDTO.getName());
+        }
+        System.out.println("------------------------------");
+        Menu.getInstance().studentMenu();
     }
 
     public void getAllBySpeciality(){
-
+        String speciality=studentService.getByLogin(Menu.getInstance().getLogin()).getSpeciality();
+        System.out.println("Студенты специальности: " + speciality);
+        for(StudentDTO studentDTO: studentService.getAllBySpeciality(speciality)){
+            System.out.println("Студент: " + studentDTO.getName());
+            System.out.println("Группа: " + studentDTO.getGroupId() + "\n");
+        }
+        System.out.println("------------------------------");
+        Menu.getInstance().studentMenu();
     }
 }

@@ -1,6 +1,7 @@
 package controllers.controllersimpl;
 
 import controllers.ControllerMD;
+import controllers.Menu;
 import dto.AdminDTO;
 import dto.RoleDTO;
 import dto.UserDTO;
@@ -31,7 +32,7 @@ public class AdminControllerImpl implements ControllerMD {
             System.out.println("3.Изменить");
             System.out.println("4.Удалить");
             System.out.println("0.Выйти");
-            k=scanner.nextInt();
+            k=Integer.parseInt(scanner.next());
             switchChange(k);
         }while(k<0 || k>4);
     }
@@ -51,10 +52,14 @@ public class AdminControllerImpl implements ControllerMD {
         System.out.println("Новый администратор");
         System.out.println("Введите логин: ");
         String login=scanner.next();
-        System.out.println("Введите пароль: ");
-        String password =scanner.next();
-        adminService.addNew(new AdminDTO(userService.generateId(1000),RoleDTO.ADMIN,
-                login,password,false));
+        if(userService.checkLogin(login)) {
+            System.out.println("Введите пароль: ");
+            String password = scanner.next();
+            adminService.addNew(new AdminDTO(userService.generateId(1000), RoleDTO.ADMIN,
+                    login, password, false));
+        }else{
+            System.out.println("Логин занят");
+        }
         editMenu();
     }
 
@@ -69,15 +74,19 @@ public class AdminControllerImpl implements ControllerMD {
             i++;
         }
         System.out.println("Выберите позицию для изменения: ");
-        int k=scanner.nextInt();
+        int k=Integer.parseInt(scanner.next());
         adminDTO=adminService.get(k-1);
         System.out.println(adminDTO.toString());
         System.out.println("Введите логин: ");
         String login=scanner.next();
-        System.out.println("Введите пароль: ");
-        String password =scanner.next();
-        adminService.updateInfo(new AdminDTO(adminDTO.getId(),RoleDTO.ADMIN,login,password,false));
-        userService.updateInfo(new UserDTO(adminDTO.getId(),RoleDTO.ADMIN,login,password));
+        if(login.equals(adminDTO.getLogin()) || userService.checkLogin(login)) {
+            System.out.println("Введите пароль: ");
+            String password = scanner.next();
+            adminService.updateInfo(new AdminDTO(adminDTO.getId(), RoleDTO.ADMIN, login, password, false));
+            userService.updateInfo(new UserDTO(adminDTO.getId(), RoleDTO.ADMIN, login, password));
+        }else{
+            System.out.println("Новый логин занят");
+        }
         editMenu();
     }
 
@@ -91,7 +100,7 @@ public class AdminControllerImpl implements ControllerMD {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k=scanner.nextInt();
+        int k=Integer.parseInt(scanner.next());
         adminService.deleteInfo(k-1);
         editMenu();
     }
