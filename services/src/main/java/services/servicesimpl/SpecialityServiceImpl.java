@@ -1,13 +1,12 @@
 package services.servicesimpl;
 
 import converters.SpecialityConverter;
-import daomodule.dao.daoImpl.SpecialityDAOImpl;
+import dao.dao.daoImpl.SpecialityDAOImpl;
 
 import dto.SpecialityDTO;
 import services.CRUDService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
     private SpecialityDAOImpl specialityDAO;

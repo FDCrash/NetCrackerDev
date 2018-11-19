@@ -1,9 +1,7 @@
 package converters;
 
-import daomodule.entities.EmployeeEntity;
-import daomodule.entities.Role;
+import dao.entities.EmployeeEntity;
 import dto.EmployeeDTO;
-import dto.RoleDTO;
 
 public class EmployeeConverter {
     public EmployeeEntity convert(EmployeeDTO employeeDTO){

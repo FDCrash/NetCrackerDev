@@ -1,7 +1,7 @@
 package controllers;
 
 import controllers.controllersimpl.*;
-import daomodule.entities.Role;
+import dao.entities.Role;
 import services.servicesimpl.AdminServiceImpl;
 import services.servicesimpl.UserServiceImpl;
 

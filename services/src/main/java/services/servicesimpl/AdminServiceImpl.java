@@ -1,7 +1,7 @@
 package services.servicesimpl;
 
 import converters.AdminConverter;
-import daomodule.dao.daoImpl.AdminDAOImpl;
+import dao.dao.daoImpl.AdminDAOImpl;
 
 import dto.AdminDTO;
 import services.CRUDService;

@@ -1,12 +1,12 @@
 package controllers.controllersimpl;
 
-import controllers.ControllerMD;
+import controllers.Controller;
 import services.servicesimpl.FacultyServiceImpl;
 import services.servicesimpl.UserServiceImpl;
 
 import java.util.Scanner;
 
-public class FacultyControllerImpl implements ControllerMD {
+public class FacultyControllerImpl implements Controller {
     private FacultyServiceImpl facultyService;
     private Scanner scanner;
     private UserServiceImpl userService;

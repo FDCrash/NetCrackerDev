@@ -1,8 +1,6 @@
 package converters;
 
-import daomodule.entities.Role;
-import daomodule.entities.UserEntity;
-import dto.RoleDTO;
+import dao.entities.UserEntity;
 import dto.UserDTO;
 
 public class UserConverter {

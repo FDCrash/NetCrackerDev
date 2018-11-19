@@ -1,7 +1,7 @@
 package services.servicesimpl;
 
 import converters.StudentConverter;
-import daomodule.dao.daoImpl.StudentDAOImpl;
+import dao.dao.daoImpl.StudentDAOImpl;
 import dto.StudentDTO;
 import services.CRUDService;
 

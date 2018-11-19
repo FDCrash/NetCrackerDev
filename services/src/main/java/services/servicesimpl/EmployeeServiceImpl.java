@@ -1,7 +1,7 @@
 package services.servicesimpl;
 
 import converters.EmployeeConverter;
-import daomodule.dao.daoImpl.EmployeeDAOImpl;
+import dao.dao.daoImpl.EmployeeDAOImpl;
 import dto.EmployeeDTO;
 import services.CRUDService;
 

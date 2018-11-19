@@ -1,10 +1,6 @@
 package converters;
 
-import daomodule.dao.daoImpl.SpecialityDAOImpl;
-import daomodule.entities.Role;
-import daomodule.entities.SpecialityEntity;
-import daomodule.entities.StudentEntity;
-import dto.RoleDTO;
+import dao.entities.StudentEntity;
 import dto.StudentDTO;
 
 public class StudentConverter {
