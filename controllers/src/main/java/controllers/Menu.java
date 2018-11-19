@@ -1,15 +1,15 @@
 package controllers;
 
 import controllers.controllersimpl.*;
-import daomodule.entities.Role;
+import dao.entities.Role;
 import services.servicesimpl.AdminServiceImpl;
 import services.servicesimpl.UserServiceImpl;
 
 import java.util.Scanner;
 
-import static daomodule.entities.Role.ADMIN;
-import static daomodule.entities.Role.EMPLOYEE;
-import static daomodule.entities.Role.STUDENT;
+import static dao.entities.Role.ADMIN;
+import static dao.entities.Role.EMPLOYEE;
+import static dao.entities.Role.STUDENT;
 
 public class Menu {
     private Role role;

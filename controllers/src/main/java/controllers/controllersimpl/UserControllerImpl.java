@@ -1,6 +1,6 @@
 package controllers.controllersimpl;
 
-import controllers.ControllerMD;
+import controllers.Controller;
 import dto.*;
 import services.servicesimpl.AdminServiceImpl;
 import services.servicesimpl.EmployeeServiceImpl;
@@ -8,10 +8,9 @@ import services.servicesimpl.StudentServiceImpl;
 import services.servicesimpl.UserServiceImpl;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
-public class UserControllerImpl implements ControllerMD {
+public class UserControllerImpl implements Controller {
     private UserServiceImpl userService;
     private Scanner scanner;
     private AdminServiceImpl adminService;

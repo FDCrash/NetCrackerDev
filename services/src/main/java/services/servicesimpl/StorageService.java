@@ -1,6 +1,6 @@
 package services.servicesimpl;
 
-import daomodule.rwstorage.rwstorageimpl.FullFillImpl;
+import dao.rwstorage.rwstorageimpl.FullFillImpl;
 
 public class StorageService {
     public void fillStorage(){

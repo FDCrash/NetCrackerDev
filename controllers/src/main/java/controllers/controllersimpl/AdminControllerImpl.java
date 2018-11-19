@@ -1,7 +1,6 @@
 package controllers.controllersimpl;
 
-import controllers.ControllerMD;
-import controllers.Menu;
+import controllers.Controller;
 import dto.AdminDTO;
 import dto.RoleDTO;
 import dto.UserDTO;
@@ -10,7 +9,7 @@ import services.servicesimpl.UserServiceImpl;
 
 import java.util.Scanner;
 
-public class AdminControllerImpl implements ControllerMD {
+public class AdminControllerImpl implements Controller {
     private AdminServiceImpl adminService;
     private Scanner scanner;
     private UserServiceImpl userService;

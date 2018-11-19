@@ -1,9 +1,9 @@
 package converters;
 
-import daomodule.dao.daoImpl.SpecialityDAOImpl;
-import daomodule.entities.Role;
-import daomodule.entities.SpecialityEntity;
-import daomodule.entities.StudentEntity;
+import dao.dao.daoImpl.SpecialityDAOImpl;
+import dao.entities.Role;
+import dao.entities.SpecialityEntity;
+import dao.entities.StudentEntity;
 import dto.RoleDTO;
 import dto.StudentDTO;
 

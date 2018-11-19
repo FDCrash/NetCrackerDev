@@ -1,7 +1,7 @@
 package converters;
 
-import daomodule.entities.Role;
-import daomodule.entities.UserEntity;
+import dao.entities.Role;
+import dao.entities.UserEntity;
 import dto.RoleDTO;
 import dto.UserDTO;
 

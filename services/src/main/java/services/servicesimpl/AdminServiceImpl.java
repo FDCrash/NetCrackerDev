@@ -1,10 +1,8 @@
 package services.servicesimpl;
 
 import converters.AdminConverter;
-import daomodule.dao.daoImpl.AdminDAOImpl;
-import daomodule.dao.daoImpl.UserDAOImpl;
-import daomodule.entities.AdminEntity;
-import daomodule.entities.UserEntity;
+import dao.dao.daoImpl.AdminDAOImpl;
+import dao.dao.daoImpl.UserDAOImpl;
 import dto.AdminDTO;
 import services.CRUDService;
 

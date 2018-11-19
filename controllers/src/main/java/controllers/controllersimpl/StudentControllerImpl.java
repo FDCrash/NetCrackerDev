@@ -1,6 +1,6 @@
 package controllers.controllersimpl;
 
-import controllers.ControllerMD;
+import controllers.Controller;
 import controllers.Menu;
 import dto.RoleDTO;
 import dto.StudentDTO;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class StudentControllerImpl implements ControllerMD {
+public class StudentControllerImpl implements Controller {
     private StudentServiceImpl studentService;
     private UserServiceImpl userService;
     private Scanner scanner;

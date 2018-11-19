@@ -1,10 +1,9 @@
 package services.servicesimpl;
 
 import converters.FacultyConverter;
-import daomodule.dao.daoImpl.FacultyDAOImpl;
-import daomodule.dao.daoImpl.SpecialityDAOImpl;
-import daomodule.entities.FacultyEntity;
-import daomodule.entities.SpecialityEntity;
+import dao.dao.daoImpl.FacultyDAOImpl;
+import dao.dao.daoImpl.SpecialityDAOImpl;
+import dao.entities.FacultyEntity;
 import dto.FacultyDTO;
 import services.CRUDService;
 

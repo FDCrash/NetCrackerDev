@@ -1,8 +1,8 @@
 package services.servicesimpl;
 
 import converters.SpecialityConverter;
-import daomodule.dao.daoImpl.SpecialityDAOImpl;
-import daomodule.entities.SpecialityEntity;
+import dao.dao.daoImpl.SpecialityDAOImpl;
+import dao.entities.SpecialityEntity;
 import dto.SpecialityDTO;
 import services.CRUDService;
 

@@ -1,8 +1,8 @@
 package converters;
 
-import daomodule.dao.daoImpl.FacultyDAOImpl;
-import daomodule.entities.FacultyEntity;
-import daomodule.entities.SpecialityEntity;
+import dao.dao.daoImpl.FacultyDAOImpl;
+import dao.entities.FacultyEntity;
+import dao.entities.SpecialityEntity;
 import dto.SpecialityDTO;
 
 public class SpecialityConverter {

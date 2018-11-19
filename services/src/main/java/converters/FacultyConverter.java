@@ -1,7 +1,7 @@
 package converters;
 
-import daomodule.entities.FacultyEntity;
-import daomodule.entities.SpecialityEntity;
+import dao.entities.FacultyEntity;
+import dao.entities.SpecialityEntity;
 import dto.FacultyDTO;
 
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
 package services.servicesimpl;
 
 import converters.UserConverter;
-import daomodule.dao.daoImpl.StudentDAOImpl;
-import daomodule.dao.daoImpl.UserDAOImpl;
-import daomodule.entities.UserEntity;
+import dao.dao.daoImpl.StudentDAOImpl;
+import dao.dao.daoImpl.UserDAOImpl;
+import dao.entities.UserEntity;
 import dto.UserDTO;
 import services.CRUDService;
 
