@@ -18,14 +18,15 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
     }
 
     @Override
-    public void add(StudentEntity studentEntity) {
-
+    public StudentEntity add(StudentEntity studentEntity) {
+        return null;
     }
 
     @Override
-    public void update(StudentEntity student) {
-
+    public StudentEntity update(StudentEntity studentEntity) {
+        return null;
     }
+
 
     @Override
     public void delete(int id) {

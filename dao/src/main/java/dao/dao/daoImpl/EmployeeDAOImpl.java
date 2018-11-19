@@ -18,14 +18,15 @@ public class EmployeeDAOImpl implements DAO<EmployeeEntity> {
     }
 
     @Override
-    public void add(EmployeeEntity employeeEntity) {
-
+    public EmployeeEntity add(EmployeeEntity employeeEntity) {
+        return null;
     }
 
     @Override
-    public void update(EmployeeEntity employee) {
-
+    public EmployeeEntity update(EmployeeEntity employeeEntity) {
+        return null;
     }
+
 
     @Override
     public void delete(int id) {

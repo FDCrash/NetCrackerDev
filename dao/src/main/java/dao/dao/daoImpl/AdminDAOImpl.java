@@ -18,13 +18,13 @@ public class AdminDAOImpl implements DAO<AdminEntity> {
     }
 
     @Override
-    public void add(AdminEntity adminEntity) {
-
+    public AdminEntity add(AdminEntity adminEntity) {
+        return null;
     }
 
     @Override
-    public void update(AdminEntity admin) {
-
+    public AdminEntity update(AdminEntity admin) {
+        return null;
     }
 
     @Override

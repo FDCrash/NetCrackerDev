@@ -22,14 +22,15 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
     }
 
     @Override
-    public void add(FacultyEntity facultyEntity) {
-
+    public FacultyEntity add(FacultyEntity facultyEntity) {
+        return null;
     }
 
     @Override
-    public void update(FacultyEntity faculty) {
-
+    public FacultyEntity update(FacultyEntity facultyEntity) {
+        return null;
     }
+
 
     @Override
     public void delete(int id) {

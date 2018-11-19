@@ -19,12 +19,15 @@ public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
     }
 
     @Override
-    public void add(SpecialityEntity speciality) {
+    public SpecialityEntity add(SpecialityEntity specialityEntity) {
+        return null;
     }
 
     @Override
-    public void update(SpecialityEntity speciality) {
+    public SpecialityEntity update(SpecialityEntity specialityEntity) {
+        return null;
     }
+
 
     @Override
     public void delete(int id) {

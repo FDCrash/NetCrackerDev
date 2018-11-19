@@ -26,12 +26,15 @@ public class UserDAOImpl implements DAO<UserEntity> {
     }
 
     @Override
-    public void add(UserEntity user) {
+    public UserEntity add(UserEntity userEntity) {
+        return null;
     }
 
     @Override
-    public void update(UserEntity user) {
+    public UserEntity update(UserEntity userEntity) {
+        return null;
     }
+
 
     @Override
     public void delete(int id) {
