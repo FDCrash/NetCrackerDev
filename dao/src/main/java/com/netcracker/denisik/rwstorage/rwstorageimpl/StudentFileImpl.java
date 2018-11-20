@@ -1,6 +1,7 @@
 package com.netcracker.denisik.rwstorage.rwstorageimpl;
 
 import com.netcracker.denisik.entities.Role;
+import com.netcracker.denisik.entities.UserEntity;
 import com.netcracker.denisik.rwstorage.RWStorage;
 import com.netcracker.denisik.storage.StudentList;
 import com.netcracker.denisik.entities.StudentEntity;
@@ -29,7 +30,7 @@ public class StudentFileImpl implements RWStorage {
     public void fillStorage(){
         students=new ArrayList<>();
         try {
-             obj = new JSONParser().parse(new FileReader("dao/src/main/resources/json/students.json"));
+             obj = new JSONParser().parse(new FileReader(LoadFile.getInstance().getProperties().getProperty("json.students")));
              jsonArray = (JSONArray) obj;
              for (Object object:jsonArray) {
                  JSONObject jsonObject = (JSONObject) object;
@@ -48,7 +49,7 @@ public class StudentFileImpl implements RWStorage {
                  while (i.hasNext()) {
                      writeBook.add(parseInt(String.valueOf(i.next())));
                  }
-                 students.add(new StudentEntity(id, role, login, pass, name, studentId, groupId, specialityId,writeBook));
+                 students.add(new StudentEntity(new UserEntity(id, role, login, pass), name, studentId, groupId, specialityId,writeBook));
              }
         } catch (IOException | ParseException e){
             e.printStackTrace();
@@ -77,7 +78,7 @@ public class StudentFileImpl implements RWStorage {
             jsonArray.add(jsonObject);
         }
         try{
-            FileWriter file=new FileWriter("dao/src/main/resources/json/students.json");
+            FileWriter file=new FileWriter(LoadFile.getInstance().getProperties().getProperty("json.students"));
             file.write(jsonArray.toJSONString());
             file.flush();
             file.close();

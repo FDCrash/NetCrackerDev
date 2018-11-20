@@ -5,8 +5,8 @@ public class EmployeeEntity extends UserEntity {
 
     public EmployeeEntity(){}
 
-    public EmployeeEntity(int id,Role role,String login,String pass,String name){
-        super(id,role,login,pass);
+    public EmployeeEntity(UserEntity userEntity,String name){
+        super(userEntity);
         this.name=name;
     }
 

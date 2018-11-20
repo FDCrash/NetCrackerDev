@@ -9,6 +9,7 @@ import com.netcracker.denisik.entities.FacultyEntity;
 import com.netcracker.denisik.entities.StudentEntity;
 
 public class FullFillImpl implements RWStorage {
+
     @Override
     public void fillStorage() {
         new EmployeeFileImpl().fillStorage();

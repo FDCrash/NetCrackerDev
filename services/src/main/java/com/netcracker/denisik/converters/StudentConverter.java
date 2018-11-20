@@ -6,12 +6,13 @@ import com.netcracker.denisik.entities.SpecialityEntity;
 import com.netcracker.denisik.entities.StudentEntity;
 import com.netcracker.denisik.dto.RoleDTO;
 import com.netcracker.denisik.dto.StudentDTO;
+import com.netcracker.denisik.entities.UserEntity;
 
 public class StudentConverter {
     public StudentEntity convert(StudentDTO studentDTO) {
-        StudentEntity studentEntity = new StudentEntity(studentDTO.getId(),
+        StudentEntity studentEntity = new StudentEntity(new UserEntity(studentDTO.getId(),
                 Role.valueOf(studentDTO.getRoleDTO().name()) , studentDTO.getLogin(),
-                studentDTO.getPassword(), studentDTO.getName(), studentDTO.getStudentId(),
+                studentDTO.getPassword()), studentDTO.getName(), studentDTO.getStudentId(),
                 studentDTO.getGroupId(), 0, studentDTO.getWriteBook());
         for (SpecialityEntity specialityEntity : new SpecialityDAOImpl().getAll()) {
             if (specialityEntity.getName().equals(studentDTO.getSpeciality())) {

@@ -1,5 +1,6 @@
 package com.netcracker.denisik.rwstorage.rwstorageimpl;
 
+import com.netcracker.denisik.entities.UserEntity;
 import com.netcracker.denisik.rwstorage.RWStorage;
 import com.netcracker.denisik.storage.AdminList;
 import com.netcracker.denisik.entities.AdminEntity;
@@ -24,7 +25,7 @@ public class AdminFileImpl implements RWStorage {
     public void fillStorage() {
         admins=new ArrayList<>();
         try {
-            obj = new JSONParser().parse(new FileReader("dao/src/main/resources/json/admins.json"));
+            obj = new JSONParser().parse(new FileReader(LoadFile.getInstance().getProperties().getProperty("json.admins")));
             jsonArray = (JSONArray) obj;
             for (Object object:jsonArray) {
                 JSONObject jsonObject = (JSONObject) object;
@@ -32,7 +33,7 @@ public class AdminFileImpl implements RWStorage {
                 Role role = Role.valueOf((String) jsonObject.get("role"));
                 String login = (String) jsonObject.get("login");
                 String pass = (String) jsonObject.get("pass");
-                admins.add(new AdminEntity(id, role, login, pass,false));
+                admins.add(new AdminEntity(new UserEntity(id, role, login, pass),false));
             }
         } catch (IOException | ParseException e){
             e.printStackTrace();
@@ -52,7 +53,7 @@ public class AdminFileImpl implements RWStorage {
             jsonArray.add(jsonObject);
         }
         try{
-            FileWriter file=new FileWriter("dao/src/main/resources/json/admins.json");
+            FileWriter file=new FileWriter(LoadFile.getInstance().getProperties().getProperty("json.admins"));
             file.write(jsonArray.toJSONString());
             file.flush();
             file.close();

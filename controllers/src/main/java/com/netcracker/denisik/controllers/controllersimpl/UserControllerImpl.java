@@ -2,7 +2,6 @@ package com.netcracker.denisik.controllers.controllersimpl;
 
 import com.netcracker.denisik.controllers.Controller;
 import com.netcracker.denisik.dto.*;
-import dto.*;
 import com.netcracker.denisik.services.servicesimpl.AdminServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.EmployeeServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.StudentServiceImpl;

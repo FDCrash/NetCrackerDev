@@ -5,8 +5,8 @@ public class AdminEntity extends UserEntity {
 
     public AdminEntity(){}
 
-    public AdminEntity(int id,Role role,String login,String pass,boolean status){
-        super(id,role,login,pass);
+    public AdminEntity(UserEntity userEntity,boolean status){
+        super(userEntity);
         this.status=status;
     }
 

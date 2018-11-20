@@ -8,6 +8,13 @@ public class UserEntity extends BaseEntity{
     public UserEntity(){
     }
 
+    public UserEntity(UserEntity userEntity){
+        super(userEntity.getId());
+        role=userEntity.role;
+        login=userEntity.login;
+        password=userEntity.password;
+    }
+
     public UserEntity(int id,Role role,String login,String password){
         super(id);
         this.role=role;

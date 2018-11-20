@@ -3,6 +3,7 @@ package com.netcracker.denisik.rwstorage.rwstorageimpl;
 
 import com.netcracker.denisik.entities.EmployeeEntity;
 import com.netcracker.denisik.entities.Role;
+import com.netcracker.denisik.entities.UserEntity;
 import com.netcracker.denisik.rwstorage.RWStorage;
 import com.netcracker.denisik.storage.EmployeeList;
 import org.json.simple.JSONArray;
@@ -25,7 +26,7 @@ public class EmployeeFileImpl implements RWStorage {
     public void fillStorage() {
         employees=new ArrayList<>();
         try {
-            obj = new JSONParser().parse(new FileReader("dao/src/main/resources/json/employees.json"));
+            obj = new JSONParser().parse(new FileReader(LoadFile.getInstance().getProperties().getProperty("json.employees")));
             jsonArray = (JSONArray) obj;
             for (Object object:jsonArray) {
                 JSONObject jsonObject = (JSONObject) object;
@@ -35,7 +36,7 @@ public class EmployeeFileImpl implements RWStorage {
                 String pass = (String) jsonObject.get("pass");
                 String name = (String) jsonObject.get("name");
 
-                employees.add(new EmployeeEntity(id, role, login, pass, name));
+                employees.add(new EmployeeEntity(new UserEntity(id, role, login, pass), name));
             }
         } catch (IOException | ParseException e){
             e.printStackTrace();
@@ -57,7 +58,7 @@ public class EmployeeFileImpl implements RWStorage {
             jsonArray.add(jsonObject);
         }
         try{
-            FileWriter file=new FileWriter("dao/src/main/resources/json/employees.json");
+            FileWriter file=new FileWriter(LoadFile.getInstance().getProperties().getProperty("json.employees"));
             file.write(jsonArray.toJSONString());
             file.flush();
             file.close();

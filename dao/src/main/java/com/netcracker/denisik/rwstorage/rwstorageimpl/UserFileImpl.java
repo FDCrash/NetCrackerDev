@@ -13,4 +13,8 @@ public class UserFileImpl implements RWStorage {
         UserList.getInstance().setEmployees(EmployeeList.getInstance().get());
         UserList.getInstance().setStudents(StudentList.getInstance().get());
     }
+
+    @Override
+    public void writeFile() {
+    }
 }

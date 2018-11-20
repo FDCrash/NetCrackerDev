@@ -23,7 +23,7 @@ public class SpecialityFileImpl implements RWStorage {
     public void fillStorage() {
         specialities=new ArrayList<>();
         try {
-            obj = new JSONParser().parse(new FileReader("dao/src/main/resources/json/specialities.json"));
+            obj = new JSONParser().parse(new FileReader(LoadFile.getInstance().getProperties().getProperty("json.specialities")));
             jsonArray = (JSONArray) obj;
             for (Object object:jsonArray) {
                 JSONObject jsonObject = (JSONObject) object;
@@ -49,7 +49,7 @@ public class SpecialityFileImpl implements RWStorage {
             jsonArray.add(jsonObject);
         }
         try{
-            FileWriter file=new FileWriter("dao/src/main/resources/json/specialities.json");
+            FileWriter file=new FileWriter(LoadFile.getInstance().getProperties().getProperty("json.specialities"));
             file.write(jsonArray.toJSONString());
             file.flush();
             file.close();

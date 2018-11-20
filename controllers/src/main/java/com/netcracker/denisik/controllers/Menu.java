@@ -1,7 +1,6 @@
 package com.netcracker.denisik.controllers;
 
 import com.netcracker.denisik.controllers.controllersimpl.*;
-import controllers.controllersimpl.*;
 import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.services.servicesimpl.AdminServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
