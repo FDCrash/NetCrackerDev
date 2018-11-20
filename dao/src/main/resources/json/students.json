@@ -1,0 +1,28 @@
+[
+  {
+    "id":7,
+    "role": "STUDENT",
+    "login" : "pavel.den",
+    "pass": "1234",
+    "name": "Павел Денисик",
+    "studentId": 13,
+    "groupId":620601,
+    "specialityId": 1,
+    "writeBook": [
+      "9","10","8","9"
+    ]
+  },
+  {
+    "id":8,
+    "role": "STUDENT",
+    "login" : "maxim",
+    "pass": "1234",
+    "name": "Житкевич Максим",
+    "studentId": 14,
+    "groupId":620601,
+    "specialityId": 2,
+    "writeBook": [
+      "9","10","8","9"
+    ]
+  }
+]
