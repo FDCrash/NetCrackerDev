@@ -34,6 +34,7 @@ public class FacultyFileImpl implements RWStorage {
         } catch (IOException | ParseException e){
             e.printStackTrace();
         }
+
         FacultyList.getInstance().set(faculties);
     }
 
