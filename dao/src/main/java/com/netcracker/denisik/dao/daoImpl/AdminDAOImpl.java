@@ -11,8 +11,8 @@ public class AdminDAOImpl implements DAO<AdminEntity> {
 
     @Override
     public AdminEntity get(int id) {
-        for(AdminEntity adminEntity:getAll()){
-            if(adminEntity.getId()==id){
+        for (AdminEntity adminEntity : getAll()) {
+            if (adminEntity.getId() == id) {
                 return adminEntity;
             }
         }
@@ -40,13 +40,13 @@ public class AdminDAOImpl implements DAO<AdminEntity> {
 
     @Override
     public void delete(int id) {
-            getAll().remove(get(id));
-            new UserDAOImpl().getAll().remove(new UserDAOImpl().get(id));
+        getAll().remove(get(id));
+        new UserDAOImpl().getAll().remove(new UserDAOImpl().get(id));
     }
 
-    public void changeStatus(String login){
-        for(AdminEntity adminEntity: getAll()){
-            if(adminEntity.getLogin().equals(login)){
+    public void changeStatus(String login) {
+        for (AdminEntity adminEntity : getAll()) {
+            if (adminEntity.getLogin().equals(login)) {
                 adminEntity.setStatus(true);
                 break;
             }

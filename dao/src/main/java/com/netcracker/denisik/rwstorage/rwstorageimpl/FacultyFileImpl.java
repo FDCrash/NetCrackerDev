@@ -21,17 +21,17 @@ public class FacultyFileImpl implements RWStorage {
 
     @Override
     public void fillStorage() {
-        faculties=new ArrayList<>();
+        faculties = new ArrayList<>();
         try {
             obj = new JSONParser().parse(new FileReader(LoadFile.getInstance().getProperties().getProperty("json.faculties")));
             jsonArray = (JSONArray) obj;
-            for (Object object:jsonArray) {
+            for (Object object : jsonArray) {
                 JSONObject jsonObject = (JSONObject) object;
                 int id = (int) (long) jsonObject.get("id");
                 String name = (String) jsonObject.get("name");
-                faculties.add(new FacultyEntity(id,name));
+                faculties.add(new FacultyEntity(id, name));
             }
-        } catch (IOException | ParseException e){
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
 
@@ -41,18 +41,18 @@ public class FacultyFileImpl implements RWStorage {
     @Override
     public void writeFile() {
         jsonArray = new JSONArray();
-        for(FacultyEntity facultyEntity:FacultyList.getInstance().get()){
-            JSONObject jsonObject=new JSONObject();
-            jsonObject.put("id" , facultyEntity.getId());
+        for (FacultyEntity facultyEntity : FacultyList.getInstance().get()) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", facultyEntity.getId());
             jsonObject.put("name", facultyEntity.getName());
             jsonArray.add(jsonObject);
         }
-        try{
-            FileWriter file=new FileWriter(LoadFile.getInstance().getProperties().getProperty("json.faculties"));
+        try {
+            FileWriter file = new FileWriter(LoadFile.getInstance().getProperties().getProperty("json.faculties"));
             file.write(jsonArray.toJSONString());
             file.flush();
             file.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

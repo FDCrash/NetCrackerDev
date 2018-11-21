@@ -3,23 +3,24 @@ package com.netcracker.denisik.dto;
 public class AdminDTO extends UserDTO {
     private boolean status;
 
-    public AdminDTO(){}
+    public AdminDTO() {
+    }
 
-    public AdminDTO(UserDTO userDTO, boolean status){
+    public AdminDTO(UserDTO userDTO, boolean status) {
         super(userDTO);
-        this.status=status;
+        this.status = status;
     }
 
     public void setStatus(boolean status) {
         this.status = status;
     }
 
-    public boolean getStatus(){
+    public boolean getStatus() {
         return status;
     }
 
-    public String toString(){
-        return "Логин: " +getLogin() + "\nРоль: " + getRoleDTO().name()
+    public String toString() {
+        return "Логин: " + getLogin() + "\nРоль: " + getRoleDTO().name()
                 + "\nСтатус: " + getStatus() + "\n";
     }
 }

@@ -1,8 +1,8 @@
 package com.netcracker.denisik.dao.daoImpl;
 
 import com.netcracker.denisik.dao.DAO;
-import com.netcracker.denisik.entities.SpecialityEntity;
 import com.netcracker.denisik.entities.FacultyEntity;
+import com.netcracker.denisik.entities.SpecialityEntity;
 import com.netcracker.denisik.entities.StudentEntity;
 import com.netcracker.denisik.storage.FacultyList;
 import com.netcracker.denisik.storage.SpecialityList;
@@ -14,8 +14,8 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
 
     @Override
     public FacultyEntity get(int id) {
-        for(FacultyEntity facultyEntity:getAll()){
-            if(facultyEntity.getId()==id){
+        for (FacultyEntity facultyEntity : getAll()) {
+            if (facultyEntity.getId() == id) {
                 return facultyEntity;
             }
         }
@@ -42,12 +42,12 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
 
     @Override
     public void delete(int id) {
-        for(SpecialityEntity specialityEntity:get(id).getSpecialities()){
+        for (SpecialityEntity specialityEntity : get(id).getSpecialities()) {
             new SpecialityDAOImpl().delete(specialityEntity.getId());
         }
-        for(StudentEntity studentEntity: StudentList.getInstance().get()){
-            if(studentEntity.getSpecialityEntity().getFaculty().getId()==id){
-                studentEntity.setSpecialityEntity(new SpecialityEntity(0,"Переводится", 0));
+        for (StudentEntity studentEntity : StudentList.getInstance().get()) {
+            if (studentEntity.getSpecialityEntity().getFaculty().getId() == id) {
+                studentEntity.setSpecialityEntity(new SpecialityEntity(0, "Переводится", 0));
             }
         }
         getAll().remove(get(id));

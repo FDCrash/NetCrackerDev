@@ -24,11 +24,11 @@ public class EmployeeFileImpl implements RWStorage {
 
     @Override
     public void fillStorage() {
-        employees=new ArrayList<>();
+        employees = new ArrayList<>();
         try {
             obj = new JSONParser().parse(new FileReader(LoadFile.getInstance().getProperties().getProperty("json.employees")));
             jsonArray = (JSONArray) obj;
-            for (Object object:jsonArray) {
+            for (Object object : jsonArray) {
                 JSONObject jsonObject = (JSONObject) object;
                 int id = (int) (long) jsonObject.get("id");
                 Role role = Role.valueOf((String) jsonObject.get("role"));
@@ -38,7 +38,7 @@ public class EmployeeFileImpl implements RWStorage {
 
                 employees.add(new EmployeeEntity(new UserEntity(id, role, login, pass), name));
             }
-        } catch (IOException | ParseException e){
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
         EmployeeList.getInstance().set(employees);
@@ -48,21 +48,21 @@ public class EmployeeFileImpl implements RWStorage {
     @Override
     public void writeFile() {
         jsonArray = new JSONArray();
-        for(EmployeeEntity employeeEntity:EmployeeList.getInstance().get()){
-            JSONObject jsonObject=new JSONObject();
-            jsonObject.put("id" , employeeEntity.getId());
+        for (EmployeeEntity employeeEntity : EmployeeList.getInstance().get()) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", employeeEntity.getId());
             jsonObject.put("role", "EMPLOYEE");
             jsonObject.put("login", employeeEntity.getLogin());
             jsonObject.put("pass", employeeEntity.getPassword());
             jsonObject.put("name", employeeEntity.getName());
             jsonArray.add(jsonObject);
         }
-        try{
-            FileWriter file=new FileWriter(LoadFile.getInstance().getProperties().getProperty("json.employees"));
+        try {
+            FileWriter file = new FileWriter(LoadFile.getInstance().getProperties().getProperty("json.employees"));
             file.write(jsonArray.toJSONString());
             file.flush();
             file.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

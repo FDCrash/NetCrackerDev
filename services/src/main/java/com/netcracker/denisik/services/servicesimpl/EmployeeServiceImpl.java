@@ -14,9 +14,9 @@ public class EmployeeServiceImpl implements CRUDService<EmployeeDTO> {
     private EmployeeConverter employeeConverter;
     private UserDAOImpl userDAO;
 
-    public EmployeeServiceImpl(){
-        employeeDAO=new EmployeeDAOImpl();
-        employeeConverter= new EmployeeConverter();
+    public EmployeeServiceImpl() {
+        employeeDAO = new EmployeeDAOImpl();
+        employeeConverter = new EmployeeConverter();
         userDAO = new UserDAOImpl();
     }
 
@@ -37,7 +37,7 @@ public class EmployeeServiceImpl implements CRUDService<EmployeeDTO> {
 
     @Override
     public List<EmployeeDTO> getAll() {
-        return employeeDAO.getAll().stream().map(employee->employeeConverter.convert(employee)).
+        return employeeDAO.getAll().stream().map(employee -> employeeConverter.convert(employee)).
                 collect(Collectors.toList());
     }
 

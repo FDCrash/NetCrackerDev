@@ -5,16 +5,16 @@ import com.netcracker.denisik.entities.FacultyEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FacultyList implements Storage<FacultyEntity>{
+public class FacultyList implements Storage<FacultyEntity> {
     private static FacultyList instance;
-    private List<FacultyEntity> faculties=new ArrayList<>();
+    private List<FacultyEntity> faculties = new ArrayList<>();
 
-    private FacultyList(){
+    private FacultyList() {
     }
 
     public static FacultyList getInstance() {
-        if(instance==null){
-            instance=new FacultyList();
+        if (instance == null) {
+            instance = new FacultyList();
         }
         return instance;
     }
@@ -27,7 +27,7 @@ public class FacultyList implements Storage<FacultyEntity>{
 
     @Override
     public void set(List<FacultyEntity> faculties) {
-        this.faculties=faculties;
+        this.faculties = faculties;
     }
 
     @Override

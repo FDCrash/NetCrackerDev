@@ -21,18 +21,18 @@ public class SpecialityFileImpl implements RWStorage {
 
     @Override
     public void fillStorage() {
-        specialities=new ArrayList<>();
+        specialities = new ArrayList<>();
         try {
             obj = new JSONParser().parse(new FileReader(LoadFile.getInstance().getProperties().getProperty("json.specialities")));
             jsonArray = (JSONArray) obj;
-            for (Object object:jsonArray) {
+            for (Object object : jsonArray) {
                 JSONObject jsonObject = (JSONObject) object;
                 int id = (int) (long) jsonObject.get("id");
                 String name = (String) jsonObject.get("name");
-                int facultyId=(int)(long) jsonObject.get("facultyId");
-                specialities.add(new SpecialityEntity(id,name,facultyId));
+                int facultyId = (int) (long) jsonObject.get("facultyId");
+                specialities.add(new SpecialityEntity(id, name, facultyId));
             }
-        } catch (IOException | ParseException e){
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
         SpecialityList.getInstance().set(specialities);
@@ -41,19 +41,19 @@ public class SpecialityFileImpl implements RWStorage {
     @Override
     public void writeFile() {
         jsonArray = new JSONArray();
-        for(SpecialityEntity specialityEntity:SpecialityList.getInstance().get()){
-            JSONObject jsonObject=new JSONObject();
-            jsonObject.put("id" , specialityEntity.getId());
+        for (SpecialityEntity specialityEntity : SpecialityList.getInstance().get()) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", specialityEntity.getId());
             jsonObject.put("name", specialityEntity.getName());
             jsonObject.put("facultyId", specialityEntity.getFaculty().getId());
             jsonArray.add(jsonObject);
         }
-        try{
-            FileWriter file=new FileWriter(LoadFile.getInstance().getProperties().getProperty("json.specialities"));
+        try {
+            FileWriter file = new FileWriter(LoadFile.getInstance().getProperties().getProperty("json.specialities"));
             file.write(jsonArray.toJSONString());
             file.flush();
             file.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

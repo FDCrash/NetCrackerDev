@@ -3,23 +3,24 @@ package com.netcracker.denisik.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentEntity extends UserEntity{
+public class StudentEntity extends UserEntity {
     private String name;
     private int studentId;
     private int groupId;
     private SpecialityEntity specialityEntity;
-    private List<Integer> writeBook ;
+    private List<Integer> writeBook;
 
-    public StudentEntity(){}
+    public StudentEntity() {
+    }
 
-    public StudentEntity(UserEntity userEntity,String name,int studentId,
-                         int groupId,int specialityId, List<Integer> writeBook) {
+    public StudentEntity(UserEntity userEntity, String name, int studentId,
+                         int groupId, int specialityId, List<Integer> writeBook) {
         super(userEntity);
-        this.name=name;
-        this.studentId=studentId;
-        this.groupId=groupId;
-        this.specialityEntity=new SpecialityEntity(specialityId,"",0);
-        this.writeBook=new ArrayList<>(writeBook);
+        this.name = name;
+        this.studentId = studentId;
+        this.groupId = groupId;
+        this.specialityEntity = new SpecialityEntity(specialityId, "", 0);
+        this.writeBook = new ArrayList<>(writeBook);
     }
 
     public int getGroupId() {

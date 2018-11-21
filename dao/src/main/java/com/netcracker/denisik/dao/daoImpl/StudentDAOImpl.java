@@ -12,8 +12,8 @@ import java.util.List;
 public class StudentDAOImpl implements DAO<StudentEntity> {
     @Override
     public StudentEntity get(int id) {
-        for (StudentEntity studentEntity: getAll()){
-            if(studentEntity.getId()==id){
+        for (StudentEntity studentEntity : getAll()) {
+            if (studentEntity.getId() == id) {
                 return studentEntity;
             }
         }
@@ -45,36 +45,36 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
         new UserDAOImpl().getAll().remove(new UserDAOImpl().get(id));
     }
 
-    public StudentEntity getByLogin(String login){
-        for (StudentEntity studentEntity: getAll()){
-            if(login.equals(studentEntity.getLogin())){
+    public StudentEntity getByLogin(String login) {
+        for (StudentEntity studentEntity : getAll()) {
+            if (login.equals(studentEntity.getLogin())) {
                 return studentEntity;
             }
         }
         return null;
     }
 
-    public boolean checkStudId(int id){
-        for (StudentEntity studentEntity: getAll()) {
-            if(studentEntity.getStudentId()==id){
+    public boolean checkStudId(int id) {
+        for (StudentEntity studentEntity : getAll()) {
+            if (studentEntity.getStudentId() == id) {
                 return true;
             }
         }
         return false;
     }
 
-    public void addNewLoginPass(int id,String login, String pass){
-        int k=0;
-        for (StudentEntity studentEntity: getAll()) {
-            if(studentEntity.getStudentId()==id){
+    public void addNewLoginPass(int id, String login, String pass) {
+        int k = 0;
+        for (StudentEntity studentEntity : getAll()) {
+            if (studentEntity.getStudentId() == id) {
                 studentEntity.setLogin(login);
                 studentEntity.setPassword(pass);
-                k=studentEntity.getId();
+                k = studentEntity.getId();
                 break;
             }
         }
-        for(UserEntity userEntity: UserList.getInstance().get()){
-            if(userEntity.getId()==k){
+        for (UserEntity userEntity : UserList.getInstance().get()) {
+            if (userEntity.getId() == k) {
                 userEntity.setLogin(login);
                 userEntity.setPassword(pass);
                 break;
@@ -82,20 +82,20 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
         }
     }
 
-    public List<StudentEntity> getAllByGroup(int id){
-        List<StudentEntity> studentEntities=new ArrayList<>();
-        for(StudentEntity studentEntity:getAll()){
-            if(studentEntity.getGroupId()==id){
+    public List<StudentEntity> getAllByGroup(int id) {
+        List<StudentEntity> studentEntities = new ArrayList<>();
+        for (StudentEntity studentEntity : getAll()) {
+            if (studentEntity.getGroupId() == id) {
                 studentEntities.add(studentEntity);
             }
         }
         return studentEntities;
     }
 
-    public List<StudentEntity> getAllBySpeciality(String speciality){
-        List<StudentEntity> studentEntities=new ArrayList<>();
-        for(StudentEntity studentEntity:getAll()){
-            if(speciality.equals(studentEntity.getSpecialityEntity().getName())){
+    public List<StudentEntity> getAllBySpeciality(String speciality) {
+        List<StudentEntity> studentEntities = new ArrayList<>();
+        for (StudentEntity studentEntity : getAll()) {
+            if (speciality.equals(studentEntity.getSpecialityEntity().getName())) {
                 studentEntities.add(studentEntity);
             }
         }

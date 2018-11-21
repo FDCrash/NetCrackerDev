@@ -7,18 +7,19 @@ public class FacultyEntity extends BaseEntity {
     private String name;
     private List<SpecialityEntity> specialities;
 
-    public FacultyEntity(){}
-
-    public FacultyEntity(int id,String name){
-        super(id);
-        this.name=name;
-        specialities=new ArrayList<>();
+    public FacultyEntity() {
     }
 
-    public FacultyEntity(int id,String name,List<SpecialityEntity> specialities){
+    public FacultyEntity(int id, String name) {
         super(id);
-        this.name=name;
-        this.specialities=new ArrayList<>(specialities);
+        this.name = name;
+        specialities = new ArrayList<>();
+    }
+
+    public FacultyEntity(int id, String name, List<SpecialityEntity> specialities) {
+        super(id);
+        this.name = name;
+        this.specialities = new ArrayList<>(specialities);
     }
 
     public void setName(String name) {
@@ -33,7 +34,7 @@ public class FacultyEntity extends BaseEntity {
         this.specialities = specialities;
     }
 
-    public void setSpeciality(SpecialityEntity speciality){
+    public void setSpeciality(SpecialityEntity speciality) {
         this.specialities.add(speciality);
     }
 

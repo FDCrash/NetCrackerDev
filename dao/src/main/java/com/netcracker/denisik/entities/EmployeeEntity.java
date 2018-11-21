@@ -3,11 +3,12 @@ package com.netcracker.denisik.entities;
 public class EmployeeEntity extends UserEntity {
     private String name;
 
-    public EmployeeEntity(){}
+    public EmployeeEntity() {
+    }
 
-    public EmployeeEntity(UserEntity userEntity,String name){
+    public EmployeeEntity(UserEntity userEntity, String name) {
         super(userEntity);
-        this.name=name;
+        this.name = name;
     }
 
     public String getName() {

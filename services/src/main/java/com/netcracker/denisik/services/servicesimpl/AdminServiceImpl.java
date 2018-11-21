@@ -14,7 +14,7 @@ public class AdminServiceImpl implements CRUDService<AdminDTO> {
     private AdminDAOImpl adminDAO;
     private UserDAOImpl userDAO;
 
-    public AdminServiceImpl(){
+    public AdminServiceImpl() {
         adminConverter = new AdminConverter();
         adminDAO = new AdminDAOImpl();
         userDAO = new UserDAOImpl();
@@ -37,7 +37,7 @@ public class AdminServiceImpl implements CRUDService<AdminDTO> {
 
     @Override
     public List<AdminDTO> getAll() {
-        return adminDAO.getAll().stream().map(admin->adminConverter.convert(admin)).collect(Collectors.toList());
+        return adminDAO.getAll().stream().map(admin -> adminConverter.convert(admin)).collect(Collectors.toList());
     }
 
     @Override
@@ -45,7 +45,7 @@ public class AdminServiceImpl implements CRUDService<AdminDTO> {
         return adminConverter.convert(adminDAO.get(id));
     }
 
-    public void changeStatusAdmin(String login){
+    public void changeStatusAdmin(String login) {
         adminDAO.changeStatus(login);
     }
 }

@@ -14,7 +14,7 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
     private StudentConverter studentConverter;
     private UserDAOImpl userDAO;
 
-    public StudentServiceImpl(){
+    public StudentServiceImpl() {
         studentConverter = new StudentConverter();
         studentDAO = new StudentDAOImpl();
         userDAO = new UserDAOImpl();
@@ -31,18 +31,18 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
         studentDAO.delete(id);
     }
 
-    public StudentDTO getByLogin(String login){
+    public StudentDTO getByLogin(String login) {
         return studentConverter.convert(studentDAO.getByLogin(login));
     }
 
-    public List<StudentDTO> getAllByGroup(int number){
+    public List<StudentDTO> getAllByGroup(int number) {
         return studentDAO.getAllByGroup(number)
-                .stream().map(student->studentConverter.convert(student)).collect(Collectors.toList());
+                .stream().map(student -> studentConverter.convert(student)).collect(Collectors.toList());
     }
 
-    public List<StudentDTO> getAllBySpeciality(String speciality){
+    public List<StudentDTO> getAllBySpeciality(String speciality) {
         return studentDAO.getAllBySpeciality(speciality).
-                stream().map(student->studentConverter.convert(student)).collect(Collectors.toList());
+                stream().map(student -> studentConverter.convert(student)).collect(Collectors.toList());
     }
 
     @Override
@@ -53,7 +53,7 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
 
     @Override
     public List<StudentDTO> getAll() {
-        return studentDAO.getAll().stream().map(student->studentConverter.convert(student)).collect(Collectors.toList());
+        return studentDAO.getAll().stream().map(student -> studentConverter.convert(student)).collect(Collectors.toList());
     }
 
     @Override

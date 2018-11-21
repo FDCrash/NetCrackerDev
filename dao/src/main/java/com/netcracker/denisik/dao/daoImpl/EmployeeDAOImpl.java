@@ -11,8 +11,8 @@ public class EmployeeDAOImpl implements DAO<EmployeeEntity> {
 
     @Override
     public EmployeeEntity get(int id) {
-        for(EmployeeEntity employeeEntity:getAll()){
-            if(employeeEntity.getId()==id){
+        for (EmployeeEntity employeeEntity : getAll()) {
+            if (employeeEntity.getId() == id) {
                 return employeeEntity;
             }
         }

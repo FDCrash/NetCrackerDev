@@ -3,7 +3,6 @@ package com.netcracker.denisik.services.servicesimpl;
 import com.netcracker.denisik.converters.FacultyConverter;
 import com.netcracker.denisik.dao.daoImpl.FacultyDAOImpl;
 import com.netcracker.denisik.dao.daoImpl.SpecialityDAOImpl;
-import com.netcracker.denisik.entities.FacultyEntity;
 import com.netcracker.denisik.dto.FacultyDTO;
 import com.netcracker.denisik.services.CRUDService;
 
@@ -17,7 +16,7 @@ public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
     private SpecialityDAOImpl specialityDAO;
     private UserServiceImpl userService;
 
-    public FacultyServiceImpl(){
+    public FacultyServiceImpl() {
         facultyDAO = new FacultyDAOImpl();
         facultyConverter = new FacultyConverter();
         specialityDAO = new SpecialityDAOImpl();
@@ -41,7 +40,7 @@ public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
 
     @Override
     public List<FacultyDTO> getAll() {
-        return facultyDAO.getAll().stream().map(faculty->facultyConverter.convert(faculty)).
+        return facultyDAO.getAll().stream().map(faculty -> facultyConverter.convert(faculty)).
                 collect(Collectors.toList());
     }
 
@@ -50,12 +49,12 @@ public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
         return facultyConverter.convert(facultyDAO.get(id));
     }
 
-    public int generateId(int bound){
-        SplittableRandom splittableRandom=new SplittableRandom();
+    public int generateId(int bound) {
+        SplittableRandom splittableRandom = new SplittableRandom();
         int k;
-        do{
-            k=splittableRandom.nextInt(1,bound);
-        }while (facultyDAO.get(k)!=null);
+        do {
+            k = splittableRandom.nextInt(1, bound);
+        } while (facultyDAO.get(k) != null);
         return k;
     }
 }

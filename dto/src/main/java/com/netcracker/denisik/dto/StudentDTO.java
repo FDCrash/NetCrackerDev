@@ -63,13 +63,13 @@ public class StudentDTO extends UserDTO {
         return groupId;
     }
 
-    public String toString(){
-        String s="\n";
-        for(int i=0;i<getWriteBook().size();i++){
-            s+=writeBook.get(i).toString()+" ";
+    public String toString() {
+        String s = "\n";
+        for (int i = 0; i < getWriteBook().size(); i++) {
+            s += writeBook.get(i).toString() + " ";
         }
         return "Имя: " + getName() + "\nРоль: " + getRoleDTO().name()
-                + "\nЛогин: " + getLogin() + "\nСпециальность: " + getSpeciality()+
+                + "\nЛогин: " + getLogin() + "\nСпециальность: " + getSpeciality() +
                 "\nНомер студенченского билета: " + getStudentId() +
                 "\nНомер группы:" + getGroupId() + "\nЗачетная книжка: " + s + "\n";
     }

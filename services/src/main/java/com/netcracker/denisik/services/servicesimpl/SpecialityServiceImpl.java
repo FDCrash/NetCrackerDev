@@ -2,7 +2,6 @@ package com.netcracker.denisik.services.servicesimpl;
 
 import com.netcracker.denisik.converters.SpecialityConverter;
 import com.netcracker.denisik.dao.daoImpl.SpecialityDAOImpl;
-import com.netcracker.denisik.entities.SpecialityEntity;
 import com.netcracker.denisik.dto.SpecialityDTO;
 import com.netcracker.denisik.services.CRUDService;
 
@@ -14,7 +13,7 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
     private SpecialityDAOImpl specialityDAO;
     private SpecialityConverter specialityConverter;
 
-    public SpecialityServiceImpl(){
+    public SpecialityServiceImpl() {
         specialityDAO = new SpecialityDAOImpl();
         specialityConverter = new SpecialityConverter();
     }
@@ -38,7 +37,7 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
     @Override
     public List<SpecialityDTO> getAll() {
         return specialityDAO.getAll().stream()
-                .map(speciality->specialityConverter.convert(speciality))
+                .map(speciality -> specialityConverter.convert(speciality))
                 .collect(Collectors.toList());
     }
 
@@ -53,7 +52,7 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
         do {
             k = splittableRandom.nextInt(1, bound);
 
-        } while (specialityDAO.get(k)!=null);
+        } while (specialityDAO.get(k) != null);
         return k;
     }
 }

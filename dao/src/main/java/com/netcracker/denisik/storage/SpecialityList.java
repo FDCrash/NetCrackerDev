@@ -5,16 +5,16 @@ import com.netcracker.denisik.entities.SpecialityEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpecialityList implements Storage<SpecialityEntity>{
+public class SpecialityList implements Storage<SpecialityEntity> {
     private static SpecialityList instance;
-    private List<SpecialityEntity> specialities=new ArrayList<>();
+    private List<SpecialityEntity> specialities = new ArrayList<>();
 
-    private SpecialityList(){
+    private SpecialityList() {
     }
 
     public static SpecialityList getInstance() {
-        if(instance==null){
-            instance=new SpecialityList();
+        if (instance == null) {
+            instance = new SpecialityList();
         }
         return instance;
     }
@@ -27,7 +27,7 @@ public class SpecialityList implements Storage<SpecialityEntity>{
 
     @Override
     public void set(List<SpecialityEntity> specialities) {
-        this.specialities=specialities;
+        this.specialities = specialities;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SpecialityList implements Storage<SpecialityEntity>{
         this.specialities.add(specialityEntity);
     }
 
-    public void addAll(List<SpecialityEntity> specialityEntities){
+    public void addAll(List<SpecialityEntity> specialityEntities) {
         this.specialities.addAll(specialityEntities);
     }
 }

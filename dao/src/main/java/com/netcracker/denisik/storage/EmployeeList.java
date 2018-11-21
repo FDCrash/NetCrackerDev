@@ -5,11 +5,11 @@ import com.netcracker.denisik.entities.EmployeeEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeList implements Storage<EmployeeEntity>{
+public class EmployeeList implements Storage<EmployeeEntity> {
     private static EmployeeList instance;
-    private List<EmployeeEntity> employees=new ArrayList<>();
+    private List<EmployeeEntity> employees = new ArrayList<>();
 
-    private EmployeeList(){
+    private EmployeeList() {
     }
 
     public static EmployeeList getInstance() {
@@ -26,7 +26,7 @@ public class EmployeeList implements Storage<EmployeeEntity>{
 
     @Override
     public void set(List<EmployeeEntity> employees) {
-        this.employees=employees;
+        this.employees = employees;
     }
 
     @Override

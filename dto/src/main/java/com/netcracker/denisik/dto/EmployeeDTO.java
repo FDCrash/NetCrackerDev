@@ -3,11 +3,12 @@ package com.netcracker.denisik.dto;
 public class EmployeeDTO extends UserDTO {
     private String name;
 
-    public EmployeeDTO(){}
+    public EmployeeDTO() {
+    }
 
-    public EmployeeDTO(UserDTO userDTO, String name){
+    public EmployeeDTO(UserDTO userDTO, String name) {
         super(userDTO);
-        this.name=name;
+        this.name = name;
     }
 
     public String getName() {
@@ -18,8 +19,8 @@ public class EmployeeDTO extends UserDTO {
         this.name = name;
     }
 
-    public String toString(){
-        return "Имя: " + getName() + "\nЛогин: " +getLogin() + "\nРоль: "
+    public String toString() {
+        return "Имя: " + getName() + "\nЛогин: " + getLogin() + "\nРоль: "
                 + getRoleDTO().name() + "\n";
     }
 }

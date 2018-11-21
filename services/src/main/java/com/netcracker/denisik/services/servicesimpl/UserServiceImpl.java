@@ -3,7 +3,6 @@ package com.netcracker.denisik.services.servicesimpl;
 import com.netcracker.denisik.converters.UserConverter;
 import com.netcracker.denisik.dao.daoImpl.StudentDAOImpl;
 import com.netcracker.denisik.dao.daoImpl.UserDAOImpl;
-import com.netcracker.denisik.entities.UserEntity;
 import com.netcracker.denisik.dto.UserDTO;
 import com.netcracker.denisik.services.CRUDService;
 
@@ -16,8 +15,8 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
     private UserConverter userConverter;
     private StudentDAOImpl studentDAO;
 
-    public UserServiceImpl(){
-        userDAO= new UserDAOImpl();
+    public UserServiceImpl() {
+        userDAO = new UserDAOImpl();
         userConverter = new UserConverter();
         studentDAO = new StudentDAOImpl();
     }
@@ -39,7 +38,7 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
 
     @Override
     public List<UserDTO> getAll() {
-        return userDAO.getAll().stream().map(user->userConverter.convert(user)).collect(Collectors.toList());
+        return userDAO.getAll().stream().map(user -> userConverter.convert(user)).collect(Collectors.toList());
     }
 
 
@@ -48,20 +47,20 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
         return userConverter.convert(userDAO.get(id));
     }
 
-    public int generateId(int bound){
-            SplittableRandom splittableRandom=new SplittableRandom();
-            int k;
-            do{
-                k=splittableRandom.nextInt(1,bound);
+    public int generateId(int bound) {
+        SplittableRandom splittableRandom = new SplittableRandom();
+        int k;
+        do {
+            k = splittableRandom.nextInt(1, bound);
 
-            }while (userDAO.get(k)!=null);
-            return k;
+        } while (userDAO.get(k) != null);
+        return k;
     }
 
-    public String registration(int id,String login,String pass){
-        if(studentDAO.checkStudId(id)){
-            if(userDAO.checkLogin(login)){
-                studentDAO.addNewLoginPass(id,login,pass);
+    public String registration(int id, String login, String pass) {
+        if (studentDAO.checkStudId(id)) {
+            if (userDAO.checkLogin(login)) {
+                studentDAO.addNewLoginPass(id, login, pass);
                 return "Вы успешно зарегистрированы!";
             }
             return "Логин занят!";
@@ -69,11 +68,11 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
         return "Неверный номер студенченского билета!";
     }
 
-    public boolean checkLogin(String login){
+    public boolean checkLogin(String login) {
         return userDAO.checkLogin(login);
     }
 
-    public Enum authentication(String login, String pass){
-        return userDAO.checkLoginPass(login,pass);
+    public Enum authentication(String login, String pass) {
+        return userDAO.checkLoginPass(login, pass);
     }
 }

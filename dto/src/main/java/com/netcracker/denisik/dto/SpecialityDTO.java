@@ -4,12 +4,13 @@ public class SpecialityDTO extends BaseDTO {
     private String name;
     private String faculty;
 
-    public SpecialityDTO(){}
+    public SpecialityDTO() {
+    }
 
-    public SpecialityDTO(int id, String name, String faculty){
+    public SpecialityDTO(int id, String name, String faculty) {
         super(id);
-        this.name=name;
-        this.faculty=faculty;
+        this.name = name;
+        this.faculty = faculty;
     }
 
     public String getFaculty() {
@@ -28,7 +29,7 @@ public class SpecialityDTO extends BaseDTO {
         return name;
     }
 
-    public String toString(){
+    public String toString() {
         return "Название специальности: " + getName()
                 + "\nФакультет: " + getFaculty() + "\n";
     }

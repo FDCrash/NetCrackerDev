@@ -5,16 +5,16 @@ import com.netcracker.denisik.entities.AdminEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminList implements Storage<AdminEntity>{
+public class AdminList implements Storage<AdminEntity> {
     private static AdminList instance;
     private List<AdminEntity> admins = new ArrayList<>();
 
-    private AdminList(){
+    private AdminList() {
     }
 
     public static AdminList getInstance() {
-        if(instance==null){
-            instance=new AdminList();
+        if (instance == null) {
+            instance = new AdminList();
         }
         return instance;
     }
@@ -26,7 +26,7 @@ public class AdminList implements Storage<AdminEntity>{
 
     @Override
     public void set(List<AdminEntity> admins) {
-        this.admins=admins;
+        this.admins = admins;
     }
 
     @Override

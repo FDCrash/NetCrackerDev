@@ -8,13 +8,14 @@ public class FacultyDTO extends BaseDTO {
     private List<Integer> specialitiesId;
     private List<String> specialities;
 
-    public FacultyDTO(){}
+    public FacultyDTO() {
+    }
 
-    public FacultyDTO(int id,String name, List<String> specialities, List<Integer> specialitiesId){
+    public FacultyDTO(int id, String name, List<String> specialities, List<Integer> specialitiesId) {
         super(id);
-        this.name=name;
-        this.specialities=new ArrayList<>(specialities);
-        this.specialitiesId=new ArrayList<>(specialitiesId);
+        this.name = name;
+        this.specialities = new ArrayList<>(specialities);
+        this.specialitiesId = new ArrayList<>(specialitiesId);
     }
 
     public String getName() {
@@ -41,10 +42,10 @@ public class FacultyDTO extends BaseDTO {
         this.specialitiesId = specialitiesId;
     }
 
-    public String toString(){
-        String s="\n";
-        for(int i=1;i<=getSpecialities().size();i++){
-            s+=i+". " +specialities.get(i-1) + "\n";
+    public String toString() {
+        String s = "\n";
+        for (int i = 1; i <= getSpecialities().size(); i++) {
+            s += i + ". " + specialities.get(i - 1) + "\n";
         }
         return "Факультет: " + getName() + s;
     }

@@ -14,8 +14,8 @@ public class LoadFile {
     }
 
     public static LoadFile getInstance() throws IOException {
-        if(instance==null){
-            instance=new LoadFile();
+        if (instance == null) {
+            instance = new LoadFile();
         }
         return instance;
     }
