@@ -24,8 +24,7 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
 
     @Override
     public void addNew(UserDTO userDTO) {
-        UserEntity userEntity= userConverter.convert(userDTO);
-        userDAO.add(userEntity);
+        userDAO.add(userConverter.convert(userDTO));
     }
 
     @Override
@@ -35,7 +34,6 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
 
     @Override
     public void updateInfo(UserDTO userDTO) {
-
         userDAO.update(userConverter.convert(userDTO));
     }
 
@@ -56,7 +54,7 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
             do{
                 k=splittableRandom.nextInt(1,bound);
 
-            }while (!userDAO.checkId(k));
+            }while (userDAO.get(k)!=null);
             return k;
     }
 

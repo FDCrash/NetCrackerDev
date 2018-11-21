@@ -56,8 +56,8 @@ public class EmployeeControllerImpl implements Controller {
         if(userService.checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.next();
-            employeeService.addNew(new EmployeeDTO(userService.generateId(1000), RoleDTO.EMPLOYEE,
-                    login, password, name));
+            employeeService.addNew(new EmployeeDTO(new UserDTO(userService.generateId(1000), RoleDTO.EMPLOYEE,
+                    login, password), name));
         }else{
             System.out.println("Логин занят");
         }
@@ -76,7 +76,7 @@ public class EmployeeControllerImpl implements Controller {
         }
         System.out.println("Выберите позицию для изменения: ");
         int k=Integer.parseInt(scanner.next());
-        employeeDTO=employeeService.get(k-1);
+        employeeDTO=employeeService.getAll().get(k-1);
         System.out.println(employeeDTO);
         System.out.println("Введите имя: ");
         String name=scanner.next();
@@ -85,8 +85,8 @@ public class EmployeeControllerImpl implements Controller {
         if(login.equals(employeeDTO.getName()) || userService.checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.next();
-            employeeService.updateInfo(new EmployeeDTO(employeeDTO.getId(), RoleDTO.EMPLOYEE, login, password, name));
-            userService.updateInfo(new UserDTO(employeeDTO.getId(), RoleDTO.EMPLOYEE, login, password));
+            employeeService.updateInfo(new EmployeeDTO(new UserDTO(employeeDTO.getId(), RoleDTO.EMPLOYEE,
+                    login, password), name));
         }else{
             System.out.println("Новый логин занят");
         }
@@ -104,7 +104,7 @@ public class EmployeeControllerImpl implements Controller {
         }
         System.out.println("Выберите позиция для удаления: ");
         int k=Integer.parseInt(scanner.next());
-        employeeService.deleteInfo(k-1);
+        employeeService.deleteInfo(employeeService.getAll().get(k-1).getId());
         editMenu();
     }
 }

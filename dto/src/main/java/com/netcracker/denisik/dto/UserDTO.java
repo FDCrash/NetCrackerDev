@@ -7,6 +7,13 @@ public class UserDTO extends BaseDTO{
 
     public UserDTO(){}
 
+    public UserDTO(UserDTO userDTO){
+        super(userDTO.getId());
+        roleDTO=userDTO.roleDTO;
+        password=userDTO.password;
+        login=userDTO.login;
+    }
+
     public UserDTO(int id, RoleDTO roleDTO, String login, String password){
         super(id);
         this.roleDTO = roleDTO;

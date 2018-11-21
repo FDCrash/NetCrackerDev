@@ -32,8 +32,7 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
 
     @Override
     public void updateInfo(SpecialityDTO specialityDTO) {
-        SpecialityEntity specialityEntity= specialityConverter.convert(specialityDTO);
-        specialityDAO.update(specialityEntity);
+        specialityDAO.update(specialityConverter.convert(specialityDTO));
     }
 
     @Override
@@ -54,7 +53,7 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
         do {
             k = splittableRandom.nextInt(1, bound);
 
-        } while (!specialityDAO.checkId(k));
+        } while (specialityDAO.get(k)!=null);
         return k;
     }
 }

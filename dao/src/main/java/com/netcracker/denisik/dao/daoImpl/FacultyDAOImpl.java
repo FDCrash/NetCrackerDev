@@ -12,12 +12,14 @@ import java.util.List;
 
 public class FacultyDAOImpl implements DAO<FacultyEntity> {
 
-    public FacultyDAOImpl(){}
-
-
     @Override
     public FacultyEntity get(int id) {
-        return getAll().get(id);
+        for(FacultyEntity facultyEntity:getAll()){
+            if(facultyEntity.getId()==id){
+                return facultyEntity;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -29,40 +31,25 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
     public FacultyEntity add(FacultyEntity facultyEntity) {
         FacultyList.getInstance().add(facultyEntity);
         SpecialityList.getInstance().addAll(facultyEntity.getSpecialities());
-        return facultyEntity;
+        return get(facultyEntity.getId());
     }
 
     @Override
     public FacultyEntity update(FacultyEntity faculty) {
-        for(FacultyEntity facultyEntity:getAll()){
-            if(faculty.getId()==facultyEntity.getId()){
-                facultyEntity.setName(faculty.getName());
-                break;
-            }
-        }
-        return faculty;
+        get(faculty.getId()).setName(faculty.getName());
+        return get(faculty.getId());
     }
 
     @Override
     public void delete(int id) {
-        FacultyEntity facultyEntity=FacultyList.getInstance().get().get(id);
-        for(SpecialityEntity specialityEntity:facultyEntity.getSpecialities()){
-            SpecialityList.getInstance().get().remove(specialityEntity);
+        for(SpecialityEntity specialityEntity:get(id).getSpecialities()){
+            new SpecialityDAOImpl().delete(specialityEntity.getId());
         }
         for(StudentEntity studentEntity: StudentList.getInstance().get()){
-            if(studentEntity.getSpecialityEntity().getFaculty().getId()==facultyEntity.getId()){
-                studentEntity.setSpecialityEntity(null);
+            if(studentEntity.getSpecialityEntity().getFaculty().getId()==id){
+                studentEntity.setSpecialityEntity(new SpecialityEntity(0,"Переводится", 0));
             }
         }
-        getAll().remove(id);
-    }
-
-    public boolean checkId(int id){
-        for(FacultyEntity facultyEntity:getAll()){
-            if(facultyEntity.getId()==id){
-                return false;
-            }
-        }
-        return true;
+        getAll().remove(get(id));
     }
 }

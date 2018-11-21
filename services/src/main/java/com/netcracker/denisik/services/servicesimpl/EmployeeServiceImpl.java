@@ -28,12 +28,6 @@ public class EmployeeServiceImpl implements CRUDService<EmployeeDTO> {
     @Override
     public void deleteInfo(int id) {
         employeeDAO.delete(id);
-        userDAO.deleteById(get(id).getId());
-    }
-
-    public void deleteInfoById(int id) {
-        employeeDAO.deleteById(id);
-        userDAO.deleteById(id);
     }
 
     @Override

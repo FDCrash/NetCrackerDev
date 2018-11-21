@@ -76,7 +76,7 @@ public class FacultyControllerImpl implements Controller {
         }
         System.out.println("Выберите позицию для изменения");
         int k=Integer.parseInt(scanner.next());
-        facultyDTO=facultyService.get(k-1);
+        facultyDTO=facultyService.getAll().get(k-1);
         System.out.println("Введите название факультета: ");
         String name=scanner.next();
         facultyService.updateInfo(new FacultyDTO(facultyDTO.getId(),name,
@@ -95,7 +95,7 @@ public class FacultyControllerImpl implements Controller {
         }
         System.out.println("Выберите позицию для удаления: ");
         int k=Integer.parseInt(scanner.next());
-        facultyService.deleteInfo(k-1);
+        facultyService.deleteInfo(facultyService.getAll().get(k-1).getId());
         editMenu();
     }
 }

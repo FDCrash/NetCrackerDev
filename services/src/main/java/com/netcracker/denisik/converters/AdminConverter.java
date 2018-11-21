@@ -1,5 +1,6 @@
 package com.netcracker.denisik.converters;
 
+import com.netcracker.denisik.dto.UserDTO;
 import com.netcracker.denisik.entities.AdminEntity;
 import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.dto.AdminDTO;
@@ -14,7 +15,7 @@ public class AdminConverter {
     }
 
     public AdminDTO convert(AdminEntity adminEntity){
-        return new AdminDTO(adminEntity.getId(),RoleDTO.valueOf(adminEntity.getRole().name()),adminEntity.getLogin(),
-                adminEntity.getPassword(),adminEntity.getStatus());
+        return new AdminDTO(new UserDTO(adminEntity.getId(),RoleDTO.valueOf(adminEntity.getRole().name()),
+                adminEntity.getLogin(),adminEntity.getPassword()),adminEntity.getStatus());
     }
 }

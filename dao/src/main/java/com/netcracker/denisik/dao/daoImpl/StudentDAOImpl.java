@@ -12,7 +12,12 @@ import java.util.List;
 public class StudentDAOImpl implements DAO<StudentEntity> {
     @Override
     public StudentEntity get(int id) {
-        return getAll().get(id);
+        for (StudentEntity studentEntity: getAll()){
+            if(studentEntity.getId()==id){
+                return studentEntity;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -24,35 +29,20 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
     public StudentEntity add(StudentEntity studentEntity) {
         StudentList.getInstance().add(studentEntity);
         UserList.getInstance().addStudent(studentEntity);
-        return studentEntity;
+        return get(studentEntity.getId());
     }
 
     @Override
     public StudentEntity update(StudentEntity student) {
-        for(StudentEntity studentEntity: getAll()){
-            if(studentEntity.getId()==student.getId()){
-                studentEntity.setName(student.getName());
-                studentEntity.setGroupId(student.getGroupId());
-                studentEntity.setStudentId(student.getStudentId());
-                studentEntity.setSpecialityEntity(student.getSpecialityEntity());
-                studentEntity.setWriteBook(student.getWriteBook());
-                break;
-            }
-        }
-        return student;
+        delete(student.getId());
+        add(student);
+        return get(student.getId());
     }
 
     @Override
     public void delete(int id) {
-        getAll().remove(id);
-    }
-
-    public void deleteById(int id){
-        for(StudentEntity studentEntity:getAll()){
-            if(studentEntity.getId()==id){
-                getAll().remove(studentEntity);
-            }
-        }
+        getAll().remove(get(id));
+        new UserDAOImpl().getAll().remove(new UserDAOImpl().get(id));
     }
 
     public StudentEntity getByLogin(String login){

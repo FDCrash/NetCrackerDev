@@ -7,8 +7,9 @@ import com.netcracker.denisik.services.servicesimpl.EmployeeServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.StudentServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
 
-import java.util.ArrayList;
 import java.util.Scanner;
+
+import static com.netcracker.denisik.dto.RoleDTO.*;
 
 public class UserControllerImpl implements Controller {
     private UserServiceImpl userService;
@@ -61,18 +62,6 @@ public class UserControllerImpl implements Controller {
             System.out.println("Введите пароль: ");
             String password = scanner.next();
             int k = userService.generateId(1000);
-            switch (role) {
-                case "admin":
-                    adminService.addNew(new AdminDTO(k, RoleDTO.ADMIN, login, password, false));
-                    break;
-                case "employee":
-                    employeeService.addNew(new EmployeeDTO(k, RoleDTO.EMPLOYEE, login, password, ""));
-                    break;
-                case "student":
-                    studentService.addNew(new StudentDTO(k, RoleDTO.STUDENT, login, password, ""
-                            , 0, 0, "", new ArrayList<>()));
-                    break;
-            }
             userService.addNew(new UserDTO(k, RoleDTO.valueOf(role.toUpperCase()),
                     login, password));
         }else{
@@ -94,47 +83,50 @@ public class UserControllerImpl implements Controller {
         }
         System.out.println("Выберите позицию для изменения: ");
         int k=Integer.parseInt(scanner.next());
-        userDTO=userService.get(k-1);
+        userDTO=userService.getAll().get(k-1);
         System.out.println(userDTO.toString());
         System.out.println("Введите роль (admin/employee):");
         String role=scanner.next();
         System.out.println("Введите логин: ");
         String login = scanner.next();
         if(login.equals(userDTO.getLogin()) || userService.checkLogin(login)) {
-            switch (role) {
-                case "admin":
+            switch (RoleDTO.valueOf(role.toUpperCase())) {
+                case ADMIN:
                     System.out.println("Введите пароль: ");
                     password = scanner.next();
-                    if (userDTO.getRoleDTO().equals(RoleDTO.ADMIN)) {
-                        adminService.updateInfo(new AdminDTO(userDTO.getId(), RoleDTO.ADMIN, login, password, false));
-                        userService.updateInfo(new UserDTO(userDTO.getId(), RoleDTO.valueOf(role.toUpperCase()), login, password));
+                    if (userDTO.getRoleDTO().equals(ADMIN)) {
+                        userService.updateInfo(new UserDTO(userDTO.getId(),ADMIN,login,password));
                     } else {
                         if (userDTO.getRoleDTO().equals(RoleDTO.EMPLOYEE)) {
-                            employeeService.deleteInfoById(userDTO.getId());
+                            employeeService.deleteInfo(userDTO.getId());
                         }
                         if (userDTO.getRoleDTO().equals(RoleDTO.STUDENT)) {
-                            studentService.deleteInfoById(userDTO.getId());
+                            studentService.deleteInfo(userDTO.getId());
                         }
-                        adminService.addNew(new AdminDTO(userDTO.getId(), RoleDTO.ADMIN, login, password, false));
+                        adminService.addNew(new AdminDTO(new UserDTO(userDTO.getId(),
+                                ADMIN, login, password), false));
                     }
                     break;
-                case "employee":
-                    System.out.println("Введите имя: ");
-                    String name = scanner.next();
+                case EMPLOYEE:
                     System.out.println("Введите пароль: ");
                     password = scanner.next();
                     if (userDTO.getRoleDTO().equals(RoleDTO.EMPLOYEE)) {
-                        employeeService.updateInfo(new EmployeeDTO(userDTO.getId(), RoleDTO.EMPLOYEE, login, password, name));
-                        userService.updateInfo(new UserDTO(userDTO.getId(), RoleDTO.valueOf(role.toUpperCase()), login, password));
+                        userService.updateInfo(new UserDTO(userDTO.getId(),EMPLOYEE,login,password));
                     } else {
-                        if (userDTO.getRoleDTO().equals(RoleDTO.ADMIN)) {
-                            adminService.deleteInfoById(userDTO.getId());
+                        if (userDTO.getRoleDTO().equals(ADMIN)) {
+                            adminService.deleteInfo(userDTO.getId());
                         }
                         if (userDTO.getRoleDTO().equals(RoleDTO.STUDENT)) {
-                            studentService.deleteInfoById(userDTO.getId());
+                            studentService.deleteInfo(userDTO.getId());
                         }
-                        employeeService.addNew(new EmployeeDTO(userDTO.getId(), RoleDTO.EMPLOYEE, login, password, name));
+                        System.out.println("Введите имя: ");
+                        String name = scanner.next();
+                        employeeService.addNew(new EmployeeDTO(new UserDTO(userDTO.getId(),
+                                RoleDTO.EMPLOYEE, login, password), name));
                     }
+                    break;
+                case STUDENT:
+                    System.out.println("Логины и пароли студентов менять не нужно");
                     break;
                 default:
                     System.out.println("Неверно введена роль!");
@@ -157,10 +149,10 @@ public class UserControllerImpl implements Controller {
         }
         System.out.println("Выберите позицию для удаления: ");
         int k=Integer.parseInt(scanner.next());
-        if(userService.get(k-1).getRoleDTO().equals(RoleDTO.ADMIN)){
+        if(userService.getAll().get(k-1).getRoleDTO().equals(ADMIN)){
             System.out.println("Вы хотите удалить админа, перейдите в CRUD админов!");
         }else {
-            userService.deleteInfo(k - 1);
+            userService.deleteInfo(userService.getAll().get(k-1).getId());
         }
         editMenu();
     }

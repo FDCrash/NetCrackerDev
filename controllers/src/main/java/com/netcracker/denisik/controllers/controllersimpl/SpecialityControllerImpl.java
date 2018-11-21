@@ -65,7 +65,7 @@ public class SpecialityControllerImpl implements Controller {
         }
         System.out.println("Выберите позицию для изменения: ");
         int k=Integer.parseInt(scanner.next());
-        SpecialityDTO specialityDTO=specialityService.get(k-1);
+        SpecialityDTO specialityDTO=specialityService.getAll().get(k-1);
         System.out.println("Введите название специальности: ");
         String name=scanner.next();
         System.out.println("Введите название факультета: ");
@@ -85,7 +85,7 @@ public class SpecialityControllerImpl implements Controller {
         }
         System.out.println("Выберите позицию для удаления: ");
         int k=Integer.parseInt(scanner.next());
-        specialityService.deleteInfo(k-1);
+        specialityService.deleteInfo(specialityService.getAll().get(k-1).getId());
         editMenu();
     }
 }

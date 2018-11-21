@@ -1,6 +1,7 @@
 package com.netcracker.denisik.converters;
 
 import com.netcracker.denisik.dao.daoImpl.SpecialityDAOImpl;
+import com.netcracker.denisik.dto.UserDTO;
 import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.entities.SpecialityEntity;
 import com.netcracker.denisik.entities.StudentEntity;
@@ -24,8 +25,8 @@ public class StudentConverter {
     }
 
     public StudentDTO convert(StudentEntity studentEntity){
-        return new StudentDTO(studentEntity.getId(),RoleDTO.valueOf(studentEntity.getRole().name()),
-                studentEntity.getLogin(), studentEntity.getPassword(),studentEntity.getName(),
+        return new StudentDTO(new UserDTO(studentEntity.getId(),RoleDTO.valueOf(studentEntity.getRole().name()),
+                studentEntity.getLogin(), studentEntity.getPassword()),studentEntity.getName(),
                 studentEntity.getStudentId(), studentEntity.getGroupId(),
                 studentEntity.getSpecialityEntity().getName(),studentEntity.getWriteBook());
     }

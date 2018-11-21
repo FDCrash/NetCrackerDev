@@ -2,24 +2,30 @@ package com.netcracker.denisik.dao.daoImpl;
 
 
 import com.netcracker.denisik.dao.DAO;
-import com.netcracker.denisik.storage.EmployeeList;
-import com.netcracker.denisik.entities.EmployeeEntity;
-import com.netcracker.denisik.entities.Role;
-import com.netcracker.denisik.entities.StudentEntity;
-import com.netcracker.denisik.entities.UserEntity;
-import com.netcracker.denisik.storage.StudentList;
+import com.netcracker.denisik.entities.*;
 import com.netcracker.denisik.storage.UserList;
 
 import java.util.List;
 
 public class UserDAOImpl implements DAO<UserEntity> {
+    private StudentDAOImpl studentDAO;
+    private EmployeeDAOImpl employeeDAO;
+    private AdminDAOImpl adminDAO;
 
     public UserDAOImpl(){
+        adminDAO = new AdminDAOImpl();
+        studentDAO = new StudentDAOImpl();
+        employeeDAO = new EmployeeDAOImpl();
     }
 
     @Override
     public UserEntity get(int id) {
-        return getAll().get(id);
+        for (UserEntity userEntity: getAll()){
+            if(userEntity.getId()==id){
+                return userEntity;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -29,61 +35,44 @@ public class UserDAOImpl implements DAO<UserEntity> {
 
     @Override
     public UserEntity add(UserEntity userEntity) {
-        UserList.getInstance().add(userEntity);
-        return userEntity;
+        switch (get(userEntity.getId()).getRole()){
+            case ADMIN: adminDAO.add(new AdminEntity(new UserEntity(userEntity), false));
+                break;
+            case EMPLOYEE: employeeDAO.add(new EmployeeEntity(new UserEntity(userEntity), ""));
+                break;
+            case STUDENT: studentDAO.add(new StudentEntity(new UserEntity(userEntity),
+                    "",0,0,0,null));
+        }
+        return get(userEntity.getId());
     }
 
     @Override
     public UserEntity update(UserEntity user) {
-        for(UserEntity userEntity:getAll()){
-            if(user.getId()==userEntity.getId()){
-                userEntity.setLogin(user.getLogin());
-                userEntity.setPassword(user.getPassword());
-                userEntity.setRole(user.getRole());
-                break;
-            }
+        int k=user.getId();
+        switch (user.getRole()){
+            case ADMIN: adminDAO.update(new AdminEntity(new UserEntity(user),
+                    adminDAO.get(k).getStatus()));
+            break;
+            case EMPLOYEE: employeeDAO.update(new EmployeeEntity(new UserEntity(user),
+                    employeeDAO.get(k).getName()));
+            break;
+            case STUDENT: studentDAO.update(new StudentEntity(new UserEntity(user),
+                    studentDAO.get(k).getName(),studentDAO.get(k).getStudentId(),
+                    studentDAO.get(k).getGroupId(),studentDAO.get(k).getSpecialityEntity().getId(),
+                    studentDAO.get(k).getWriteBook()));
         }
-        return user;
+        return get(user.getId());
     }
 
     @Override
     public void delete(int id) {
-        UserEntity userEntity=getAll().get(id);
-        if(userEntity.getRole().equals(Role.STUDENT)){
-            for (StudentEntity studentEntity:StudentList.getInstance().get()) {
-                if(userEntity.getId()==studentEntity.getId()) {
-                    StudentList.getInstance().get().remove(studentEntity);
-                    break;
-                }
-            }
-        }
-        if(userEntity.getRole().equals(Role.EMPLOYEE)){
-            for (EmployeeEntity employeeEntity:EmployeeList.getInstance().get()) {
-                if(userEntity.getId()==employeeEntity.getId()) {
-                    EmployeeList.getInstance().get().remove(employeeEntity);
-                    break;
-                }
-            }
-        }
-        getAll().remove(id);
-    }
-
-    public void deleteById(int id){
-        for(UserEntity userEntity:getAll()){
-            if(userEntity.getId()==id){
-                getAll().remove(userEntity);
+        switch (get(id).getRole()){
+            case ADMIN: adminDAO.delete(id);
                 break;
-            }
+            case EMPLOYEE: employeeDAO.delete(id);
+                break;
+            case STUDENT: studentDAO.delete(id);
         }
-    }
-
-    public boolean checkId(int id){
-        for(UserEntity userEntity:getAll()){
-            if(userEntity.getId()==id){
-                return false;
-            }
-        }
-        return true;
     }
 
     public Enum checkLoginPass(String login,String pass){

@@ -11,10 +11,14 @@ import com.netcracker.denisik.storage.StudentList;
 import java.util.List;
 
 public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
-
     @Override
     public SpecialityEntity get(int id) {
-        return getAll().get(id);
+        for(SpecialityEntity specialityEntity:getAll()){
+            if(specialityEntity.getId()==id){
+                return specialityEntity;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -25,49 +29,25 @@ public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
     @Override
     public SpecialityEntity add(SpecialityEntity speciality) {
         SpecialityList.getInstance().add(speciality);
-        for(FacultyEntity facultyEntity:FacultyList.getInstance().get()){
-            if(speciality.getFaculty().getId()==facultyEntity.getId()){
-                facultyEntity.setSpeciality(speciality);
-                break;
-            }
-        }
-        return speciality;
+        new FacultyDAOImpl().get(speciality.getFaculty().getId()).setSpeciality(speciality);
+        return get(speciality.getId());
     }
 
     @Override
     public SpecialityEntity update(SpecialityEntity speciality) {
-        for(SpecialityEntity specialityEntity: getAll()){
-            if(specialityEntity.getId()==speciality.getId()){
-                specialityEntity.setName(speciality.getName());
-                specialityEntity.setFaculty(speciality.getFaculty());
-                break;
-            }
-        }
-        return speciality;
+        delete(speciality.getId());
+        add(speciality);
+        return get(speciality.getId());
     }
 
     @Override
     public void delete(int id) {
-        SpecialityEntity specialityEntity=getAll().get(id);
-        for(FacultyEntity facultyEntity:FacultyList.getInstance().get()){
-            if(facultyEntity.getId()==specialityEntity.getFaculty().getId()){
-                facultyEntity.getSpecialities().remove(specialityEntity);
-                break;
-            }
-        }
+        new FacultyDAOImpl().get(get(id).getFaculty().getId()).getSpecialities().remove(get(id));
         for(StudentEntity studentEntity: StudentList.getInstance().get()){
-            if(studentEntity.getSpecialityEntity().getId()==specialityEntity.getId()){
+            if(studentEntity.getSpecialityEntity().getId()==id){
                 studentEntity.setSpecialityEntity(new SpecialityEntity(0,"Переводится", 0));
             }
         }
-        getAll().remove(specialityEntity);
-    }
-    public boolean checkId(int id) {
-        for (SpecialityEntity specialityEntity : getAll()) {
-            if (specialityEntity.getId() == id) {
-                return false;
-            }
-        }
-        return true;
+        getAll().remove(get(id));
     }
 }

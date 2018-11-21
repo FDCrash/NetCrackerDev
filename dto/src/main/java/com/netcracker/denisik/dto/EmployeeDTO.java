@@ -5,8 +5,8 @@ public class EmployeeDTO extends UserDTO {
 
     public EmployeeDTO(){}
 
-    public EmployeeDTO(int id, RoleDTO roleDTO, String login, String pass, String name){
-        super(id, roleDTO,login,pass);
+    public EmployeeDTO(UserDTO userDTO, String name){
+        super(userDTO);
         this.name=name;
     }
 

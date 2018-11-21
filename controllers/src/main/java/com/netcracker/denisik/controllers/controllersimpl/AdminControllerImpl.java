@@ -54,8 +54,8 @@ public class AdminControllerImpl implements Controller {
         if(userService.checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.next();
-            adminService.addNew(new AdminDTO(userService.generateId(1000), RoleDTO.ADMIN,
-                    login, password, false));
+            adminService.addNew(new AdminDTO(new UserDTO(userService.generateId(1000), RoleDTO.ADMIN,
+                    login, password), false));
         }else{
             System.out.println("Логин занят");
         }
@@ -74,15 +74,15 @@ public class AdminControllerImpl implements Controller {
         }
         System.out.println("Выберите позицию для изменения: ");
         int k=Integer.parseInt(scanner.next());
-        adminDTO=adminService.get(k-1);
+        adminDTO=adminService.getAll().get(k-1);
         System.out.println(adminDTO.toString());
         System.out.println("Введите логин: ");
         String login=scanner.next();
         if(login.equals(adminDTO.getLogin()) || userService.checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.next();
-            adminService.updateInfo(new AdminDTO(adminDTO.getId(), RoleDTO.ADMIN, login, password, false));
-            userService.updateInfo(new UserDTO(adminDTO.getId(), RoleDTO.ADMIN, login, password));
+            adminService.updateInfo(new AdminDTO(new UserDTO(adminDTO.getId(), RoleDTO.ADMIN,
+                    login, password), false));
         }else{
             System.out.println("Новый логин занят");
         }
@@ -100,7 +100,7 @@ public class AdminControllerImpl implements Controller {
         }
         System.out.println("Выберите позицию для удаления: ");
         int k=Integer.parseInt(scanner.next());
-        adminService.deleteInfo(k-1);
+        adminService.deleteInfo(adminService.getAll().get(k-1).getId());
         editMenu();
     }
 }

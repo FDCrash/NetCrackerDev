@@ -26,12 +26,7 @@ public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
 
     @Override
     public void addNew(FacultyDTO facultyDTO) {
-        FacultyEntity facultyEntity=facultyConverter.convert(facultyDTO);
-        facultyDAO.add(facultyEntity);
-        /*for(SpecialityEntity specialityEntity:facultyEntity.getSpecialities()){
-            specialityDAO.add(new SpecialityEntity(specialityEntity.getId(),
-                    specialityEntity.getName(),facultyEntity));
-        }*/
+        facultyDAO.add(facultyConverter.convert(facultyDTO));
     }
 
     @Override
@@ -60,8 +55,7 @@ public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
         int k;
         do{
             k=splittableRandom.nextInt(1,bound);
-
-        }while (!facultyDAO.checkId(k));
+        }while (facultyDAO.get(k)!=null);
         return k;
     }
 }

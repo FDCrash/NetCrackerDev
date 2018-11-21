@@ -13,9 +13,9 @@ public class StudentDTO extends UserDTO {
     public StudentDTO() {
     }
 
-    public StudentDTO(int id, RoleDTO roleDTO, String login, String pass, String name,
+    public StudentDTO(UserDTO userDTO, String name,
                       int studentId, int groupId, String speciality, List<Integer> writeBook) {
-        super(id, roleDTO, login, pass);
+        super(userDTO);
         this.name = name;
         this.studentId = studentId;
         this.groupId = groupId;

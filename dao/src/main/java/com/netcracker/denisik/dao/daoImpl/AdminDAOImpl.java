@@ -8,9 +8,15 @@ import com.netcracker.denisik.storage.UserList;
 import java.util.List;
 
 public class AdminDAOImpl implements DAO<AdminEntity> {
+
     @Override
     public AdminEntity get(int id) {
-        return getAll().get(id);
+        for(AdminEntity adminEntity:getAll()){
+            if(adminEntity.getId()==id){
+                return adminEntity;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -22,34 +28,20 @@ public class AdminDAOImpl implements DAO<AdminEntity> {
     public AdminEntity add(AdminEntity adminEntity) {
         AdminList.getInstance().add(adminEntity);
         UserList.getInstance().addAdmin(adminEntity);
-        return adminEntity;
+        return get(adminEntity.getId());
     }
 
     @Override
     public AdminEntity update(AdminEntity admin) {
-        for(AdminEntity adminEntity:getAll()){
-            if(admin.getId()==adminEntity.getId()){
-                adminEntity.setLogin(admin.getLogin());
-                adminEntity.setPassword(admin.getPassword());
-                break;
-            }
-        }
-        return admin;
-    }
-
-    public void deleteById(int id){
-        for(AdminEntity adminEntity:getAll()){
-            if(adminEntity.getId()==id){
-                getAll().remove(adminEntity);
-            }
-        }
+        delete(admin.getId());
+        add(admin);
+        return get(admin.getId());
     }
 
     @Override
     public void delete(int id) {
-        if(!getAll().get(id).getStatus()){
-            getAll().remove(id);
-        }
+            getAll().remove(get(id));
+            new UserDAOImpl().getAll().remove(new UserDAOImpl().get(id));
     }
 
     public void changeStatus(String login){

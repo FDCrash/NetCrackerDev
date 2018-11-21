@@ -66,8 +66,8 @@ public class StudentControllerImpl implements Controller {
             System.out.print(i + ". ");
             writeBook.add(Integer.parseInt(scanner.next()));
         }
-        studentService.addNew(new StudentDTO(userService.generateId(1000),RoleDTO.STUDENT,
-                "","", name,number,group,speciality,writeBook));
+        studentService.addNew(new StudentDTO(new UserDTO(userService.generateId(1000),RoleDTO.STUDENT,
+                "",""), name,number,group,speciality,writeBook));
         editMenu();
     }
 
@@ -83,7 +83,7 @@ public class StudentControllerImpl implements Controller {
         }
         System.out.println("Выберите позицию для изменения: ");
         int k=Integer.parseInt(scanner.next());
-        studentDTO=studentService.get(k-1);
+        studentDTO=studentService.getAll().get(k-1);
         System.out.println(studentDTO);
         System.out.println("Введите имя: ");
         String name=scanner.next();
@@ -100,8 +100,8 @@ public class StudentControllerImpl implements Controller {
             System.out.print(i + ". ");
             writeBook.add(Integer.parseInt(scanner.next()));
         }
-        studentService.updateInfo(new StudentDTO(studentDTO.getId(),RoleDTO.STUDENT,
-                studentDTO.getLogin(),studentDTO.getPassword(),name,number,group,speciality,writeBook));
+        studentService.updateInfo(new StudentDTO(new UserDTO(studentDTO.getId(),RoleDTO.STUDENT,
+                studentDTO.getLogin(),studentDTO.getPassword()),name,number,group,speciality,writeBook));
         userService.updateInfo(new UserDTO(studentDTO.getId(),RoleDTO.STUDENT,
                 studentDTO.getLogin(),studentDTO.getPassword()));
         editMenu();
@@ -118,7 +118,7 @@ public class StudentControllerImpl implements Controller {
         }
         System.out.println("Выберите позицию для удаления: ");
         int k=Integer.parseInt(scanner.next());
-        studentService.deleteInfo(k-1);
+        studentService.deleteInfo(studentService.getAll().get(k-1).getId());
         editMenu();
     }
 

@@ -29,12 +29,6 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
     @Override
     public void deleteInfo(int id) {
         studentDAO.delete(id);
-        userDAO.deleteById(get(id).getId());
-    }
-
-    public void deleteInfoById(int id){
-        studentDAO.deleteById(id);
-        userDAO.deleteById(id);
     }
 
     public StudentDTO getByLogin(String login){
