@@ -25,7 +25,8 @@ public class AdminFileImpl implements RWStorage {
     public void fillStorage() {
         admins = new ArrayList<>();
         try {
-            obj = new JSONParser().parse(new FileReader(LoadFile.getInstance().getProperties().getProperty("json.admins")));
+            obj = new JSONParser().parse(new FileReader(LoadFile.getInstance().
+                    getProperties().getProperty("json.admins")));
             jsonArray = (JSONArray) obj;
             for (Object object : jsonArray) {
                 JSONObject jsonObject = (JSONObject) object;

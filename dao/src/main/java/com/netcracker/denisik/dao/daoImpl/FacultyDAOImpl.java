@@ -43,7 +43,7 @@ public class FacultyDAOImpl implements DAO<FacultyEntity> {
     @Override
     public void delete(int id) {
         for (SpecialityEntity specialityEntity : get(id).getSpecialities()) {
-            new SpecialityDAOImpl().delete(specialityEntity.getId());
+            SpecialityList.getInstance().get().remove(specialityEntity);
         }
         for (StudentEntity studentEntity : StudentList.getInstance().get()) {
             if (studentEntity.getSpecialityEntity().getFaculty().getId() == id) {
