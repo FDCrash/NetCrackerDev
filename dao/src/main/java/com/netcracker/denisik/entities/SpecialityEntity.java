@@ -4,18 +4,21 @@ public class SpecialityEntity extends BaseEntity {
     private String name;
     private FacultyEntity faculty;
 
-    public SpecialityEntity(){};
-
-    public SpecialityEntity(int id,String name,FacultyEntity faculty){
-        super(id);
-        this.name=name;
-        this.faculty=faculty;
+    public SpecialityEntity() {
     }
 
-    public SpecialityEntity(int id,String name,int facultyId){
+    ;
+
+    public SpecialityEntity(int id, String name, FacultyEntity faculty) {
         super(id);
-        this.name=name;
-        faculty=new FacultyEntity(facultyId,"");
+        this.name = name;
+        this.faculty = faculty;
+    }
+
+    public SpecialityEntity(int id, String name, int facultyId) {
+        super(id);
+        this.name = name;
+        faculty = new FacultyEntity(facultyId, "");
     }
 
     public String getName() {

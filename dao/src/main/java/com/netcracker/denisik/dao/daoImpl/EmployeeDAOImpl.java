@@ -3,13 +3,20 @@ package com.netcracker.denisik.dao.daoImpl;
 import com.netcracker.denisik.dao.DAO;
 import com.netcracker.denisik.entities.EmployeeEntity;
 import com.netcracker.denisik.storage.EmployeeList;
+import com.netcracker.denisik.storage.UserList;
 
 import java.util.List;
 
 public class EmployeeDAOImpl implements DAO<EmployeeEntity> {
+
     @Override
     public EmployeeEntity get(int id) {
-        return EmployeeList.getInstance().get().get(id);
+        for (EmployeeEntity employeeEntity : getAll()) {
+            if (employeeEntity.getId() == id) {
+                return employeeEntity;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -19,17 +26,21 @@ public class EmployeeDAOImpl implements DAO<EmployeeEntity> {
 
     @Override
     public EmployeeEntity add(EmployeeEntity employeeEntity) {
-        return null;
+        EmployeeList.getInstance().add(employeeEntity);
+        UserList.getInstance().addEmployee(employeeEntity);
+        return get(employeeEntity.getId());
     }
 
     @Override
-    public EmployeeEntity update(EmployeeEntity employeeEntity) {
-        return null;
+    public EmployeeEntity update(EmployeeEntity employee) {
+        delete(employee.getId());
+        add(employee);
+        return get(employee.getId());
     }
-
 
     @Override
     public void delete(int id) {
-
+        getAll().remove(get(id));
+        new UserDAOImpl().getAll().remove(new UserDAOImpl().get(id));
     }
 }

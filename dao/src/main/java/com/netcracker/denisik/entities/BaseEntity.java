@@ -6,8 +6,8 @@ public abstract class BaseEntity {
     public BaseEntity() {
     }
 
-    public BaseEntity(int id){
-        this.id=id;
+    public BaseEntity(int id) {
+        this.id = id;
     }
 
     public int getId() {

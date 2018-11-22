@@ -1,14 +1,1 @@
-[
-  {
-    "id":1,
-    "role": "ADMIN",
-    "login" : "fk",
-    "pass": "1234"
-  },
-  {
-    "id":2,
-    "role": "ADMIN",
-    "login" : "bsuir",
-    "pass": "1234"
-  }
-]
+[{"role":"ADMIN","pass":"1234","id":34,"login":"bsuir"},{"role":"ADMIN","pass":"1234","id":4,"login":"admin"}]

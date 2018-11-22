@@ -1,12 +1,1 @@
-[
-  {
-    "id":1,
-    "name": "АСОИ",
-    "facultyId": 1
-  },
-  {
-    "id":2,
-    "name": "ИИ",
-    "facultyId": 1
-  }
-]
+[{"facultyId":36,"name":"ПОИТ","id":23},{"facultyId":36,"name":"ВМСИС","id":15}]

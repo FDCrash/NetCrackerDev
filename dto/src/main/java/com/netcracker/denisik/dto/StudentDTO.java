@@ -13,9 +13,9 @@ public class StudentDTO extends UserDTO {
     public StudentDTO() {
     }
 
-    public StudentDTO(int id, RoleDTO roleDTO, String login, String pass, String name,
+    public StudentDTO(UserDTO userDTO, String name,
                       int studentId, int groupId, String speciality, List<Integer> writeBook) {
-        super(id, roleDTO, login, pass);
+        super(userDTO);
         this.name = name;
         this.studentId = studentId;
         this.groupId = groupId;
@@ -63,13 +63,13 @@ public class StudentDTO extends UserDTO {
         return groupId;
     }
 
-    public String toString(){
-        String s="\n";
-        for(int i=0;i<getWriteBook().size();i++){
-            s+=writeBook.get(i).toString()+" ";
+    public String toString() {
+        String s = "\n";
+        for (int i = 0; i < getWriteBook().size(); i++) {
+            s += writeBook.get(i).toString() + " ";
         }
         return "Имя: " + getName() + "\nРоль: " + getRoleDTO().name()
-                + "\nЛогин: " + getLogin() + "\nСпециальность: " + getSpeciality()+
+                + "\nЛогин: " + getLogin() + "\nСпециальность: " + getSpeciality() +
                 "\nНомер студенченского билета: " + getStudentId() +
                 "\nНомер группы:" + getGroupId() + "\nЗачетная книжка: " + s + "\n";
     }
