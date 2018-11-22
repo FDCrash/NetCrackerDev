@@ -11,12 +11,10 @@ import java.util.List;
 public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
     @Override
     public SpecialityEntity get(int id) {
-        for (SpecialityEntity specialityEntity : getAll()) {
-            if (specialityEntity.getId() == id) {
-                return specialityEntity;
-            }
-        }
-        return null;
+        return getAll().stream()
+                .filter(speciality -> speciality.getId()==id)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -40,15 +38,13 @@ public class SpecialityDAOImpl implements DAO<SpecialityEntity> {
 
     @Override
     public void delete(int id) {
+        StudentList.getInstance().get().stream()
+                .filter(student -> student.getSpecialityEntity().getId()==id)
+                .forEach(student-> student.setSpecialityEntity(new SpecialityEntity(0,"Переводится", 0)));
         new FacultyDAOImpl()
                 .get(get(id).getFaculty().getId())
                 .getSpecialities()
                 .remove(get(id));
-        for (StudentEntity studentEntity : StudentList.getInstance().get()) {
-            if (studentEntity.getSpecialityEntity().getId() == id) {
-                studentEntity.setSpecialityEntity(new SpecialityEntity(0, "Переводится", 0));
-            }
-        }
         getAll().remove(get(id));
     }
 }

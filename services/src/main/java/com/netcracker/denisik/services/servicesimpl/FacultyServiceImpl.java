@@ -7,6 +7,7 @@ import com.netcracker.denisik.dto.FacultyDTO;
 import com.netcracker.denisik.services.CRUDService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.SplittableRandom;
 import java.util.stream.Collectors;
 

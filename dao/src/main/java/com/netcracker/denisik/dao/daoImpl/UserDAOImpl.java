@@ -23,12 +23,10 @@ public class UserDAOImpl implements DAO<UserEntity> {
 
     @Override
     public UserEntity get(int id) {
-        for (UserEntity userEntity : getAll()) {
-            if (userEntity.getId() == id) {
-                return userEntity;
-            }
-        }
-        return null;
+        return getAll().stream()
+                .filter(user -> user.getId()==id)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -88,20 +86,13 @@ public class UserDAOImpl implements DAO<UserEntity> {
     }
 
     public Enum checkLoginPass(String login, String pass) {
-        for (UserEntity userEntity : getAll()) {
-            if (userEntity.getLogin().equals(login) && userEntity.getPassword().equals(pass)) {
-                return userEntity.getRole();
-            }
-        }
-        return null;
+        return getAll().stream()
+                .filter(user -> user.getLogin().equals(login) && user.getPassword().equals(pass))
+                .findFirst().get().getRole();
     }
 
     public boolean checkLogin(String login) {
-        for (UserEntity userEntity : getAll()) {
-            if (userEntity.getLogin().equals(login)) {
-                return false;
-            }
-        }
-        return true;
+        return getAll().stream()
+                .anyMatch(user -> user.getLogin().equals(login));
     }
 }

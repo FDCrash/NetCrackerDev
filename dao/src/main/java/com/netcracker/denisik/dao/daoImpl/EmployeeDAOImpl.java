@@ -11,12 +11,10 @@ public class EmployeeDAOImpl implements DAO<EmployeeEntity> {
 
     @Override
     public EmployeeEntity get(int id) {
-        for (EmployeeEntity employeeEntity : getAll()) {
-            if (employeeEntity.getId() == id) {
-                return employeeEntity;
-            }
-        }
-        return null;
+        return getAll().stream()
+                .filter(employee -> employee.getId()==id)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override

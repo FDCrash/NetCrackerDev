@@ -11,12 +11,10 @@ public class AdminDAOImpl implements DAO<AdminEntity> {
 
     @Override
     public AdminEntity get(int id) {
-        for (AdminEntity adminEntity : getAll()) {
-            if (adminEntity.getId() == id) {
-                return adminEntity;
-            }
-        }
-        return null;
+        return getAll().stream()
+                .filter(admin -> admin.getId()==id)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -45,11 +43,8 @@ public class AdminDAOImpl implements DAO<AdminEntity> {
     }
 
     public void changeStatus(String login) {
-        for (AdminEntity adminEntity : getAll()) {
-            if (adminEntity.getLogin().equals(login)) {
-                adminEntity.setStatus(true);
-                break;
-            }
-        }
+        getAll().stream()
+                .filter(admin -> admin.getLogin().equals(login))
+                .findFirst().get().setStatus(true);
     }
 }

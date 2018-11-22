@@ -59,7 +59,7 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
 
     public String registration(int id, String login, String pass) {
         if (studentDAO.checkStudId(id)) {
-            if (userDAO.checkLogin(login)) {
+            if (!userDAO.checkLogin(login)) {
                 studentDAO.addNewLoginPass(id, login, pass);
                 return "Вы успешно зарегистрированы!";
             }
@@ -69,7 +69,7 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
     }
 
     public boolean checkLogin(String login) {
-        return userDAO.checkLogin(login);
+        return !userDAO.checkLogin(login);
     }
 
     public Enum authentication(String login, String pass) {

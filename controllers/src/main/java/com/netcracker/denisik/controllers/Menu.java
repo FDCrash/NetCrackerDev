@@ -160,6 +160,7 @@ public class Menu {
                         bool = true;
                         break;
                     case 0:
+                        ;
                         startMenu();
                         bool = true;
                         return;

@@ -8,16 +8,15 @@ import com.netcracker.denisik.storage.UserList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StudentDAOImpl implements DAO<StudentEntity> {
     @Override
     public StudentEntity get(int id) {
-        for (StudentEntity studentEntity : getAll()) {
-            if (studentEntity.getId() == id) {
-                return studentEntity;
-            }
-        }
-        return null;
+        return getAll().stream()
+                .filter(student -> student.getId()==id)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -46,21 +45,15 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
     }
 
     public StudentEntity getByLogin(String login) {
-        for (StudentEntity studentEntity : getAll()) {
-            if (login.equals(studentEntity.getLogin())) {
-                return studentEntity;
-            }
-        }
-        return null;
+        return getAll().stream()
+                .filter(student-> student.getLogin().equals(login))
+                .findFirst()
+                .orElse(null);
     }
 
     public boolean checkStudId(int id) {
-        for (StudentEntity studentEntity : getAll()) {
-            if (studentEntity.getStudentId() == id) {
-                return true;
-            }
-        }
-        return false;
+        return getAll().stream()
+                .anyMatch(student-> student.getStudentId()==id);
     }
 
     public void addNewLoginPass(int id, String login, String pass) {
@@ -83,22 +76,14 @@ public class StudentDAOImpl implements DAO<StudentEntity> {
     }
 
     public List<StudentEntity> getAllByGroup(int id) {
-        List<StudentEntity> studentEntities = new ArrayList<>();
-        for (StudentEntity studentEntity : getAll()) {
-            if (studentEntity.getGroupId() == id) {
-                studentEntities.add(studentEntity);
-            }
-        }
-        return studentEntities;
+        return getAll().stream()
+                .filter(student -> student.getGroupId()==id)
+                .collect(Collectors.toList());
     }
 
     public List<StudentEntity> getAllBySpeciality(String speciality) {
-        List<StudentEntity> studentEntities = new ArrayList<>();
-        for (StudentEntity studentEntity : getAll()) {
-            if (speciality.equals(studentEntity.getSpecialityEntity().getName())) {
-                studentEntities.add(studentEntity);
-            }
-        }
-        return studentEntities;
+        return getAll().stream()
+                .filter(student -> student.getSpecialityEntity().getName().equals(speciality))
+                .collect(Collectors.toList());
     }
 }

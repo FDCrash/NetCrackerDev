@@ -10,7 +10,7 @@ import java.util.List;
 public class FacultyConverter {
     public FacultyEntity convert(FacultyDTO facultyDTO) {
         List<SpecialityEntity> specialityEntities = new ArrayList<>();
-        int n = 0;
+        int n;
         n = facultyDTO.getSpecialities().size();
         for (int i = 0; i < n; i++) {
             specialityEntities.add(new SpecialityEntity(facultyDTO.getSpecialitiesId().get(i),

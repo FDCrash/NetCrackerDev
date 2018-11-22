@@ -9,14 +9,26 @@ import com.netcracker.denisik.storage.SpecialityList;
 import com.netcracker.denisik.storage.StudentList;
 
 public class FullFillImpl implements RWStorage {
+    private EmployeeFileImpl employeeFile;
+    private AdminFileImpl adminFile;
+    private StudentFileImpl studentFile;
+    private SpecialityFileImpl specialityFile;
+    private FacultyFileImpl facultyFile;
 
+    public FullFillImpl(){
+        employeeFile =new EmployeeFileImpl();
+        adminFile = new AdminFileImpl();
+        studentFile = new StudentFileImpl();
+        specialityFile = new SpecialityFileImpl();
+        facultyFile = new FacultyFileImpl();
+    }
     @Override
     public void fillStorage() {
-        new EmployeeFileImpl().fillStorage();
-        new AdminFileImpl().fillStorage();
-        new StudentFileImpl().fillStorage();
-        new SpecialityFileImpl().fillStorage();
-        new FacultyFileImpl().fillStorage();
+        employeeFile.fillStorage();
+        adminFile.fillStorage();
+        studentFile.fillStorage();
+        specialityFile.fillStorage();
+        facultyFile.fillStorage();
         connectStudentSpeciality();
         connectSpecialityFaculty();
         new UserFileImpl().fillStorage();
@@ -24,11 +36,11 @@ public class FullFillImpl implements RWStorage {
 
     @Override
     public void writeFile() {
-        new EmployeeFileImpl().writeFile();
-        new AdminFileImpl().writeFile();
-        new StudentFileImpl().writeFile();
-        new SpecialityFileImpl().writeFile();
-        new FacultyFileImpl().writeFile();
+        employeeFile.fillStorage();
+        adminFile.fillStorage();
+        studentFile.fillStorage();
+        specialityFile.fillStorage();
+        facultyFile.fillStorage();
     }
 
     private void connectStudentSpeciality() {
