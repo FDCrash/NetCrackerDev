@@ -5,6 +5,7 @@ import com.netcracker.denisik.controllers.Menu;
 import com.netcracker.denisik.dto.RoleDTO;
 import com.netcracker.denisik.dto.StudentDTO;
 import com.netcracker.denisik.dto.UserDTO;
+import com.netcracker.denisik.dto.WriteBookDTO;
 import com.netcracker.denisik.services.servicesimpl.StudentServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
 
@@ -33,7 +34,7 @@ public class StudentControllerImpl implements Controller {
             System.out.println("3.Изменить");
             System.out.println("4.Удалить");
             System.out.println("0.Выйти");
-            k = scanner.nextInt();
+            k = Integer.parseInt(scanner.nextLine());
             switchChange(k);
         } while (k < 0 || k > 4);
     }
@@ -52,22 +53,17 @@ public class StudentControllerImpl implements Controller {
     public void add() {
         System.out.println("Новый студент");
         System.out.println("Введите имя: ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         System.out.println("Введите номер студенченского билета: ");
-        int number = Integer.parseInt(scanner.next());
+        int number = Integer.parseInt(scanner.nextLine());
         System.out.println("Введите номер группы: ");
-        int group = Integer.parseInt(scanner.next());
+        int group = Integer.parseInt(scanner.nextLine());
         System.out.println("Введите специальность: ");
-        String speciality = scanner.next();
-        System.out.println("Введите колво оценок: ");
-        List<Integer> writeBook = new ArrayList<>();
-        int n = Integer.parseInt(scanner.next());
-        for (int i = 1; i <= n; i++) {
-            System.out.print(i + ". ");
-            writeBook.add(Integer.parseInt(scanner.next()));
-        }
+        String speciality = scanner.nextLine();
+        System.out.println("Введите колво семестров: ");
+        int n = Integer.parseInt(scanner.nextLine());
         studentService.addNew(new StudentDTO(new UserDTO(userService.generateId(1000), RoleDTO.STUDENT,
-                "", ""), name, number, group, speciality, writeBook));
+                "", ""), name, number, group, speciality, fillBook(n)));
         editMenu();
     }
 
@@ -82,29 +78,47 @@ public class StudentControllerImpl implements Controller {
             z++;
         }
         System.out.println("Выберите позицию для изменения: ");
-        int k = Integer.parseInt(scanner.next());
+        int k = Integer.parseInt(scanner.nextLine());
         studentDTO = studentService.getAll().get(k - 1);
         System.out.println(studentDTO);
         System.out.println("Введите имя: ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         System.out.println("Введите номер студенченского билета: ");
-        int number = Integer.parseInt(scanner.next());
+        int number = Integer.parseInt(scanner.nextLine());
         System.out.println("Введите номер группы: ");
-        int group = Integer.parseInt(scanner.next());
+        int group = Integer.parseInt(scanner.nextLine());
         System.out.println("Введите специальность: ");
-        String speciality = scanner.next();
-        System.out.println("Введите колво оценок: ");
-        List<Integer> writeBook = new ArrayList<>();
-        int n = Integer.parseInt(scanner.next());
-        for (int i = 1; i <= n; i++) {
-            System.out.print(i + ". ");
-            writeBook.add(Integer.parseInt(scanner.next()));
-        }
+        String speciality = scanner.nextLine();
+        System.out.println("Введите колво семестров: ");
+        int n = Integer.parseInt(scanner.nextLine());
         studentService.updateInfo(new StudentDTO(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
-                studentDTO.getLogin(), studentDTO.getPassword()), name, number, group, speciality, writeBook));
+                studentDTO.getLogin(), studentDTO.getPassword()), name, number, group, speciality, fillBook(n)));
         userService.updateInfo(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
                 studentDTO.getLogin(), studentDTO.getPassword()));
         editMenu();
+    }
+
+    private List<WriteBookDTO> fillBook(int n) {
+        List<Integer> marks=new ArrayList<>();
+        List<String> subjects=new ArrayList<>();
+        int kol;
+        List<WriteBookDTO> writeBook = new ArrayList<>();
+        String subj;
+        int mark;
+        for (int i = 1; i <= n; i++) {
+            System.out.println("Введите колво предметов за " + i + " семестр: ");
+            kol=Integer.parseInt(scanner.nextLine());
+            for(int j=1; j <=kol;j++){
+                System.out.println("Введите название " + j + " предмета :");
+                subj=scanner.nextLine();
+                System.out.println("Введите оценку по " + subj + " предмету: ");
+                mark=Integer.parseInt(scanner.nextLine());
+                marks.add(mark);
+                subjects.add(subj);
+            }
+            writeBook.add(new WriteBookDTO(i,subjects,marks));
+        }
+        return writeBook;
     }
 
     @Override
@@ -117,7 +131,7 @@ public class StudentControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k = Integer.parseInt(scanner.next());
+        int k = Integer.parseInt(scanner.nextLine());
         studentService.deleteInfo(studentService.getAll().get(k - 1).getId());
         editMenu();
     }
@@ -125,8 +139,8 @@ public class StudentControllerImpl implements Controller {
     public void showWriteBook() {
         StudentDTO studentDTO = studentService.getByLogin(Menu.getInstance().getLogin());
         System.out.println("Зачетка студента " + studentDTO.getName() + ":");
-        for (Integer i : studentDTO.getWriteBook()) {
-            System.out.print(i + " ");
+        for (WriteBookDTO writeBook : studentDTO.getWriteBook()) {
+            System.out.println(writeBook.toString());
         }
         System.out.println();
         Menu.getInstance().studentMenu();

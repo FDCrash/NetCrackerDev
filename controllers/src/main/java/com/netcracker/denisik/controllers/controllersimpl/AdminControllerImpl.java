@@ -31,7 +31,7 @@ public class AdminControllerImpl implements Controller {
             System.out.println("3.Изменить");
             System.out.println("4.Удалить");
             System.out.println("0.Выйти");
-            k = Integer.parseInt(scanner.next());
+            k = Integer.parseInt(scanner.nextLine());
             switchChange(k);
         } while (k < 0 || k > 4);
     }
@@ -50,7 +50,7 @@ public class AdminControllerImpl implements Controller {
     public void add() {
         System.out.println("Новый администратор");
         System.out.println("Введите логин: ");
-        String login = scanner.next();
+        String login = scanner.nextLine();
         if (userService.checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.next();
@@ -77,10 +77,10 @@ public class AdminControllerImpl implements Controller {
         adminDTO = adminService.getAll().get(k - 1);
         System.out.println(adminDTO.toString());
         System.out.println("Введите логин: ");
-        String login = scanner.next();
+        String login = scanner.nextLine();
         if (login.equals(adminDTO.getLogin()) || userService.checkLogin(login)) {
             System.out.println("Введите пароль: ");
-            String password = scanner.next();
+            String password = scanner.nextLine();
             adminService.updateInfo(new AdminDTO(new UserDTO(adminDTO.getId(), RoleDTO.ADMIN,
                     login, password), false));
         } else {
@@ -99,7 +99,7 @@ public class AdminControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k = Integer.parseInt(scanner.next());
+        int k = Integer.parseInt(scanner.nextLine());
         adminService.deleteInfo(adminService.getAll().get(k - 1).getId());
         editMenu();
     }

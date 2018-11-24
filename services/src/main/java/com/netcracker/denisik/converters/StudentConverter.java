@@ -4,17 +4,22 @@ import com.netcracker.denisik.dao.daoImpl.SpecialityDAOImpl;
 import com.netcracker.denisik.dto.RoleDTO;
 import com.netcracker.denisik.dto.StudentDTO;
 import com.netcracker.denisik.dto.UserDTO;
-import com.netcracker.denisik.entities.Role;
-import com.netcracker.denisik.entities.SpecialityEntity;
-import com.netcracker.denisik.entities.StudentEntity;
-import com.netcracker.denisik.entities.UserEntity;
+import com.netcracker.denisik.dto.WriteBookDTO;
+import com.netcracker.denisik.entities.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentConverter {
     public StudentEntity convert(StudentDTO studentDTO) {
+        List<WriteBook> writeBooks=new ArrayList<>();
+        studentDTO.getWriteBook().stream().
+                forEach(writeBookDTO -> writeBooks.
+                        add(new WriteBook(writeBookDTO.getSem(),writeBookDTO.getSubjects(),writeBookDTO.getMarks())));
         StudentEntity studentEntity = new StudentEntity(new UserEntity(studentDTO.getId(),
                 Role.valueOf(studentDTO.getRoleDTO().name()), studentDTO.getLogin(),
                 studentDTO.getPassword()), studentDTO.getName(), studentDTO.getStudentId(),
-                studentDTO.getGroupId(), 0, studentDTO.getWriteBook());
+                studentDTO.getGroupId(), 0, writeBooks);
         for (SpecialityEntity specialityEntity : new SpecialityDAOImpl().getAll()) {
             if (specialityEntity.getName().equals(studentDTO.getSpeciality())) {
                 studentEntity.setSpecialityEntity(specialityEntity);
@@ -25,9 +30,13 @@ public class StudentConverter {
     }
 
     public StudentDTO convert(StudentEntity studentEntity) {
+        List<WriteBookDTO> writeBookDTO=new ArrayList<>();
+        for(WriteBook writeBook:studentEntity.getWriteBook()) {
+            writeBookDTO.add(new WriteBookDTO(writeBook.getSem(), writeBook.getSubjects(), writeBook.getMarks()));
+        }
         return new StudentDTO(new UserDTO(studentEntity.getId(), RoleDTO.valueOf(studentEntity.getRole().name()),
                 studentEntity.getLogin(), studentEntity.getPassword()), studentEntity.getName(),
                 studentEntity.getStudentId(), studentEntity.getGroupId(),
-                studentEntity.getSpecialityEntity().getName(), studentEntity.getWriteBook());
+                studentEntity.getSpecialityEntity().getName(), writeBookDTO);
     }
 }

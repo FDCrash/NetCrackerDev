@@ -5,6 +5,7 @@ import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.services.servicesimpl.AdminServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static com.netcracker.denisik.entities.Role.*;
@@ -51,7 +52,7 @@ public class Menu {
             System.out.println("2.Зарегистрироваться");
             System.out.println("0.Выйти");
             try {
-                k = Integer.parseInt(scanner.next());
+                k = Integer.parseInt(scanner.nextLine());
                 switch (k) {
                     case 1:
                         authenticationMenu();
@@ -77,11 +78,11 @@ public class Menu {
         String pass, login;
         try {
             System.out.println("Введите свой номер студенченского билета:");
-            idStud = Integer.parseInt(scanner.next());
+            idStud = Integer.parseInt(scanner.nextLine());
             System.out.println("Введите желаемый логин:");
-            login = scanner.next();
+            login = scanner.nextLine();
             System.out.println("Введите желаемый пароль:");
-            pass = scanner.next();
+            pass = scanner.nextLine();
             System.out.println(userService.registration(idStud, login, pass));
         } catch (NumberFormatException e) {
             System.out.println("Введен неверный символ!");
@@ -92,9 +93,9 @@ public class Menu {
     private void authenticationMenu() {
         String pass;
         System.out.println("Введите логин:");
-        login = scanner.next();
+        login = scanner.nextLine();
         System.out.println("Введите пароль:");
-        pass = scanner.next();
+        pass = scanner.nextLine();
         try {
             switch ((Role) userService.authentication(login, pass)) {
                 case ADMIN:
@@ -114,8 +115,8 @@ public class Menu {
                     System.out.println("Неправильный логин или пароль");
                     startMenu();
             }
-        } catch (NullPointerException e) {
-            System.out.println("Пользователя с таким логином не существует");
+        } catch (NullPointerException | NoSuchElementException e) {
+            System.out.println("Неверный логин или пароль");
             startMenu();
         }
     }
@@ -133,7 +134,7 @@ public class Menu {
             System.out.println("6.CRUD Специальностей");
             System.out.println("0.Выйти");
             try {
-                k = Integer.parseInt(scanner.next());
+                k = Integer.parseInt(scanner.nextLine());
                 switch (k) {
                     case 1:
                         adminController.editMenu();
@@ -182,7 +183,7 @@ public class Menu {
             System.out.println("2.CRUD Специальностей");
             System.out.println("0.Выйти");
             try {
-                k = Integer.parseInt(scanner.next());
+                k = Integer.parseInt(scanner.nextLine());
                 switch (k) {
                     case 1:
                         studentController.editMenu();
@@ -215,7 +216,7 @@ public class Menu {
             System.out.println("3.Просмотреть специальность");
             System.out.println("0.Выйти");
             try {
-                k = Integer.parseInt(scanner.next());
+                k = Integer.parseInt(scanner.nextLine());
                 switch (k) {
                     case 1:
                         studentController.showWriteBook();

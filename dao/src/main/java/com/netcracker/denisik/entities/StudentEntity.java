@@ -1,5 +1,6 @@
 package com.netcracker.denisik.entities;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,18 +9,18 @@ public class StudentEntity extends UserEntity {
     private int studentId;
     private int groupId;
     private SpecialityEntity specialityEntity;
-    private List<Integer> writeBook;
+    private List<WriteBook> writeBook;
 
     public StudentEntity() {
     }
 
     public StudentEntity(UserEntity userEntity, String name, int studentId,
-                         int groupId, int specialityId, List<Integer> writeBook) {
+                         int groupId, int specialityId, List<WriteBook> writeBook) {
         super(userEntity);
         this.name = name;
         this.studentId = studentId;
         this.groupId = groupId;
-        this.specialityEntity = new SpecialityEntity(specialityId, "", 0);
+        this.specialityEntity = new SpecialityEntity(specialityId, "Переводится", 0);
         this.writeBook = new ArrayList<>(writeBook);
     }
 
@@ -27,8 +28,8 @@ public class StudentEntity extends UserEntity {
         return groupId;
     }
 
-    public void setGroupId(int gtoupId) {
-        this.groupId = gtoupId;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public void setName(String name) {
@@ -55,11 +56,11 @@ public class StudentEntity extends UserEntity {
         this.specialityEntity = speciality;
     }
 
-    public void setWriteBook(List<Integer> writeBook) {
+    public void setWriteBook(List<WriteBook> writeBook) {
         this.writeBook = writeBook;
     }
 
-    public List<Integer> getWriteBook() {
+    public List<WriteBook> getWriteBook() {
         return writeBook;
     }
 

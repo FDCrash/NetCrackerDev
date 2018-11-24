@@ -36,11 +36,11 @@ public class FullFillImpl implements RWStorage {
 
     @Override
     public void writeFile() {
-        employeeFile.fillStorage();
-        adminFile.fillStorage();
-        studentFile.fillStorage();
-        specialityFile.fillStorage();
-        facultyFile.fillStorage();
+        employeeFile.writeFile();
+        adminFile.writeFile();
+        studentFile.writeFile();
+        specialityFile.writeFile();
+        facultyFile.writeFile();
     }
 
     private void connectStudentSpeciality() {

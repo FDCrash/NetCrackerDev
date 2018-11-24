@@ -28,7 +28,7 @@ public class SpecialityControllerImpl implements Controller {
             System.out.println("3.Изменить");
             System.out.println("4.Удалить");
             System.out.println("0.Выйти");
-            k = scanner.nextInt();
+            k = Integer.parseInt(scanner.nextLine());
             switchChange(k);
         } while (k < 0 || k > 4);
     }
@@ -47,9 +47,9 @@ public class SpecialityControllerImpl implements Controller {
     public void add() {
         System.out.println("Новая специальность");
         System.out.println("Введите название специальности: ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         System.out.println("Введите название факультета: ");
-        String faculty = scanner.next();
+        String faculty = scanner.nextLine();
         specialityService.addNew(new SpecialityDTO(userService.generateId(50), name, faculty));
         editMenu();
     }
@@ -67,9 +67,9 @@ public class SpecialityControllerImpl implements Controller {
         int k = Integer.parseInt(scanner.next());
         SpecialityDTO specialityDTO = specialityService.getAll().get(k - 1);
         System.out.println("Введите название специальности: ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         System.out.println("Введите название факультета: ");
-        String faculty = scanner.next();
+        String faculty = scanner.nextLine();
         specialityService.updateInfo(new SpecialityDTO(specialityDTO.getId(), name, faculty));
         editMenu();
     }
@@ -84,7 +84,7 @@ public class SpecialityControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k = Integer.parseInt(scanner.next());
+        int k = Integer.parseInt(scanner.nextLine());
         specialityService.deleteInfo(specialityService.getAll().get(k - 1).getId());
         editMenu();
     }

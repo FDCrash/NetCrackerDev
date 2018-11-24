@@ -40,7 +40,7 @@ public class UserControllerImpl implements Controller {
             System.out.println("3.Изменить");
             System.out.println("4.Удалить");
             System.out.println("0.Выйти");
-            k = scanner.nextInt();
+            k = Integer.parseInt(scanner.nextLine());
             switchChange(k);
         } while (k < 0 || k > 4);
     }
@@ -59,12 +59,12 @@ public class UserControllerImpl implements Controller {
     public void add() {
         System.out.println("Новый пользователь");
         System.out.println("Введите роль(admin/employee/student):");
-        String role = scanner.next();
+        String role = scanner.nextLine();
         System.out.println("Введите логин: ");
-        String login = scanner.next();
+        String login = scanner.nextLine();
         if (userService.checkLogin(login)) {
             System.out.println("Введите пароль: ");
-            String password = scanner.next();
+            String password = scanner.nextLine();
             int k = userService.generateId(1000);
             userService.addNew(new UserDTO(k, RoleDTO.valueOf(role.toUpperCase()),
                     login, password));
@@ -86,18 +86,18 @@ public class UserControllerImpl implements Controller {
             z++;
         }
         System.out.println("Выберите позицию для изменения: ");
-        int k = Integer.parseInt(scanner.next());
+        int k = Integer.parseInt(scanner.nextLine());
         userDTO = userService.getAll().get(k - 1);
         System.out.println(userDTO.toString());
         System.out.println("Введите роль (admin/employee):");
-        String role = scanner.next();
+        String role = scanner.nextLine();
         System.out.println("Введите логин: ");
-        String login = scanner.next();
+        String login = scanner.nextLine();
         if (login.equals(userDTO.getLogin()) || userService.checkLogin(login)) {
             switch (RoleDTO.valueOf(role.toUpperCase())) {
                 case ADMIN:
                     System.out.println("Введите пароль: ");
-                    password = scanner.next();
+                    password = scanner.nextLine();
                     if (userDTO.getRoleDTO().equals(ADMIN)) {
                         userService.updateInfo(new UserDTO(userDTO.getId(), ADMIN, login, password));
                     } else {
@@ -113,7 +113,7 @@ public class UserControllerImpl implements Controller {
                     break;
                 case EMPLOYEE:
                     System.out.println("Введите пароль: ");
-                    password = scanner.next();
+                    password = scanner.nextLine();
                     if (userDTO.getRoleDTO().equals(RoleDTO.EMPLOYEE)) {
                         userService.updateInfo(new UserDTO(userDTO.getId(), EMPLOYEE, login, password));
                     } else {
@@ -124,7 +124,7 @@ public class UserControllerImpl implements Controller {
                             studentService.deleteInfo(userDTO.getId());
                         }
                         System.out.println("Введите имя: ");
-                        String name = scanner.next();
+                        String name = scanner.nextLine();
                         employeeService.addNew(new EmployeeDTO(new UserDTO(userDTO.getId(),
                                 RoleDTO.EMPLOYEE, login, password), name));
                     }
@@ -152,7 +152,7 @@ public class UserControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k = Integer.parseInt(scanner.next());
+        int k = Integer.parseInt(scanner.nextLine());
         if (userService.getAll().get(k - 1).getRoleDTO().equals(ADMIN)) {
             System.out.println("Вы хотите удалить админа, перейдите в CRUD админов!");
         } else {

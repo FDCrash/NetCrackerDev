@@ -30,7 +30,7 @@ public class FacultyControllerImpl implements Controller {
             System.out.println("3.Изменить");
             System.out.println("4.Удалить");
             System.out.println("0.Выйти");
-            k = scanner.nextInt();
+            k = Integer.parseInt(scanner.nextLine());
             switchChange(k);
         } while (k < 0 || k > 4);
     }
@@ -49,14 +49,14 @@ public class FacultyControllerImpl implements Controller {
     public void add() {
         System.out.println("Новый факультет");
         System.out.println("Введите название факультета: ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         System.out.println("Введите количество специальностей: ");
         List<String> specialities = new ArrayList<>();
         List<Integer> specialitiesId = new ArrayList<>();
         int n = Integer.parseInt(scanner.next());
         for (int i = 1; i <= n; i++) {
             System.out.print(i + ". ");
-            specialities.add(scanner.next());
+            specialities.add(scanner.nextLine());
             specialitiesId.add(specialityService.generateId(50));
         }
         facultyService.addNew(new FacultyDTO(facultyService.generateId(50),
@@ -78,7 +78,7 @@ public class FacultyControllerImpl implements Controller {
         int k = Integer.parseInt(scanner.next());
         facultyDTO = facultyService.getAll().get(k - 1);
         System.out.println("Введите название факультета: ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         facultyService.updateInfo(new FacultyDTO(facultyDTO.getId(), name,
                 facultyDTO.getSpecialities(), facultyDTO.getSpecialitiesId()));
         editMenu();
@@ -94,7 +94,7 @@ public class FacultyControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k = Integer.parseInt(scanner.next());
+        int k = Integer.parseInt(scanner.nextLine());
         facultyService.deleteInfo(facultyService.getAll().get(k - 1).getId());
         editMenu();
     }

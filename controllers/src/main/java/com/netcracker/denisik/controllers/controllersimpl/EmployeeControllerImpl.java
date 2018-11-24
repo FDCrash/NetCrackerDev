@@ -30,7 +30,7 @@ public class EmployeeControllerImpl implements Controller {
             System.out.println("3.Изменить");
             System.out.println("4.Удалить");
             System.out.println("0.Выйти");
-            k = scanner.nextInt();
+            k = Integer.parseInt(scanner.nextLine());
             switchChange(k);
         } while (k < 0 || k > 4);
 
@@ -50,12 +50,12 @@ public class EmployeeControllerImpl implements Controller {
     public void add() {
         System.out.println("Новый сотрудник");
         System.out.println("Введите имя: ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         System.out.println("Введите логин: ");
-        String login = scanner.next();
+        String login = scanner.nextLine();
         if (userService.checkLogin(login)) {
             System.out.println("Введите пароль: ");
-            String password = scanner.next();
+            String password = scanner.nextLine();
             employeeService.addNew(new EmployeeDTO(new UserDTO(userService.generateId(1000), RoleDTO.EMPLOYEE,
                     login, password), name));
         } else {
@@ -79,12 +79,12 @@ public class EmployeeControllerImpl implements Controller {
         employeeDTO = employeeService.getAll().get(k - 1);
         System.out.println(employeeDTO);
         System.out.println("Введите имя: ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         System.out.println("Введите логин: ");
-        String login = scanner.next();
+        String login = scanner.nextLine();
         if (login.equals(employeeDTO.getName()) || userService.checkLogin(login)) {
             System.out.println("Введите пароль: ");
-            String password = scanner.next();
+            String password = scanner.nextLine();
             employeeService.updateInfo(new EmployeeDTO(new UserDTO(employeeDTO.getId(), RoleDTO.EMPLOYEE,
                     login, password), name));
         } else {
@@ -103,7 +103,7 @@ public class EmployeeControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позиция для удаления: ");
-        int k = Integer.parseInt(scanner.next());
+        int k = Integer.parseInt(scanner.nextLine());
         employeeService.deleteInfo(employeeService.getAll().get(k - 1).getId());
         editMenu();
     }

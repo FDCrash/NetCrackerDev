@@ -43,9 +43,9 @@ public class FacultyDTO extends BaseDTO {
     }
 
     public String toString() {
-        String s = "\n";
+        StringBuilder s = new StringBuilder("\n");
         for (int i = 1; i <= getSpecialities().size(); i++) {
-            s += i + ". " + specialities.get(i - 1) + "\n";
+            s.append(i).append(") ").append(specialities.get(i - 1)).append("\n");
         }
         return "Факультет: " + getName() + s;
     }

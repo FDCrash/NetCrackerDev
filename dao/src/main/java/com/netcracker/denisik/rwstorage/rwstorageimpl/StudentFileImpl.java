@@ -1,8 +1,6 @@
 package com.netcracker.denisik.rwstorage.rwstorageimpl;
 
-import com.netcracker.denisik.entities.Role;
-import com.netcracker.denisik.entities.StudentEntity;
-import com.netcracker.denisik.entities.UserEntity;
+import com.netcracker.denisik.entities.*;
 import com.netcracker.denisik.rwstorage.RWStorage;
 import com.netcracker.denisik.storage.StudentList;
 import org.json.simple.JSONArray;
@@ -13,9 +11,7 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.Integer.parseInt;
 
@@ -43,14 +39,26 @@ public class StudentFileImpl implements RWStorage {
                 int studentId = (int) (long) jsonObject.get("studentId");
                 int groupId = (int) (long) jsonObject.get("groupId");
                 int specialityId = (int) (long) jsonObject.get("specialityId");
-
-                JSONArray marks = (JSONArray) jsonObject.get("writeBook");
-                Iterator<Integer> i = marks.iterator();
-                List<Integer> writeBook = new ArrayList<>();
-                while (i.hasNext()) {
-                    writeBook.add(parseInt(String.valueOf(i.next())));
+                JSONArray semester = (JSONArray) jsonObject.get("writeBook");
+                List<WriteBook> writeBooks = new ArrayList<>();
+                for(Object object1:semester){
+                    JSONObject jsonObj= (JSONObject) object1;
+                    JSONArray subject= (JSONArray) jsonObj.get("subjects");
+                    Iterator<String> iteratorSubj= subject.iterator();
+                    List<String> subjects = new ArrayList<>();
+                    while(iteratorSubj.hasNext()){
+                        subjects.add(iteratorSubj.next());
+                    }
+                    JSONArray mark=(JSONArray) jsonObj.get("marks");
+                    Iterator<Long> iteratorMark= mark.iterator();
+                    List<Integer> marks= new ArrayList<>();
+                    while(iteratorMark.hasNext()){
+                        marks.add(iteratorMark.next().intValue());
+                    }
+                    writeBooks.add(new WriteBook((int) (long)jsonObj.get("semester"),subjects,marks));
                 }
-                students.add(new StudentEntity(new UserEntity(id, role, login, pass), name, studentId, groupId, specialityId, writeBook));
+                students.add(new StudentEntity(new UserEntity(id,role,login,pass),
+                        name,studentId,groupId,specialityId, writeBooks));
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
@@ -71,11 +79,24 @@ public class StudentFileImpl implements RWStorage {
             jsonObject.put("studentId", studentEntity.getStudentId());
             jsonObject.put("groupId", studentEntity.getGroupId());
             jsonObject.put("specialityId", studentEntity.getSpecialityEntity().getId());
-            JSONArray marks = new JSONArray();
-            for (int i : studentEntity.getWriteBook()) {
-                marks.add(String.valueOf(i));
+            JSONArray writeBook = new JSONArray();
+            int i=0;
+            for (WriteBook semesters:studentEntity.getWriteBook()) {
+                JSONObject sem=new JSONObject();
+                sem.put("semester", semesters.getSem());
+                JSONArray subject= new JSONArray();
+                for(String s: studentEntity.getWriteBook().get(i).getSubjects()){
+                    subject.add(s);
+                }
+                sem.put("subjects", subject);
+                JSONArray mark= new JSONArray();
+                for(Integer marks: studentEntity.getWriteBook().get(i).getMarks()){
+                    mark.add(marks);
+                }
+                sem.put("marks", mark);
+                writeBook.add(sem);
             }
-            jsonObject.put("writeBook", marks);
+            jsonObject.put("writeBook", writeBook);
             jsonArray.add(jsonObject);
         }
         try {
