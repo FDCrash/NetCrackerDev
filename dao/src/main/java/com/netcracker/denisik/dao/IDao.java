@@ -2,7 +2,7 @@ package com.netcracker.denisik.dao;
 
 import java.util.List;
 
-public interface DAO<T> {
+public interface IDao<T> {
     T get(int id);
 
     List<T> getAll();

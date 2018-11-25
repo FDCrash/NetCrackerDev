@@ -1,18 +1,16 @@
 package com.netcracker.denisik.dao.daoImpl;
 
-import com.netcracker.denisik.dao.DAO;
+import com.netcracker.denisik.dao.IDao;
 import com.netcracker.denisik.entities.FacultyEntity;
 import com.netcracker.denisik.entities.SpecialityEntity;
-import com.netcracker.denisik.entities.StudentEntity;
 import com.netcracker.denisik.storage.FacultyList;
 import com.netcracker.denisik.storage.SpecialityList;
 import com.netcracker.denisik.storage.StudentList;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FacultyDAOImpl implements DAO<FacultyEntity> {
+public class FacultyDAOImpl implements IDao<FacultyEntity> {
 
     @Override
     public FacultyEntity get(int id) {

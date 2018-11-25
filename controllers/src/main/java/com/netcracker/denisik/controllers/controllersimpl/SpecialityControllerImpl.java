@@ -5,6 +5,7 @@ import com.netcracker.denisik.dto.SpecialityDTO;
 import com.netcracker.denisik.services.servicesimpl.SpecialityServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class SpecialityControllerImpl implements Controller {
@@ -36,9 +37,13 @@ public class SpecialityControllerImpl implements Controller {
     @Override
     public void getAll() {
         System.out.println("Специальности:");
-        for (SpecialityDTO specialityDTO : specialityService.getAll()) {
-            String s = specialityDTO.toString();
-            System.out.println(s);
+        try {
+            for (SpecialityDTO specialityDTO : specialityService.getAll()) {
+                String s = specialityDTO.toString();
+                System.out.println(s);
+            }
+        }catch (NullPointerException | NoSuchElementException e){
+            System.out.println("Специальности отсутствуют");
         }
         editMenu();
     }
@@ -64,13 +69,17 @@ public class SpecialityControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позицию для изменения: ");
-        int k = Integer.parseInt(scanner.next());
-        SpecialityDTO specialityDTO = specialityService.getAll().get(k - 1);
-        System.out.println("Введите название специальности: ");
-        String name = scanner.nextLine();
-        System.out.println("Введите название факультета: ");
-        String faculty = scanner.nextLine();
-        specialityService.updateInfo(new SpecialityDTO(specialityDTO.getId(), name, faculty));
+        try {
+            int k = Integer.parseInt(scanner.nextLine());
+            SpecialityDTO specialityDTO = specialityService.getAll().get(k - 1);
+            System.out.println("Введите название специальности: ");
+            String name = scanner.nextLine();
+            System.out.println("Введите название факультета: ");
+            String faculty = scanner.nextLine();
+            specialityService.updateInfo(new SpecialityDTO(specialityDTO.getId(), name, faculty));
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Вы ввели неверный номер из списка");
+        }
         editMenu();
     }
 
@@ -84,8 +93,12 @@ public class SpecialityControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k = Integer.parseInt(scanner.nextLine());
-        specialityService.deleteInfo(specialityService.getAll().get(k - 1).getId());
+        try {
+            int k = Integer.parseInt(scanner.nextLine());
+            specialityService.deleteInfo(specialityService.getAll().get(k - 1).getId());
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Вы ввели неверный номер из списка");
+        }
         editMenu();
     }
 }

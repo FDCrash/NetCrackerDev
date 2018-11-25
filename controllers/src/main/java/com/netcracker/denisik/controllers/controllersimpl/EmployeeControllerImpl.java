@@ -7,6 +7,7 @@ import com.netcracker.denisik.dto.UserDTO;
 import com.netcracker.denisik.services.servicesimpl.EmployeeServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class EmployeeControllerImpl implements Controller {
@@ -39,9 +40,13 @@ public class EmployeeControllerImpl implements Controller {
     @Override
     public void getAll() {
         System.out.println("Сотрудники:");
-        for (EmployeeDTO adminDTO : employeeService.getAll()) {
-            String s = adminDTO.toString();
-            System.out.println(s);
+        try{
+            for (EmployeeDTO adminDTO : employeeService.getAll()) {
+                String s = adminDTO.toString();
+                System.out.println(s);
+            }
+        }catch (NullPointerException | NoSuchElementException e){
+            System.out.println("Сотрудники отсутствуют");
         }
         editMenu();
     }
@@ -75,20 +80,24 @@ public class EmployeeControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позицию для изменения: ");
-        int k = Integer.parseInt(scanner.next());
-        employeeDTO = employeeService.getAll().get(k - 1);
-        System.out.println(employeeDTO);
-        System.out.println("Введите имя: ");
-        String name = scanner.nextLine();
-        System.out.println("Введите логин: ");
-        String login = scanner.nextLine();
-        if (login.equals(employeeDTO.getName()) || userService.checkLogin(login)) {
-            System.out.println("Введите пароль: ");
-            String password = scanner.nextLine();
-            employeeService.updateInfo(new EmployeeDTO(new UserDTO(employeeDTO.getId(), RoleDTO.EMPLOYEE,
-                    login, password), name));
-        } else {
-            System.out.println("Новый логин занят");
+        try {
+            int k = Integer.parseInt(scanner.nextLine());
+            employeeDTO = employeeService.getAll().get(k - 1);
+            System.out.println(employeeDTO);
+            System.out.println("Введите имя: ");
+            String name = scanner.nextLine();
+            System.out.println("Введите логин: ");
+            String login = scanner.nextLine();
+            if (login.equals(employeeDTO.getName()) || userService.checkLogin(login)) {
+                System.out.println("Введите пароль: ");
+                String password = scanner.nextLine();
+                employeeService.updateInfo(new EmployeeDTO(new UserDTO(employeeDTO.getId(), RoleDTO.EMPLOYEE,
+                        login, password), name));
+            } else {
+                System.out.println("Новый логин занят");
+            }
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Вы ввели неверный номер из списка");
         }
         editMenu();
     }
@@ -103,8 +112,12 @@ public class EmployeeControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позиция для удаления: ");
-        int k = Integer.parseInt(scanner.nextLine());
-        employeeService.deleteInfo(employeeService.getAll().get(k - 1).getId());
+        try {
+            int k = Integer.parseInt(scanner.nextLine());
+            employeeService.deleteInfo(employeeService.getAll().get(k - 1).getId());
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Вы ввели неверный номер из списка");
+        }
         editMenu();
     }
 }

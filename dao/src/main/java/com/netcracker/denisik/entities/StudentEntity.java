@@ -15,6 +15,16 @@ public class StudentEntity extends UserEntity {
     }
 
     public StudentEntity(UserEntity userEntity, String name, int studentId,
+                         int groupId,SpecialityEntity specialityEntity, List<WriteBook> writeBook) {
+        super(userEntity);
+        this.name = name;
+        this.studentId = studentId;
+        this.groupId = groupId;
+        this.specialityEntity= specialityEntity;
+        this.writeBook = new ArrayList<>(writeBook);
+    }
+
+    public StudentEntity(UserEntity userEntity, String name, int studentId,
                          int groupId, int specialityId, List<WriteBook> writeBook) {
         super(userEntity);
         this.name = name;

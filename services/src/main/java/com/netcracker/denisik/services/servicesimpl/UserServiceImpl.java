@@ -52,7 +52,6 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
         int k;
         do {
             k = splittableRandom.nextInt(1, bound);
-
         } while (userDAO.get(k) != null);
         return k;
     }

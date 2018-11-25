@@ -11,6 +11,7 @@ import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class StudentControllerImpl implements Controller {
@@ -42,9 +43,13 @@ public class StudentControllerImpl implements Controller {
     @Override
     public void getAll() {
         System.out.println("Студенты:");
-        for (StudentDTO studentDTO : studentService.getAll()) {
-            String s = studentDTO.toString();
-            System.out.println(s);
+        try{
+            for (StudentDTO studentDTO : studentService.getAll()) {
+                String s = studentDTO.toString();
+                System.out.println(s);
+            }
+        }catch (NullPointerException | NoSuchElementException e){
+            System.out.println("Студенты отсутствуют");
         }
         editMenu();
     }
@@ -78,23 +83,27 @@ public class StudentControllerImpl implements Controller {
             z++;
         }
         System.out.println("Выберите позицию для изменения: ");
-        int k = Integer.parseInt(scanner.nextLine());
-        studentDTO = studentService.getAll().get(k - 1);
-        System.out.println(studentDTO);
-        System.out.println("Введите имя: ");
-        String name = scanner.nextLine();
-        System.out.println("Введите номер студенченского билета: ");
-        int number = Integer.parseInt(scanner.nextLine());
-        System.out.println("Введите номер группы: ");
-        int group = Integer.parseInt(scanner.nextLine());
-        System.out.println("Введите специальность: ");
-        String speciality = scanner.nextLine();
-        System.out.println("Введите колво семестров: ");
-        int n = Integer.parseInt(scanner.nextLine());
-        studentService.updateInfo(new StudentDTO(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
-                studentDTO.getLogin(), studentDTO.getPassword()), name, number, group, speciality, fillBook(n)));
-        userService.updateInfo(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
-                studentDTO.getLogin(), studentDTO.getPassword()));
+        try {
+            int k = Integer.parseInt(scanner.nextLine());
+            studentDTO = studentService.getAll().get(k - 1);
+            System.out.println(studentDTO);
+            System.out.println("Введите имя: ");
+            String name = scanner.nextLine();
+            System.out.println("Введите номер студенченского билета: ");
+            int number = Integer.parseInt(scanner.nextLine());
+            System.out.println("Введите номер группы: ");
+            int group = Integer.parseInt(scanner.nextLine());
+            System.out.println("Введите специальность: ");
+            String speciality = scanner.nextLine();
+            System.out.println("Введите колво семестров: ");
+            int n = Integer.parseInt(scanner.nextLine());
+            studentService.updateInfo(new StudentDTO(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
+                    studentDTO.getLogin(), studentDTO.getPassword()), name, number, group, speciality, fillBook(n)));
+            userService.updateInfo(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
+                    studentDTO.getLogin(), studentDTO.getPassword()));
+        }catch (IndexOutOfBoundsException e){
+                System.out.println("Вы ввели неверный номер из списка");
+            }
         editMenu();
     }
 
@@ -131,8 +140,12 @@ public class StudentControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k = Integer.parseInt(scanner.nextLine());
-        studentService.deleteInfo(studentService.getAll().get(k - 1).getId());
+        try {
+            int k = Integer.parseInt(scanner.nextLine());
+            studentService.deleteInfo(studentService.getAll().get(k - 1).getId());
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Вы ввели неверный номер из списка");
+        }
         editMenu();
     }
 

@@ -1,13 +1,13 @@
 package com.netcracker.denisik.dao.daoImpl;
 
-import com.netcracker.denisik.dao.DAO;
+import com.netcracker.denisik.dao.IDao;
 import com.netcracker.denisik.entities.EmployeeEntity;
 import com.netcracker.denisik.storage.EmployeeList;
 import com.netcracker.denisik.storage.UserList;
 
 import java.util.List;
 
-public class EmployeeDAOImpl implements DAO<EmployeeEntity> {
+public class EmployeeDAOImpl implements IDao<EmployeeEntity> {
 
     @Override
     public EmployeeEntity get(int id) {

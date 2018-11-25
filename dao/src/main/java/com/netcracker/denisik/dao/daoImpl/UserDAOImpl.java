@@ -1,16 +1,14 @@
 package com.netcracker.denisik.dao.daoImpl;
 
 
-import com.netcracker.denisik.dao.DAO;
-import com.netcracker.denisik.entities.AdminEntity;
-import com.netcracker.denisik.entities.EmployeeEntity;
-import com.netcracker.denisik.entities.StudentEntity;
-import com.netcracker.denisik.entities.UserEntity;
+import com.netcracker.denisik.dao.IDao;
+import com.netcracker.denisik.entities.*;
 import com.netcracker.denisik.storage.UserList;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOImpl implements DAO<UserEntity> {
+public class UserDAOImpl implements IDao<UserEntity> {
     private StudentDAOImpl studentDAO;
     private EmployeeDAOImpl employeeDAO;
     private AdminDAOImpl adminDAO;
@@ -36,7 +34,7 @@ public class UserDAOImpl implements DAO<UserEntity> {
 
     @Override
     public UserEntity add(UserEntity userEntity) {
-        switch (get(userEntity.getId()).getRole()) {
+        switch (userEntity.getRole()) {
             case ADMIN:
                 adminDAO.add(new AdminEntity(new UserEntity(userEntity), false));
                 break;
@@ -45,7 +43,7 @@ public class UserDAOImpl implements DAO<UserEntity> {
                 break;
             case STUDENT:
                 studentDAO.add(new StudentEntity(new UserEntity(userEntity),
-                        "", 0, 0, 0, null));
+                        "", 0, 0, 0, new ArrayList<>()));
         }
         return get(userEntity.getId());
     }

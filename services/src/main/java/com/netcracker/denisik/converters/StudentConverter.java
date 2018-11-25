@@ -16,24 +16,19 @@ public class StudentConverter {
         studentDTO.getWriteBook().stream().
                 forEach(writeBookDTO -> writeBooks.
                         add(new WriteBook(writeBookDTO.getSem(),writeBookDTO.getSubjects(),writeBookDTO.getMarks())));
-        StudentEntity studentEntity = new StudentEntity(new UserEntity(studentDTO.getId(),
+        return new StudentEntity(new UserEntity(studentDTO.getId(),
                 Role.valueOf(studentDTO.getRoleDTO().name()), studentDTO.getLogin(),
                 studentDTO.getPassword()), studentDTO.getName(), studentDTO.getStudentId(),
-                studentDTO.getGroupId(), 0, writeBooks);
-        for (SpecialityEntity specialityEntity : new SpecialityDAOImpl().getAll()) {
-            if (specialityEntity.getName().equals(studentDTO.getSpeciality())) {
-                studentEntity.setSpecialityEntity(specialityEntity);
-                break;
-            }
-        }
-        return studentEntity;
+                studentDTO.getGroupId(),new SpecialityDAOImpl().getAll().stream()
+                .filter(specialityEntity -> specialityEntity.getName().equals(studentDTO.getSpeciality()))
+                .findFirst().get(), writeBooks);
     }
 
     public StudentDTO convert(StudentEntity studentEntity) {
         List<WriteBookDTO> writeBookDTO=new ArrayList<>();
-        for(WriteBook writeBook:studentEntity.getWriteBook()) {
-            writeBookDTO.add(new WriteBookDTO(writeBook.getSem(), writeBook.getSubjects(), writeBook.getMarks()));
-        }
+        studentEntity.getWriteBook().stream().
+                forEach(writeBook -> writeBookDTO.
+                        add(new WriteBookDTO(writeBook.getSem(),writeBook.getSubjects(),writeBook.getMarks())));
         return new StudentDTO(new UserDTO(studentEntity.getId(), RoleDTO.valueOf(studentEntity.getRole().name()),
                 studentEntity.getLogin(), studentEntity.getPassword()), studentEntity.getName(),
                 studentEntity.getStudentId(), studentEntity.getGroupId(),

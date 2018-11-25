@@ -7,8 +7,6 @@ public class SpecialityEntity extends BaseEntity {
     public SpecialityEntity() {
     }
 
-    ;
-
     public SpecialityEntity(int id, String name, FacultyEntity faculty) {
         super(id);
         this.name = name;

@@ -7,6 +7,7 @@ import com.netcracker.denisik.dto.UserDTO;
 import com.netcracker.denisik.services.servicesimpl.AdminServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class AdminControllerImpl implements Controller {
@@ -39,9 +40,13 @@ public class AdminControllerImpl implements Controller {
     @Override
     public void getAll() {
         System.out.println("Адинистраторы:");
-        for (AdminDTO adminDTO : adminService.getAll()) {
-            String s = adminDTO.toString();
-            System.out.println(s);
+        try{
+            for (AdminDTO adminDTO : adminService.getAll()) {
+                String s = adminDTO.toString();
+                System.out.println(s);
+            }
+        }catch (NullPointerException | NoSuchElementException e){
+            System.out.println("Администраторы отсутствуют");
         }
         editMenu();
     }
@@ -53,7 +58,7 @@ public class AdminControllerImpl implements Controller {
         String login = scanner.nextLine();
         if (userService.checkLogin(login)) {
             System.out.println("Введите пароль: ");
-            String password = scanner.next();
+            String password = scanner.nextLine();
             adminService.addNew(new AdminDTO(new UserDTO(userService.generateId(1000), RoleDTO.ADMIN,
                     login, password), false));
         } else {
@@ -73,18 +78,22 @@ public class AdminControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позицию для изменения: ");
-        int k = Integer.parseInt(scanner.next());
-        adminDTO = adminService.getAll().get(k - 1);
-        System.out.println(adminDTO.toString());
-        System.out.println("Введите логин: ");
-        String login = scanner.nextLine();
-        if (login.equals(adminDTO.getLogin()) || userService.checkLogin(login)) {
-            System.out.println("Введите пароль: ");
-            String password = scanner.nextLine();
-            adminService.updateInfo(new AdminDTO(new UserDTO(adminDTO.getId(), RoleDTO.ADMIN,
-                    login, password), false));
-        } else {
-            System.out.println("Новый логин занят");
+        try {
+            int k = Integer.parseInt(scanner.nextLine());
+            adminDTO = adminService.getAll().get(k - 1);
+            System.out.println(adminDTO.toString());
+            System.out.println("Введите логин: ");
+            String login = scanner.nextLine();
+            if (login.equals(adminDTO.getLogin()) || userService.checkLogin(login)) {
+                System.out.println("Введите пароль: ");
+                String password = scanner.nextLine();
+                adminService.updateInfo(new AdminDTO(new UserDTO(adminDTO.getId(), RoleDTO.ADMIN,
+                        login, password), false));
+            } else {
+                System.out.println("Новый логин занят");
+            }
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Вы ввели неверный номер из списка");
         }
         editMenu();
     }
@@ -99,8 +108,12 @@ public class AdminControllerImpl implements Controller {
             i++;
         }
         System.out.println("Выберите позицию для удаления: ");
-        int k = Integer.parseInt(scanner.nextLine());
-        adminService.deleteInfo(adminService.getAll().get(k - 1).getId());
+        try {
+            int k = Integer.parseInt(scanner.nextLine());
+            adminService.deleteInfo(adminService.getAll().get(k - 1).getId());
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Вы ввели неверный номер из списка");
+        }
         editMenu();
     }
 }
