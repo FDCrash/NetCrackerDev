@@ -11,6 +11,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FacultyDAOImpl implements IDao<FacultyEntity> {
+    private static FacultyDAOImpl instance;
+
+    private FacultyDAOImpl(){}
+
+    public static FacultyDAOImpl getInstance(){
+        if(instance==null){
+            instance = new FacultyDAOImpl();
+        }
+        return instance;
+    }
+
 
     @Override
     public FacultyEntity get(int id) {

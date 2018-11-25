@@ -11,15 +11,10 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class AdminControllerImpl implements Controller {
-    private AdminServiceImpl adminService;
     private Scanner scanner;
-    private UserServiceImpl userService;
-
 
     public AdminControllerImpl() {
         scanner = new Scanner(System.in);
-        adminService = new AdminServiceImpl();
-        userService = new UserServiceImpl();
     }
 
     @Override
@@ -41,7 +36,7 @@ public class AdminControllerImpl implements Controller {
     public void getAll() {
         System.out.println("Адинистраторы:");
         try{
-            for (AdminDTO adminDTO : adminService.getAll()) {
+            for (AdminDTO adminDTO : AdminServiceImpl.getInstance().getAll()) {
                 String s = adminDTO.toString();
                 System.out.println(s);
             }
@@ -56,10 +51,11 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Новый администратор");
         System.out.println("Введите логин: ");
         String login = scanner.nextLine();
-        if (userService.checkLogin(login)) {
+        if (UserServiceImpl.getInstance().checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.nextLine();
-            adminService.addNew(new AdminDTO(new UserDTO(userService.generateId(1000), RoleDTO.ADMIN,
+            AdminServiceImpl.getInstance().addNew(new AdminDTO(new UserDTO(UserServiceImpl.getInstance()
+                    .generateId(1000), RoleDTO.ADMIN,
                     login, password), false));
         } else {
             System.out.println("Логин занят");
@@ -72,7 +68,7 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Адинистраторы:");
         int i = 1;
         AdminDTO adminDTO;
-        for (AdminDTO admin : adminService.getAll()) {
+        for (AdminDTO admin :  AdminServiceImpl.getInstance().getAll()) {
             String s = admin.toString();
             System.out.println(i + ". " + s);
             i++;
@@ -80,14 +76,14 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Выберите позицию для изменения: ");
         try {
             int k = Integer.parseInt(scanner.nextLine());
-            adminDTO = adminService.getAll().get(k - 1);
+            adminDTO =  AdminServiceImpl.getInstance().getAll().get(k - 1);
             System.out.println(adminDTO.toString());
             System.out.println("Введите логин: ");
             String login = scanner.nextLine();
-            if (login.equals(adminDTO.getLogin()) || userService.checkLogin(login)) {
+            if (login.equals(adminDTO.getLogin()) || UserServiceImpl.getInstance().checkLogin(login)) {
                 System.out.println("Введите пароль: ");
                 String password = scanner.nextLine();
-                adminService.updateInfo(new AdminDTO(new UserDTO(adminDTO.getId(), RoleDTO.ADMIN,
+                AdminServiceImpl.getInstance().updateInfo(new AdminDTO(new UserDTO(adminDTO.getId(), RoleDTO.ADMIN,
                         login, password), false));
             } else {
                 System.out.println("Новый логин занят");
@@ -102,7 +98,7 @@ public class AdminControllerImpl implements Controller {
     public void delete() {
         System.out.println("Адинистраторы:");
         int i = 1;
-        for (AdminDTO adminDTO : adminService.getAll()) {
+        for (AdminDTO adminDTO :  AdminServiceImpl.getInstance().getAll()) {
             String s = adminDTO.toString();
             System.out.println(i + ". " + s);
             i++;
@@ -110,7 +106,7 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Выберите позицию для удаления: ");
         try {
             int k = Integer.parseInt(scanner.nextLine());
-            adminService.deleteInfo(adminService.getAll().get(k - 1).getId());
+            AdminServiceImpl.getInstance().deleteInfo( AdminServiceImpl.getInstance().getAll().get(k - 1).getId());
         }catch (IndexOutOfBoundsException e){
             System.out.println("Вы ввели неверный номер из списка");
         }

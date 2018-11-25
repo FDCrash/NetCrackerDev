@@ -13,14 +13,12 @@ import static com.netcracker.denisik.entities.Role.*;
 public class Menu {
     private Role role;
     private String login;
-    private UserServiceImpl userService;
     private Scanner scanner;
     private StudentControllerImpl studentController;
     private EmployeeControllerImpl employeeController;
     private AdminControllerImpl adminController;
     private SpecialityControllerImpl specialityController;
     private FacultyControllerImpl facultyController;
-    private AdminServiceImpl adminService;
     private static Menu instance;
     private UserControllerImpl userController;
 
@@ -32,14 +30,12 @@ public class Menu {
     }
 
     private Menu() {
-        userService = new UserServiceImpl();
         scanner = new Scanner(System.in);
         studentController = new StudentControllerImpl();
         employeeController = new EmployeeControllerImpl();
         adminController = new AdminControllerImpl();
         facultyController = new FacultyControllerImpl();
         specialityController = new SpecialityControllerImpl();
-        adminService = new AdminServiceImpl();
         userController = new UserControllerImpl();
     }
 
@@ -83,7 +79,7 @@ public class Menu {
             login = scanner.nextLine();
             System.out.println("Введите желаемый пароль:");
             pass = scanner.nextLine();
-            System.out.println(userService.registration(idStud, login, pass));
+            System.out.println(UserServiceImpl.getInstance().registration(idStud, login, pass));
         } catch (NumberFormatException e) {
             System.out.println("Введен неверный символ!");
         }
@@ -97,9 +93,9 @@ public class Menu {
         System.out.println("Введите пароль:");
         pass = scanner.nextLine();
         try {
-            switch ((Role) userService.authentication(login, pass)) {
+            switch ((Role) UserServiceImpl.getInstance().authentication(login, pass)) {
                 case ADMIN:
-                    adminService.changeStatusAdmin(login);
+                    AdminServiceImpl.getInstance().changeStatusAdmin(login);
                     setRole(ADMIN);
                     adminMenu();
                     break;

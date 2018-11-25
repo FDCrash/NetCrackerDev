@@ -11,42 +11,44 @@ import java.util.SplittableRandom;
 import java.util.stream.Collectors;
 
 public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
-    private FacultyDAOImpl facultyDAO;
     private FacultyConverter facultyConverter;
-    private SpecialityDAOImpl specialityDAO;
-    private UserServiceImpl userService;
+    private static FacultyServiceImpl instance;
 
-    public FacultyServiceImpl() {
-        facultyDAO = new FacultyDAOImpl();
+    private FacultyServiceImpl(){
         facultyConverter = new FacultyConverter();
-        specialityDAO = new SpecialityDAOImpl();
-        userService = new UserServiceImpl();
+    }
+
+    public static FacultyServiceImpl getInstance(){
+        if(instance == null){
+            instance = new FacultyServiceImpl();
+        }
+        return instance;
     }
 
     @Override
     public void addNew(FacultyDTO facultyDTO) {
-        facultyDAO.add(facultyConverter.convert(facultyDTO));
+        FacultyDAOImpl.getInstance().add(facultyConverter.convert(facultyDTO));
     }
 
     @Override
     public void deleteInfo(int id) {
-        facultyDAO.delete(id);
+        FacultyDAOImpl.getInstance().delete(id);
     }
 
     @Override
     public void updateInfo(FacultyDTO facultyDTO) {
-        facultyDAO.update(facultyConverter.convert(facultyDTO));
+        FacultyDAOImpl.getInstance().update(facultyConverter.convert(facultyDTO));
     }
 
     @Override
     public List<FacultyDTO> getAll() {
-        return facultyDAO.getAll().stream().map(faculty -> facultyConverter.convert(faculty)).
+        return FacultyDAOImpl.getInstance().getAll().stream().map(faculty -> facultyConverter.convert(faculty)).
                 collect(Collectors.toList());
     }
 
     @Override
     public FacultyDTO get(int id) {
-        return facultyConverter.convert(facultyDAO.get(id));
+        return facultyConverter.convert(FacultyDAOImpl.getInstance().get(id));
     }
 
     public int generateId(int bound) {
@@ -54,7 +56,7 @@ public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
         int k;
         do {
             k = splittableRandom.nextInt(1, bound);
-        } while (facultyDAO.get(k) != null);
+        } while (FacultyDAOImpl.getInstance().get(k) != null);
         return k;
     }
 }

@@ -11,14 +11,10 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class EmployeeControllerImpl implements Controller {
-    private EmployeeServiceImpl employeeService;
-    private UserServiceImpl userService;
     private Scanner scanner;
 
     public EmployeeControllerImpl() {
-        employeeService = new EmployeeServiceImpl();
         scanner = new Scanner(System.in);
-        userService = new UserServiceImpl();
     }
 
     @Override
@@ -41,7 +37,7 @@ public class EmployeeControllerImpl implements Controller {
     public void getAll() {
         System.out.println("Сотрудники:");
         try{
-            for (EmployeeDTO adminDTO : employeeService.getAll()) {
+            for (EmployeeDTO adminDTO : EmployeeServiceImpl.getInstance().getAll()) {
                 String s = adminDTO.toString();
                 System.out.println(s);
             }
@@ -58,10 +54,11 @@ public class EmployeeControllerImpl implements Controller {
         String name = scanner.nextLine();
         System.out.println("Введите логин: ");
         String login = scanner.nextLine();
-        if (userService.checkLogin(login)) {
+        if (UserServiceImpl.getInstance().checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.nextLine();
-            employeeService.addNew(new EmployeeDTO(new UserDTO(userService.generateId(1000), RoleDTO.EMPLOYEE,
+            EmployeeServiceImpl.getInstance().
+                    addNew(new EmployeeDTO(new UserDTO(UserServiceImpl.getInstance().generateId(1000), RoleDTO.EMPLOYEE,
                     login, password), name));
         } else {
             System.out.println("Логин занят");
@@ -74,7 +71,7 @@ public class EmployeeControllerImpl implements Controller {
         System.out.println("Сотрудники:");
         int i = 1;
         EmployeeDTO employeeDTO;
-        for (EmployeeDTO employee : employeeService.getAll()) {
+        for (EmployeeDTO employee : EmployeeServiceImpl.getInstance().getAll()) {
             String s = employee.toString();
             System.out.println(i + ". " + s);
             i++;
@@ -82,16 +79,16 @@ public class EmployeeControllerImpl implements Controller {
         System.out.println("Выберите позицию для изменения: ");
         try {
             int k = Integer.parseInt(scanner.nextLine());
-            employeeDTO = employeeService.getAll().get(k - 1);
+            employeeDTO = EmployeeServiceImpl.getInstance().getAll().get(k - 1);
             System.out.println(employeeDTO);
             System.out.println("Введите имя: ");
             String name = scanner.nextLine();
             System.out.println("Введите логин: ");
             String login = scanner.nextLine();
-            if (login.equals(employeeDTO.getName()) || userService.checkLogin(login)) {
+            if (login.equals(employeeDTO.getName()) || UserServiceImpl.getInstance().checkLogin(login)) {
                 System.out.println("Введите пароль: ");
                 String password = scanner.nextLine();
-                employeeService.updateInfo(new EmployeeDTO(new UserDTO(employeeDTO.getId(), RoleDTO.EMPLOYEE,
+                EmployeeServiceImpl.getInstance().updateInfo(new EmployeeDTO(new UserDTO(employeeDTO.getId(), RoleDTO.EMPLOYEE,
                         login, password), name));
             } else {
                 System.out.println("Новый логин занят");
@@ -106,7 +103,7 @@ public class EmployeeControllerImpl implements Controller {
     public void delete() {
         System.out.println("Сотрудники:");
         int i = 1;
-        for (EmployeeDTO adminDTO : employeeService.getAll()) {
+        for (EmployeeDTO adminDTO : EmployeeServiceImpl.getInstance().getAll()) {
             String s = adminDTO.toString();
             System.out.println(i + ". " + s);
             i++;
@@ -114,7 +111,7 @@ public class EmployeeControllerImpl implements Controller {
         System.out.println("Выберите позиция для удаления: ");
         try {
             int k = Integer.parseInt(scanner.nextLine());
-            employeeService.deleteInfo(employeeService.getAll().get(k - 1).getId());
+            EmployeeServiceImpl.getInstance().deleteInfo(EmployeeServiceImpl.getInstance().getAll().get(k - 1).getId());
         }catch (IndexOutOfBoundsException e){
             System.out.println("Вы ввели неверный номер из списка");
         }

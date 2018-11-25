@@ -10,39 +10,43 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class EmployeeServiceImpl implements CRUDService<EmployeeDTO> {
-    private EmployeeDAOImpl employeeDAO;
     private EmployeeConverter employeeConverter;
-    private UserDAOImpl userDAO;
+    private static EmployeeServiceImpl instance;
 
-    public EmployeeServiceImpl() {
-        employeeDAO = new EmployeeDAOImpl();
+    private EmployeeServiceImpl(){
         employeeConverter = new EmployeeConverter();
-        userDAO = new UserDAOImpl();
+    }
+
+    public static EmployeeServiceImpl getInstance(){
+        if(instance == null){
+            instance = new EmployeeServiceImpl();
+        }
+        return instance;
     }
 
     @Override
     public void addNew(EmployeeDTO employeeDTO) {
-        employeeDAO.add(employeeConverter.convert(employeeDTO));
+        EmployeeDAOImpl.getInstance().add(employeeConverter.convert(employeeDTO));
     }
 
     @Override
     public void deleteInfo(int id) {
-        employeeDAO.delete(id);
+        EmployeeDAOImpl.getInstance().delete(id);
     }
 
     @Override
     public void updateInfo(EmployeeDTO employeeDTO) {
-        employeeDAO.update(employeeConverter.convert(employeeDTO));
+        EmployeeDAOImpl.getInstance().update(employeeConverter.convert(employeeDTO));
     }
 
     @Override
     public List<EmployeeDTO> getAll() {
-        return employeeDAO.getAll().stream().map(employee -> employeeConverter.convert(employee)).
+        return EmployeeDAOImpl.getInstance().getAll().stream().map(employee -> employeeConverter.convert(employee)).
                 collect(Collectors.toList());
     }
 
     @Override
     public EmployeeDTO get(int id) {
-        return employeeConverter.convert(employeeDAO.get(id));
+        return employeeConverter.convert(EmployeeDAOImpl.getInstance().get(id));
     }
 }

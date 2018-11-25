@@ -9,7 +9,7 @@ public class SpecialityConverter {
     public SpecialityEntity convert(SpecialityDTO specialityDTO) {
         SpecialityEntity specialityEntity = new SpecialityEntity(specialityDTO.getId(),
                 specialityDTO.getName(), 0);
-        for (FacultyEntity facultyEntity : new FacultyDAOImpl().getAll()) {
+        for (FacultyEntity facultyEntity : FacultyDAOImpl.getInstance().getAll()) {
             if (facultyEntity.getName().equals(specialityDTO.getFaculty())) {
                 specialityEntity.setFaculty(facultyEntity);
                 break;

@@ -10,6 +10,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StudentDAOImpl implements IDao<StudentEntity> {
+    private static StudentDAOImpl instance;
+    private StudentDAOImpl(){}
+
+    public static StudentDAOImpl getInstance(){
+        if(instance==null){
+            instance = new StudentDAOImpl();
+        }
+        return instance;
+    }
+
     @Override
     public StudentEntity get(int id) {
         return getAll().stream()
@@ -40,7 +50,7 @@ public class StudentDAOImpl implements IDao<StudentEntity> {
     @Override
     public void delete(int id) {
         getAll().remove(get(id));
-        new UserDAOImpl().getAll().remove(new UserDAOImpl().get(id));
+        UserDAOImpl.getInstance().getAll().remove(UserDAOImpl.getInstance().get(id));
     }
 
     public StudentEntity getByLogin(String login) {

@@ -8,6 +8,16 @@ import com.netcracker.denisik.storage.UserList;
 import java.util.List;
 
 public class AdminDAOImpl implements IDao<AdminEntity> {
+    private static AdminDAOImpl instance;
+
+    private AdminDAOImpl(){}
+
+    public static AdminDAOImpl getInstance(){
+        if(instance==null){
+            instance = new AdminDAOImpl();
+        }
+        return instance;
+    }
 
     @Override
     public AdminEntity get(int id) {
@@ -38,8 +48,10 @@ public class AdminDAOImpl implements IDao<AdminEntity> {
 
     @Override
     public void delete(int id) {
-        getAll().remove(get(id));
-        new UserDAOImpl().getAll().remove(new UserDAOImpl().get(id));
+        if(!get(id).getStatus()) {
+            getAll().remove(get(id));
+            UserDAOImpl.getInstance().getAll().remove(UserDAOImpl.getInstance().get(id));
+        }
     }
 
     public void changeStatus(String login) {

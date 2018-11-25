@@ -10,54 +10,57 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StudentServiceImpl implements CRUDService<StudentDTO> {
-    private StudentDAOImpl studentDAO;
     private StudentConverter studentConverter;
-    private UserDAOImpl userDAO;
+    private static StudentServiceImpl instance;
 
-    public StudentServiceImpl() {
+    private StudentServiceImpl(){
         studentConverter = new StudentConverter();
-        studentDAO = new StudentDAOImpl();
-        userDAO = new UserDAOImpl();
     }
 
+    public static StudentServiceImpl getInstance(){
+        if(instance == null){
+            instance = new StudentServiceImpl();
+        }
+        return instance;
+    }
 
     @Override
     public void addNew(StudentDTO studentDTO) {
-        studentDAO.add(studentConverter.convert(studentDTO));
+        StudentDAOImpl.getInstance().add(studentConverter.convert(studentDTO));
     }
 
     @Override
     public void deleteInfo(int id) {
-        studentDAO.delete(id);
+        StudentDAOImpl.getInstance().delete(id);
     }
 
     public StudentDTO getByLogin(String login) {
-        return studentConverter.convert(studentDAO.getByLogin(login));
+        return studentConverter.convert(StudentDAOImpl.getInstance().getByLogin(login));
     }
 
     public List<StudentDTO> getAllByGroup(int number) {
-        return studentDAO.getAllByGroup(number)
+        return StudentDAOImpl.getInstance().getAllByGroup(number)
                 .stream().map(student -> studentConverter.convert(student)).collect(Collectors.toList());
     }
 
     public List<StudentDTO> getAllBySpeciality(String speciality) {
-        return studentDAO.getAllBySpeciality(speciality).
+        return StudentDAOImpl.getInstance().getAllBySpeciality(speciality).
                 stream().map(student -> studentConverter.convert(student)).collect(Collectors.toList());
     }
 
     @Override
     public void updateInfo(StudentDTO studentDTO) {
-        studentDAO.update(studentConverter.convert(studentDTO));
+        StudentDAOImpl.getInstance().update(studentConverter.convert(studentDTO));
     }
 
 
     @Override
     public List<StudentDTO> getAll() {
-        return studentDAO.getAll().stream().map(student -> studentConverter.convert(student)).collect(Collectors.toList());
+        return StudentDAOImpl.getInstance().getAll().stream().map(student -> studentConverter.convert(student)).collect(Collectors.toList());
     }
 
     @Override
     public StudentDTO get(int id) {
-        return studentConverter.convert(studentDAO.get(id));
+        return studentConverter.convert(StudentDAOImpl.getInstance().get(id));
     }
 }

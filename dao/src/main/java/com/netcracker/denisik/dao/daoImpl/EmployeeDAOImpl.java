@@ -8,6 +8,16 @@ import com.netcracker.denisik.storage.UserList;
 import java.util.List;
 
 public class EmployeeDAOImpl implements IDao<EmployeeEntity> {
+    private static EmployeeDAOImpl instance;
+
+    private EmployeeDAOImpl(){}
+
+    public static EmployeeDAOImpl getInstance(){
+        if(instance==null){
+            instance = new EmployeeDAOImpl();
+        }
+        return instance;
+    }
 
     @Override
     public EmployeeEntity get(int id) {
@@ -39,6 +49,6 @@ public class EmployeeDAOImpl implements IDao<EmployeeEntity> {
     @Override
     public void delete(int id) {
         getAll().remove(get(id));
-        new UserDAOImpl().getAll().remove(new UserDAOImpl().get(id));
+        UserDAOImpl.getInstance().getAll().remove(UserDAOImpl.getInstance().get(id));
     }
 }

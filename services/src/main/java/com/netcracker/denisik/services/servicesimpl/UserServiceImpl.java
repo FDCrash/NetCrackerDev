@@ -11,40 +11,44 @@ import java.util.SplittableRandom;
 import java.util.stream.Collectors;
 
 public class UserServiceImpl implements CRUDService<UserDTO> {
-    private UserDAOImpl userDAO;
     private UserConverter userConverter;
-    private StudentDAOImpl studentDAO;
+    private static UserServiceImpl instance;
 
-    public UserServiceImpl() {
-        userDAO = new UserDAOImpl();
+    private UserServiceImpl(){
         userConverter = new UserConverter();
-        studentDAO = new StudentDAOImpl();
+    }
+
+    public static UserServiceImpl getInstance(){
+        if(instance == null){
+            instance = new UserServiceImpl();
+        }
+        return instance;
     }
 
     @Override
     public void addNew(UserDTO userDTO) {
-        userDAO.add(userConverter.convert(userDTO));
+        UserDAOImpl.getInstance().add(userConverter.convert(userDTO));
     }
 
     @Override
     public void deleteInfo(int id) {
-        userDAO.delete(id);
+        UserDAOImpl.getInstance().delete(id);
     }
 
     @Override
     public void updateInfo(UserDTO userDTO) {
-        userDAO.update(userConverter.convert(userDTO));
+        UserDAOImpl.getInstance().update(userConverter.convert(userDTO));
     }
 
     @Override
     public List<UserDTO> getAll() {
-        return userDAO.getAll().stream().map(user -> userConverter.convert(user)).collect(Collectors.toList());
+        return UserDAOImpl.getInstance().getAll().stream().map(user -> userConverter.convert(user)).collect(Collectors.toList());
     }
 
 
     @Override
     public UserDTO get(int id) {
-        return userConverter.convert(userDAO.get(id));
+        return userConverter.convert(UserDAOImpl.getInstance().get(id));
     }
 
     public int generateId(int bound) {
@@ -52,14 +56,14 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
         int k;
         do {
             k = splittableRandom.nextInt(1, bound);
-        } while (userDAO.get(k) != null);
+        } while (UserDAOImpl.getInstance().get(k) != null);
         return k;
     }
 
     public String registration(int id, String login, String pass) {
-        if (studentDAO.checkStudId(id)) {
-            if (!userDAO.checkLogin(login)) {
-                studentDAO.addNewLoginPass(id, login, pass);
+        if (StudentDAOImpl.getInstance().checkStudId(id)) {
+            if (!UserDAOImpl.getInstance().checkLogin(login)) {
+                StudentDAOImpl.getInstance().addNewLoginPass(id, login, pass);
                 return "Вы успешно зарегистрированы!";
             }
             return "Логин занят!";
@@ -68,10 +72,10 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
     }
 
     public boolean checkLogin(String login) {
-        return !userDAO.checkLogin(login);
+        return !UserDAOImpl.getInstance().checkLogin(login);
     }
 
     public Enum authentication(String login, String pass) {
-        return userDAO.checkLoginPass(login, pass);
+        return UserDAOImpl.getInstance().checkLoginPass(login, pass);
     }
 }

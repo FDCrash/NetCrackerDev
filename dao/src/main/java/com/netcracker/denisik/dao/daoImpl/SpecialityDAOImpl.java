@@ -8,6 +8,17 @@ import com.netcracker.denisik.storage.StudentList;
 import java.util.List;
 
 public class SpecialityDAOImpl implements IDao<SpecialityEntity> {
+    private static SpecialityDAOImpl instance;
+
+    private SpecialityDAOImpl(){}
+
+    public static SpecialityDAOImpl getInstance(){
+        if(instance==null){
+            instance = new SpecialityDAOImpl();
+        }
+        return instance;
+    }
+
     @Override
     public SpecialityEntity get(int id) {
         return getAll().stream()
@@ -24,7 +35,7 @@ public class SpecialityDAOImpl implements IDao<SpecialityEntity> {
     @Override
     public SpecialityEntity add(SpecialityEntity speciality) {
         SpecialityList.getInstance().add(speciality);
-        new FacultyDAOImpl().get(speciality.getFaculty().getId()).setSpeciality(speciality);
+        FacultyDAOImpl.getInstance().get(speciality.getFaculty().getId()).setSpeciality(speciality);
         return get(speciality.getId());
     }
 
@@ -40,7 +51,7 @@ public class SpecialityDAOImpl implements IDao<SpecialityEntity> {
         StudentList.getInstance().get().stream()
                 .filter(student -> student.getSpecialityEntity().getId()==id)
                 .forEach(student-> student.setSpecialityEntity(new SpecialityEntity(0,"Переводится", 0)));
-        new FacultyDAOImpl()
+        FacultyDAOImpl.getInstance()
                 .get(get(id).getFaculty().getId())
                 .getSpecialities()
                 .remove(get(id));

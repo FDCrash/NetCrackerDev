@@ -17,18 +17,10 @@ import static com.netcracker.denisik.dto.RoleDTO.ADMIN;
 import static com.netcracker.denisik.dto.RoleDTO.EMPLOYEE;
 
 public class UserControllerImpl implements Controller {
-    private UserServiceImpl userService;
     private Scanner scanner;
-    private AdminServiceImpl adminService;
-    private EmployeeServiceImpl employeeService;
-    private StudentServiceImpl studentService;
 
     public UserControllerImpl() {
-        userService = new UserServiceImpl();
         scanner = new Scanner(System.in);
-        adminService = new AdminServiceImpl();
-        employeeService = new EmployeeServiceImpl();
-        studentService = new StudentServiceImpl();
     }
 
     @Override
@@ -50,7 +42,7 @@ public class UserControllerImpl implements Controller {
     public void getAll() {
         System.out.println("Пользователи:");
         try{
-            for (UserDTO userDTO : userService.getAll()) {
+            for (UserDTO userDTO : UserServiceImpl.getInstance().getAll()) {
                 String s = userDTO.toString();
                 System.out.println(s);
             }
@@ -67,10 +59,12 @@ public class UserControllerImpl implements Controller {
         String role = scanner.nextLine();
         System.out.println("Введите логин: ");
         String login = scanner.nextLine();
-        if (userService.checkLogin(login)) {
+        if (UserServiceImpl.getInstance().checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.nextLine();
-            userService.addNew(new UserDTO(userService.generateId(1000), RoleDTO.valueOf(role.toUpperCase()),
+            UserServiceImpl.getInstance().
+                    addNew(new UserDTO(UserServiceImpl.getInstance().generateId(1000),
+                            RoleDTO.valueOf(role.toUpperCase()),
                     login, password));
         } else {
             System.out.println("Логин занят");
@@ -84,7 +78,7 @@ public class UserControllerImpl implements Controller {
         int z = 1;
         String password;
         UserDTO userDTO;
-        for (UserDTO user : userService.getAll()) {
+        for (UserDTO user : UserServiceImpl.getInstance().getAll()) {
             String s = user.toString();
             System.out.println(z + ". " + s);
             z++;
@@ -92,27 +86,27 @@ public class UserControllerImpl implements Controller {
         System.out.println("Выберите позицию для изменения: ");
         try {
             int k = Integer.parseInt(scanner.nextLine());
-            userDTO = userService.getAll().get(k - 1);
+            userDTO = UserServiceImpl.getInstance().getAll().get(k - 1);
             System.out.println(userDTO.toString());
             System.out.println("Введите роль (admin/employee):");
             String role = scanner.nextLine();
             System.out.println("Введите логин: ");
             String login = scanner.nextLine();
-            if (login.equals(userDTO.getLogin()) || userService.checkLogin(login)) {
+            if (login.equals(userDTO.getLogin()) || UserServiceImpl.getInstance().checkLogin(login)) {
                 switch (RoleDTO.valueOf(role.toUpperCase())) {
                     case ADMIN:
                         System.out.println("Введите пароль: ");
                         password = scanner.nextLine();
                         if (userDTO.getRoleDTO().equals(ADMIN)) {
-                            userService.updateInfo(new UserDTO(userDTO.getId(), ADMIN, login, password));
+                            UserServiceImpl.getInstance().updateInfo(new UserDTO(userDTO.getId(), ADMIN, login, password));
                         } else {
                             if (userDTO.getRoleDTO().equals(RoleDTO.EMPLOYEE)) {
-                                employeeService.deleteInfo(userDTO.getId());
+                                EmployeeServiceImpl.getInstance().deleteInfo(userDTO.getId());
                             }
                             if (userDTO.getRoleDTO().equals(RoleDTO.STUDENT)) {
-                                studentService.deleteInfo(userDTO.getId());
+                                StudentServiceImpl.getInstance().deleteInfo(userDTO.getId());
                             }
-                            adminService.addNew(new AdminDTO(new UserDTO(userDTO.getId(),
+                            AdminServiceImpl.getInstance().addNew(new AdminDTO(new UserDTO(userDTO.getId(),
                                     ADMIN, login, password), false));
                         }
                         break;
@@ -120,17 +114,17 @@ public class UserControllerImpl implements Controller {
                         System.out.println("Введите пароль: ");
                         password = scanner.nextLine();
                         if (userDTO.getRoleDTO().equals(RoleDTO.EMPLOYEE)) {
-                            userService.updateInfo(new UserDTO(userDTO.getId(), EMPLOYEE, login, password));
+                            UserServiceImpl.getInstance().updateInfo(new UserDTO(userDTO.getId(), EMPLOYEE, login, password));
                         } else {
                             if (userDTO.getRoleDTO().equals(ADMIN)) {
-                                adminService.deleteInfo(userDTO.getId());
+                                AdminServiceImpl.getInstance().deleteInfo(userDTO.getId());
                             }
                             if (userDTO.getRoleDTO().equals(RoleDTO.STUDENT)) {
-                                studentService.deleteInfo(userDTO.getId());
+                                StudentServiceImpl.getInstance().deleteInfo(userDTO.getId());
                             }
                             System.out.println("Введите имя: ");
                             String name = scanner.nextLine();
-                            employeeService.addNew(new EmployeeDTO(new UserDTO(userDTO.getId(),
+                            EmployeeServiceImpl.getInstance().addNew(new EmployeeDTO(new UserDTO(userDTO.getId(),
                                     RoleDTO.EMPLOYEE, login, password), name));
                         }
                         break;
@@ -154,7 +148,7 @@ public class UserControllerImpl implements Controller {
     public void delete() {
         System.out.println("Пользователи:");
         int i = 1;
-        for (UserDTO userDTO : userService.getAll()) {
+        for (UserDTO userDTO : UserServiceImpl.getInstance().getAll()) {
             String s = userDTO.toString();
             System.out.println(i + ". " + s);
             i++;
@@ -162,10 +156,10 @@ public class UserControllerImpl implements Controller {
         System.out.println("Выберите позицию для удаления: ");
         try {
             int k = Integer.parseInt(scanner.nextLine());
-            if (userService.getAll().get(k - 1).getRoleDTO().equals(ADMIN)) {
+            if (UserServiceImpl.getInstance().getAll().get(k - 1).getRoleDTO().equals(ADMIN)) {
                 System.out.println("Вы хотите удалить админа, перейдите в CRUD админов!");
             } else {
-                userService.deleteInfo(userService.getAll().get(k - 1).getId());
+                UserServiceImpl.getInstance().deleteInfo(UserServiceImpl.getInstance().getAll().get(k - 1).getId());
             }
         }catch (IndexOutOfBoundsException e){
             System.out.println("Вы ввели неверный номер из списка");

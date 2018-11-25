@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAOImpl implements IDao<UserEntity> {
-    private StudentDAOImpl studentDAO;
-    private EmployeeDAOImpl employeeDAO;
-    private AdminDAOImpl adminDAO;
+    private static UserDAOImpl instance;
+    private UserDAOImpl(){}
 
-    public UserDAOImpl() {
-        adminDAO = new AdminDAOImpl();
-        studentDAO = new StudentDAOImpl();
-        employeeDAO = new EmployeeDAOImpl();
+    public static UserDAOImpl getInstance(){
+        if(instance==null){
+            instance = new UserDAOImpl();
+        }
+        return instance;
     }
 
     @Override
@@ -36,13 +36,13 @@ public class UserDAOImpl implements IDao<UserEntity> {
     public UserEntity add(UserEntity userEntity) {
         switch (userEntity.getRole()) {
             case ADMIN:
-                adminDAO.add(new AdminEntity(new UserEntity(userEntity), false));
+                AdminDAOImpl.getInstance().add(new AdminEntity(new UserEntity(userEntity), false));
                 break;
             case EMPLOYEE:
-                employeeDAO.add(new EmployeeEntity(new UserEntity(userEntity), ""));
+                EmployeeDAOImpl.getInstance().add(new EmployeeEntity(new UserEntity(userEntity), ""));
                 break;
             case STUDENT:
-                studentDAO.add(new StudentEntity(new UserEntity(userEntity),
+                StudentDAOImpl.getInstance().add(new StudentEntity(new UserEntity(userEntity),
                         "", 0, 0, 0, new ArrayList<>()));
         }
         return get(userEntity.getId());
@@ -53,18 +53,18 @@ public class UserDAOImpl implements IDao<UserEntity> {
         int k = user.getId();
         switch (user.getRole()) {
             case ADMIN:
-                adminDAO.update(new AdminEntity(new UserEntity(user),
-                        adminDAO.get(k).getStatus()));
+                AdminDAOImpl.getInstance().update(new AdminEntity(new UserEntity(user),
+                        AdminDAOImpl.getInstance().get(k).getStatus()));
                 break;
             case EMPLOYEE:
-                employeeDAO.update(new EmployeeEntity(new UserEntity(user),
-                        employeeDAO.get(k).getName()));
+                EmployeeDAOImpl.getInstance().update(new EmployeeEntity(new UserEntity(user),
+                        EmployeeDAOImpl.getInstance().get(k).getName()));
                 break;
             case STUDENT:
-                studentDAO.update(new StudentEntity(new UserEntity(user),
-                        studentDAO.get(k).getName(), studentDAO.get(k).getStudentId(),
-                        studentDAO.get(k).getGroupId(), studentDAO.get(k).getSpecialityEntity().getId(),
-                        studentDAO.get(k).getWriteBook()));
+                StudentDAOImpl.getInstance().update(new StudentEntity(new UserEntity(user),
+                        StudentDAOImpl.getInstance().get(k).getName(), StudentDAOImpl.getInstance().get(k).getStudentId(),
+                        StudentDAOImpl.getInstance().get(k).getGroupId(), StudentDAOImpl.getInstance().get(k).getSpecialityEntity().getId(),
+                        StudentDAOImpl.getInstance().get(k).getWriteBook()));
         }
         return get(user.getId());
     }
@@ -73,13 +73,13 @@ public class UserDAOImpl implements IDao<UserEntity> {
     public void delete(int id) {
         switch (get(id).getRole()) {
             case ADMIN:
-                adminDAO.delete(id);
+                AdminDAOImpl.getInstance().delete(id);
                 break;
             case EMPLOYEE:
-                employeeDAO.delete(id);
+                EmployeeDAOImpl.getInstance().delete(id);
                 break;
             case STUDENT:
-                studentDAO.delete(id);
+                StudentDAOImpl.getInstance().delete(id);
         }
     }
 

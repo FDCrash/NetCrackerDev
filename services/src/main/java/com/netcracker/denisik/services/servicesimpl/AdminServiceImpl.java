@@ -11,41 +11,47 @@ import java.util.stream.Collectors;
 
 public class AdminServiceImpl implements CRUDService<AdminDTO> {
     private AdminConverter adminConverter;
-    private AdminDAOImpl adminDAO;
-    private UserDAOImpl userDAO;
+    private static AdminServiceImpl instance;
 
-    public AdminServiceImpl() {
+    private AdminServiceImpl(){
         adminConverter = new AdminConverter();
-        adminDAO = new AdminDAOImpl();
-        userDAO = new UserDAOImpl();
+    }
+
+    public static AdminServiceImpl getInstance(){
+        if(instance == null){
+            instance = new AdminServiceImpl();
+        }
+        return instance;
     }
 
     @Override
     public void addNew(AdminDTO adminDTO) {
-        adminDAO.add(adminConverter.convert(adminDTO));
+        AdminDAOImpl.getInstance().add(adminConverter.convert(adminDTO));
     }
 
     @Override
     public void deleteInfo(int id) {
-        adminDAO.delete(id);
+        AdminDAOImpl.getInstance().delete(id);
     }
 
     @Override
     public void updateInfo(AdminDTO adminDTO) {
-        adminDAO.update(adminConverter.convert(adminDTO));
+        AdminDAOImpl.getInstance().update(adminConverter.convert(adminDTO));
     }
 
     @Override
     public List<AdminDTO> getAll() {
-        return adminDAO.getAll().stream().map(admin -> adminConverter.convert(admin)).collect(Collectors.toList());
+        return AdminDAOImpl.getInstance()
+                .getAll().stream().
+                        map(admin -> adminConverter.convert(admin)).collect(Collectors.toList());
     }
 
     @Override
     public AdminDTO get(int id) {
-        return adminConverter.convert(adminDAO.get(id));
+        return adminConverter.convert(AdminDAOImpl.getInstance().get(id));
     }
 
     public void changeStatusAdmin(String login) {
-        adminDAO.changeStatus(login);
+        AdminDAOImpl.getInstance().changeStatus(login);
     }
 }

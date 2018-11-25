@@ -11,14 +11,10 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class FacultyControllerImpl implements Controller {
-    private FacultyServiceImpl facultyService;
     private Scanner scanner;
-    private SpecialityServiceImpl specialityService;
 
     public FacultyControllerImpl() {
-        facultyService = new FacultyServiceImpl();
         scanner = new Scanner(System.in);
-        specialityService = new SpecialityServiceImpl();
     }
 
     @Override
@@ -40,7 +36,7 @@ public class FacultyControllerImpl implements Controller {
     public void getAll() {
         System.out.println("Факультеты:");
         try{
-            for (FacultyDTO facultyDTO : facultyService.getAll()) {
+            for (FacultyDTO facultyDTO : FacultyServiceImpl.getInstance().getAll()) {
                 String s = facultyDTO.toString();
                 System.out.println(s);
             }
@@ -62,9 +58,9 @@ public class FacultyControllerImpl implements Controller {
         for (int i = 1; i <= n; i++) {
             System.out.print(i + ". ");
             specialities.add(scanner.nextLine());
-            specialitiesId.add(specialityService.generateId(50));
+            specialitiesId.add(SpecialityServiceImpl.getInstance().generateId(50));
         }
-        facultyService.addNew(new FacultyDTO(facultyService.generateId(50),
+        FacultyServiceImpl.getInstance().addNew(new FacultyDTO(FacultyServiceImpl.getInstance().generateId(50),
                 name, specialities, specialitiesId));
         editMenu();
     }
@@ -74,7 +70,7 @@ public class FacultyControllerImpl implements Controller {
         System.out.println("Факультеты:");
         int z = 1;
         FacultyDTO facultyDTO;
-        for (FacultyDTO faculty : facultyService.getAll()) {
+        for (FacultyDTO faculty : FacultyServiceImpl.getInstance().getAll()) {
             String s = faculty.toString();
             System.out.println(z + ". " + s);
             z++;
@@ -82,10 +78,10 @@ public class FacultyControllerImpl implements Controller {
         System.out.println("Выберите позицию для изменения");
         try {
             int k = Integer.parseInt(scanner.nextLine());
-            facultyDTO = facultyService.getAll().get(k - 1);
+            facultyDTO = FacultyServiceImpl.getInstance().getAll().get(k - 1);
             System.out.println("Введите название факультета: ");
             String name = scanner.nextLine();
-            facultyService.updateInfo(new FacultyDTO(facultyDTO.getId(), name,
+            FacultyServiceImpl.getInstance().updateInfo(new FacultyDTO(facultyDTO.getId(), name,
                     facultyDTO.getSpecialities(), facultyDTO.getSpecialitiesId()));
         }catch (IndexOutOfBoundsException e){
             System.out.println("Вы ввели неверный номер из списка");
@@ -97,7 +93,7 @@ public class FacultyControllerImpl implements Controller {
     public void delete() {
         System.out.println("Факультеты:");
         int i = 1;
-        for (FacultyDTO faculty : facultyService.getAll()) {
+        for (FacultyDTO faculty : FacultyServiceImpl.getInstance().getAll()) {
             String s = faculty.toString();
             System.out.println(i + ". " + s);
             i++;
@@ -105,7 +101,7 @@ public class FacultyControllerImpl implements Controller {
         System.out.println("Выберите позицию для удаления: ");
         try {
             int k = Integer.parseInt(scanner.nextLine());
-            facultyService.deleteInfo(facultyService.getAll().get(k - 1).getId());
+            FacultyServiceImpl.getInstance().deleteInfo(FacultyServiceImpl.getInstance().getAll().get(k - 1).getId());
         }catch (IndexOutOfBoundsException e){
             System.out.println("Вы ввели неверный номер из списка");
         }

@@ -19,7 +19,7 @@ public class StudentConverter {
         return new StudentEntity(new UserEntity(studentDTO.getId(),
                 Role.valueOf(studentDTO.getRoleDTO().name()), studentDTO.getLogin(),
                 studentDTO.getPassword()), studentDTO.getName(), studentDTO.getStudentId(),
-                studentDTO.getGroupId(),new SpecialityDAOImpl().getAll().stream()
+                studentDTO.getGroupId(),SpecialityDAOImpl.getInstance().getAll().stream()
                 .filter(specialityEntity -> specialityEntity.getName().equals(studentDTO.getSpeciality()))
                 .findFirst().get(), writeBooks);
     }
