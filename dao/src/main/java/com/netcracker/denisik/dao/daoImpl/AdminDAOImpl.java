@@ -57,7 +57,7 @@ public class AdminDAOImpl extends AbstractDao<AdminEntity> {
                 System.out.println("Проблемы с закрытием");
             }
         }
-        return AdminList.getInstance().get();
+        return list;
     }
 
     @Override
