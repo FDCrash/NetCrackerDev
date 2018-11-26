@@ -1,14 +1,18 @@
 package com.netcracker.denisik.dao.daoImpl;
 
 
+import com.netcracker.denisik.dao.AbstractDao;
 import com.netcracker.denisik.dao.IDao;
 import com.netcracker.denisik.entities.*;
+import com.netcracker.denisik.sql.Database;
+import com.netcracker.denisik.sql.SqlRequest;
 import com.netcracker.denisik.storage.UserList;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOImpl implements IDao<UserEntity> {
+public class UserDAOImpl extends AbstractDao <UserEntity>{
     private static UserDAOImpl instance;
     private UserDAOImpl(){}
 
@@ -21,15 +25,53 @@ public class UserDAOImpl implements IDao<UserEntity> {
 
     @Override
     public UserEntity get(int id) {
-        return getAll().stream()
-                .filter(user -> user.getId()==id)
-                .findFirst()
-                .orElse(null);
+        UserEntity userEntity=null;
+        try {
+            connection = Database.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.GET_USER_BY_ID);
+            statement.setInt(1,id);
+            result = statement.executeQuery();
+            while(result.next()){
+                userEntity =new UserEntity(result.getInt(1),
+                        Role.valueOf(result.getString(2)),
+                        result.getString(3),result.getString(4));
+            }
+        }catch (SQLException e){
+            System.out.println("Проблемы с бд(пользователь)");
+        }finally {
+            try {
+                statement.close();
+                result.close();
+            }catch(SQLException e){
+                System.out.println("Проблемы с закрытием(пользователь)");
+            }
+        }
+        return userEntity;
     }
 
     @Override
     public List<UserEntity> getAll() {
-        return UserList.getInstance().get();
+        List<UserEntity> list=new ArrayList<>();
+        try {
+            connection = Database.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.GET_ALL_USERS);
+            result = statement.executeQuery();
+            while(result.next()){
+                list.add(new UserEntity(result.getInt(1),
+                        Role.valueOf(result.getString(2)),
+                        result.getString(3),result.getString(4)));
+            }
+        }catch (SQLException e){
+            System.out.println("Проблемы с бд(пользователи)");
+        }finally {
+            try {
+                statement.close();
+                result.close();
+            }catch(SQLException e){
+                System.out.println("Проблемы с закрытием(пользователи)");
+            }
+        }
+        return list;
     }
 
     @Override

@@ -5,16 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class PoolManager {
-    private static PoolManager instance;
+public class Database {
+    private static Database instance;
 
 
-    private PoolManager() {
+    private Database() {
     }
 
-    public static PoolManager getInstance(){
+    public static Database getInstance(){
         if(instance == null){
-            instance = new PoolManager();
+            instance = new Database();
         }
         return instance;
     }

@@ -1,19 +1,26 @@
 package com.netcracker.denisik.dao.daoImpl;
 
-import com.netcracker.denisik.dao.IDao;
+import com.netcracker.denisik.dao.AbstractDao;
 import com.netcracker.denisik.entities.EmployeeEntity;
+import com.netcracker.denisik.entities.Role;
+import com.netcracker.denisik.entities.UserEntity;
+import com.netcracker.denisik.sql.Database;
+import com.netcracker.denisik.sql.SqlRequest;
 import com.netcracker.denisik.storage.EmployeeList;
 import com.netcracker.denisik.storage.UserList;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeDAOImpl implements IDao<EmployeeEntity> {
+public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
     private static EmployeeDAOImpl instance;
 
-    private EmployeeDAOImpl(){}
+    private EmployeeDAOImpl() {
+    }
 
-    public static EmployeeDAOImpl getInstance(){
-        if(instance==null){
+    public static EmployeeDAOImpl getInstance() {
+        if (instance == null) {
             instance = new EmployeeDAOImpl();
         }
         return instance;
@@ -21,15 +28,55 @@ public class EmployeeDAOImpl implements IDao<EmployeeEntity> {
 
     @Override
     public EmployeeEntity get(int id) {
-        return getAll().stream()
-                .filter(employee -> employee.getId()==id)
-                .findFirst()
-                .orElse(null);
+        EmployeeEntity employeeEntity = null;
+        try {
+            connection = Database.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.GET_EMPLOYEE_BY_ID);
+            statement.setInt(1, id);
+            result = statement.executeQuery();
+            while (result.next()) {
+                employeeEntity = new EmployeeEntity(new UserEntity(result.getInt(1),
+                        Role.valueOf(result.getString(2)),
+                        result.getString(3), result.getString(4)),
+                        result.getString(5));
+            }
+        } catch (SQLException e) {
+            System.out.println("Проблемы с бд(сотрудник)");
+        } finally {
+            try {
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием(сотрудник)");
+            }
+        }
+        return employeeEntity;
     }
 
     @Override
     public List<EmployeeEntity> getAll() {
-        return EmployeeList.getInstance().get();
+        List<EmployeeEntity> list = new ArrayList<>();
+        try {
+            connection = Database.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.GET_ALL_EMPLOYEES);
+            result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new EmployeeEntity(new UserEntity(result.getInt(1),
+                        Role.valueOf(result.getString(2)),
+                        result.getString(3), result.getString(4)),
+                        result.getString(5)));
+            }
+        } catch (SQLException e) {
+            System.out.println("Проблемы с бд(сотрудники)");
+        } finally {
+            try {
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием(сотрудники)");
+            }
+        }
+        return list;
     }
 
     @Override

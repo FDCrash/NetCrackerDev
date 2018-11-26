@@ -42,7 +42,8 @@ public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
 
     @Override
     public List<FacultyDTO> getAll() {
-        return FacultyDAOImpl.getInstance().getAll().stream().map(faculty -> facultyConverter.convert(faculty)).
+        return FacultyDAOImpl.getInstance().getAll().stream()
+                .map(faculty -> facultyConverter.convert(faculty)).
                 collect(Collectors.toList());
     }
 
