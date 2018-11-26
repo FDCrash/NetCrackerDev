@@ -79,6 +79,7 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
     @Override
     public SpecialityEntity add(SpecialityEntity specialityEntity) {
         try {
+            connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.ADD_SPECIALITY);
             statement.setInt(1, specialityEntity.getId());
             statement.setString(2, specialityEntity.getName());

@@ -80,6 +80,7 @@ public class AdminDAOImpl extends AbstractDao<AdminEntity> {
     @Override
     public AdminEntity add(AdminEntity adminEntity) {
         try {
+            connection = DatabaseConnector.getInstance().getConnection();
             addUser(new UserEntity(adminEntity.getId(),adminEntity.getRole(),
                     adminEntity.getLogin(),adminEntity.getPassword()));
             statement = connection.prepareStatement(SqlRequest.ADD_ADMIN);

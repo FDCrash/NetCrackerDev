@@ -83,6 +83,7 @@ public class FacultyDAOImpl extends AbstractDao<FacultyEntity> {
     @Override
     public FacultyEntity add(FacultyEntity facultyEntity) {
         try {
+            connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.ADD_FACULTY);
             statement.setInt(1, facultyEntity.getId());
             statement.setString(2, facultyEntity.getName());

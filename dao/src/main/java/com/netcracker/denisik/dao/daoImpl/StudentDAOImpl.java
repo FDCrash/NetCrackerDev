@@ -45,13 +45,13 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
                         .get(result.getInt(8)),WriteBookDAO.getInstance().get(result.getInt(6)));
             }
         }catch (SQLException e){
-            System.out.println("Проблемы с бд(студенты)");
+            System.out.println("Проблемы с бд(студент)");
         }finally {
             try {
                 statement.close();
                 result.close();
             }catch(SQLException e){
-                System.out.println("Проблемы с закрытием(студенты)");
+                System.out.println("Проблемы с закрытием(студент)");
             }
         }
         return studentEntity;
@@ -88,8 +88,12 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
     @Override
     public StudentEntity add(StudentEntity studentEntity) {
         try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            if(studentEntity.getLogin().equals("")){
+                studentEntity.setLogin(null);
+            }
             addUser(new UserEntity(studentEntity.getId(),studentEntity.getRole(),
-                    studentEntity.getLogin(),studentEntity.getName()));
+                    studentEntity.getLogin(),studentEntity.getPassword()));
             statement = connection.prepareStatement(SqlRequest.ADD_STUDENT);
             statement.setInt(1, studentEntity.getId());
             statement.setString(2, studentEntity.getName());
@@ -98,15 +102,15 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
             statement.setInt(5,studentEntity.getSpecialityEntity().getId());
             statement.executeUpdate();
             for(WriteBook writeBook:studentEntity.getWriteBook()) {
-                WriteBookDAO.getInstance().add(writeBook,studentEntity.getId());
+                WriteBookDAO.getInstance().add(writeBook,studentEntity.getStudentId());
             }
         } catch (SQLException e) {
-            System.out.println("Проблемы с записью бд(сотрудник)");
+            System.out.println("Проблемы с записью бд(студент)");
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием записи в бд(сотрудник)");
+                System.out.println("Проблемы с закрытием записи в бд(студент)");
             }
         }
         return get(studentEntity.getId());

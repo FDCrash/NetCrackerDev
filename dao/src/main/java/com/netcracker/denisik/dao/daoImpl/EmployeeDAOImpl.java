@@ -82,6 +82,7 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
     @Override
     public EmployeeEntity add(EmployeeEntity employeeEntity) {
         try {
+            connection = DatabaseConnector.getInstance().getConnection();
             addUser(new UserEntity(employeeEntity.getId(),employeeEntity.getRole(),
                     employeeEntity.getLogin(),employeeEntity.getName()));
             statement = connection.prepareStatement(SqlRequest.ADD_EMPLOYEE);

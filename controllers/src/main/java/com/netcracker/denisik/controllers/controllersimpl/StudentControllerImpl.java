@@ -112,6 +112,8 @@ public class StudentControllerImpl implements Controller {
         String subj;
         int mark;
         for (int i = 1; i <= n; i++) {
+            marks.clear();
+            subjects.clear();
             System.out.println("Введите колво предметов за " + i + " семестр: ");
             kol=Integer.parseInt(scanner.nextLine());
             for(int j=1; j <=kol;j++){

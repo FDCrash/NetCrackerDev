@@ -13,7 +13,7 @@ import java.util.List;
 public class StudentConverter {
     public StudentEntity convert(StudentDTO studentDTO) {
         List<WriteBook> writeBooks=new ArrayList<>();
-        studentDTO.getWriteBook().stream().
+        studentDTO.getWriteBook().
                 forEach(writeBookDTO -> writeBooks.
                         add(new WriteBook(writeBookDTO.getSem(),writeBookDTO.getSubjects(),writeBookDTO.getMarks())));
         return new StudentEntity(new UserEntity(studentDTO.getId(),
@@ -26,7 +26,7 @@ public class StudentConverter {
 
     public StudentDTO convert(StudentEntity studentEntity) {
         List<WriteBookDTO> writeBookDTO=new ArrayList<>();
-        studentEntity.getWriteBook().stream().
+        studentEntity.getWriteBook().
                 forEach(writeBook -> writeBookDTO.
                         add(new WriteBookDTO(writeBook.getSem(),writeBook.getSubjects(),writeBook.getMarks())));
         return new StudentDTO(new UserDTO(studentEntity.getId(), RoleDTO.valueOf(studentEntity.getRole().name()),

@@ -101,10 +101,11 @@ public class UserDAOImpl extends AbstractDao <UserEntity>{
                         EmployeeDAOImpl.getInstance().get(k).getName()));
                 break;
             case STUDENT:
+                StudentEntity studentEntity= StudentDAOImpl.getInstance().get(k);
                 StudentDAOImpl.getInstance().update(new StudentEntity(new UserEntity(user),
-                        StudentDAOImpl.getInstance().get(k).getName(), StudentDAOImpl.getInstance().get(k).getStudentId(),
-                        StudentDAOImpl.getInstance().get(k).getGroupId(), StudentDAOImpl.getInstance().get(k).getSpecialityEntity().getId(),
-                        StudentDAOImpl.getInstance().get(k).getWriteBook()));
+                        studentEntity.getName(), studentEntity.getStudentId(),
+                        studentEntity.getGroupId(), studentEntity.getSpecialityEntity().getId(),
+                       studentEntity.getWriteBook()));
         }
         return get(user.getId());
     }

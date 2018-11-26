@@ -70,6 +70,7 @@ public class WriteBookDAO {
 
     public void add(WriteBook writeBook,int id){
         try {
+            connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.ADD_WRITEBOOK);
             for(int i=0;i<writeBook.getMarks().size();i++){
                 statement.setInt(1,id);
@@ -79,12 +80,12 @@ public class WriteBookDAO {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            System.out.println("Проблемы с записью бд(сотрудник)");
+            System.out.println("Проблемы с записью бд(зачетка)");
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием записи в бд(сотрудник)");
+                System.out.println("Проблемы с закрытием записи в бд(зачетка)");
             }
         }
     }
