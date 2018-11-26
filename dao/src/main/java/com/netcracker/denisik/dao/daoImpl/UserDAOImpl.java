@@ -2,11 +2,9 @@ package com.netcracker.denisik.dao.daoImpl;
 
 
 import com.netcracker.denisik.dao.AbstractDao;
-import com.netcracker.denisik.dao.IDao;
 import com.netcracker.denisik.entities.*;
-import com.netcracker.denisik.sql.Database;
+import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
-import com.netcracker.denisik.storage.UserList;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,7 +25,7 @@ public class UserDAOImpl extends AbstractDao <UserEntity>{
     public UserEntity get(int id) {
         UserEntity userEntity=null;
         try {
-            connection = Database.getInstance().getConnection();
+            connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_USER_BY_ID);
             statement.setInt(1,id);
             result = statement.executeQuery();
@@ -53,7 +51,7 @@ public class UserDAOImpl extends AbstractDao <UserEntity>{
     public List<UserEntity> getAll() {
         List<UserEntity> list=new ArrayList<>();
         try {
-            connection = Database.getInstance().getConnection();
+            connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_ALL_USERS);
             result = statement.executeQuery();
             while(result.next()){

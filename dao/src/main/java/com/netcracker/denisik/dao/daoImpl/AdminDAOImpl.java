@@ -4,10 +4,8 @@ import com.netcracker.denisik.dao.AbstractDao;
 import com.netcracker.denisik.entities.AdminEntity;
 import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.entities.UserEntity;
-import com.netcracker.denisik.sql.Database;
+import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
-import com.netcracker.denisik.storage.AdminList;
-import com.netcracker.denisik.storage.UserList;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public class AdminDAOImpl extends AbstractDao<AdminEntity> {
     public AdminEntity get(int id) {
         AdminEntity adminEntity=null;
         try {
-            connection = Database.getInstance().getConnection();
+            connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_ADMIN_BY_ID);
             statement.setInt(1, id);
             result = statement.executeQuery();
@@ -57,7 +55,7 @@ public class AdminDAOImpl extends AbstractDao<AdminEntity> {
     public List<AdminEntity> getAll() {
         List<AdminEntity> list=new ArrayList<>();
         try {
-            connection = Database.getInstance().getConnection();
+            connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_ALL_ADMINS);
             result = statement.executeQuery();
             while(result.next()){
@@ -81,12 +79,27 @@ public class AdminDAOImpl extends AbstractDao<AdminEntity> {
 
     @Override
     public AdminEntity add(AdminEntity adminEntity) {
-
+        try {
+            addUser(new UserEntity(adminEntity.getId(),adminEntity.getRole(),
+                    adminEntity.getLogin(),adminEntity.getPassword()));
+            statement = connection.prepareStatement(SqlRequest.ADD_ADMIN);
+            statement.setInt(1, adminEntity.getId());
+            statement.setBoolean(2, adminEntity.getStatus());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Проблемы с записью бд(админ)");
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием записи в бд(админ)");
+            }
+        }
         return get(adminEntity.getId());
     }
 
     @Override
-    public AdminEntity update(AdminEntity adming) {
+    public AdminEntity update(AdminEntity admin) {
         delete(admin.getId());
         add(admin);
         return get(admin.getId());

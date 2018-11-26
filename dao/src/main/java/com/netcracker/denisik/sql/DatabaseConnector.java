@@ -5,16 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class Database {
-    private static Database instance;
+public class DatabaseConnector {
+    private static DatabaseConnector instance;
 
 
-    private Database() {
+    private DatabaseConnector() {
     }
 
-    public static Database getInstance(){
+    public static DatabaseConnector getInstance(){
         if(instance == null){
-            instance = new Database();
+            instance = new DatabaseConnector();
         }
         return instance;
     }

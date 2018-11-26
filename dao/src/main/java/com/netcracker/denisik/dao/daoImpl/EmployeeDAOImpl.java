@@ -4,7 +4,7 @@ import com.netcracker.denisik.dao.AbstractDao;
 import com.netcracker.denisik.entities.EmployeeEntity;
 import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.entities.UserEntity;
-import com.netcracker.denisik.sql.Database;
+import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
 import com.netcracker.denisik.storage.EmployeeList;
 import com.netcracker.denisik.storage.UserList;
@@ -30,7 +30,7 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
     public EmployeeEntity get(int id) {
         EmployeeEntity employeeEntity = null;
         try {
-            connection = Database.getInstance().getConnection();
+            connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_EMPLOYEE_BY_ID);
             statement.setInt(1, id);
             result = statement.executeQuery();
@@ -41,13 +41,13 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
                         result.getString(5));
             }
         } catch (SQLException e) {
-            System.out.println("Проблемы с бд(сотрудник)");
+            System.out.println("Проблемы с чтением бд(сотрудник)");
         } finally {
             try {
                 statement.close();
                 result.close();
             } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием(сотрудник)");
+                System.out.println("Проблемы с чтением закрытием(сотрудник)");
             }
         }
         return employeeEntity;
@@ -57,7 +57,7 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
     public List<EmployeeEntity> getAll() {
         List<EmployeeEntity> list = new ArrayList<>();
         try {
-            connection = Database.getInstance().getConnection();
+            connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_ALL_EMPLOYEES);
             result = statement.executeQuery();
             while (result.next()) {
@@ -67,13 +67,13 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
                         result.getString(5)));
             }
         } catch (SQLException e) {
-            System.out.println("Проблемы с бд(сотрудники)");
+            System.out.println("Проблемы с чтением бд(сотрудники)");
         } finally {
             try {
                 statement.close();
                 result.close();
             } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием(сотрудники)");
+                System.out.println("Проблемы с чтением закрытием(сотрудники)");
             }
         }
         return list;
@@ -81,8 +81,22 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
 
     @Override
     public EmployeeEntity add(EmployeeEntity employeeEntity) {
-        EmployeeList.getInstance().add(employeeEntity);
-        UserList.getInstance().addEmployee(employeeEntity);
+        try {
+            addUser(new UserEntity(employeeEntity.getId(),employeeEntity.getRole(),
+                    employeeEntity.getLogin(),employeeEntity.getName()));
+            statement = connection.prepareStatement(SqlRequest.ADD_EMPLOYEE);
+            statement.setInt(1, employeeEntity.getId());
+            statement.setString(2, employeeEntity.getName());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Проблемы с записью бд(сотрудник)");
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием записи в бд(сотрудник)");
+            }
+        }
         return get(employeeEntity.getId());
     }
 

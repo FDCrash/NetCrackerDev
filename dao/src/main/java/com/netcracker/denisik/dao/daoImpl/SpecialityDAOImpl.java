@@ -1,9 +1,8 @@
 package com.netcracker.denisik.dao.daoImpl;
 
 import com.netcracker.denisik.dao.AbstractDao;
-import com.netcracker.denisik.dao.IDao;
 import com.netcracker.denisik.entities.SpecialityEntity;
-import com.netcracker.denisik.sql.Database;
+import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
 import com.netcracker.denisik.storage.SpecialityList;
 import com.netcracker.denisik.storage.StudentList;
@@ -28,7 +27,7 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
     public SpecialityEntity get(int id) {
         SpecialityEntity specialityEntity = null;
         try {
-            connection = Database.getInstance().getConnection();
+            connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_SPECIALITY_BY_ID);
             statement.setInt(1,id);
             result = statement.executeQuery();
@@ -55,7 +54,7 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
     public List<SpecialityEntity> getAll() {
         List<SpecialityEntity> list = new ArrayList<>();
         try {
-            connection = Database.getInstance().getConnection();
+            connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_ALL_SPECIALITIES);
             result = statement.executeQuery();
             while (result.next()) {
@@ -78,10 +77,23 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
     }
 
     @Override
-    public SpecialityEntity add(SpecialityEntity speciality) {
-        SpecialityList.getInstance().add(speciality);
-        FacultyDAOImpl.getInstance().get(speciality.getFaculty().getId()).setSpeciality(speciality);
-        return get(speciality.getId());
+    public SpecialityEntity add(SpecialityEntity specialityEntity) {
+        try {
+            statement = connection.prepareStatement(SqlRequest.ADD_SPECIALITY);
+            statement.setInt(1, specialityEntity.getId());
+            statement.setString(2, specialityEntity.getName());
+            statement.setInt(3,specialityEntity.getFaculty().getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Проблемы с записью бд(специальность)");
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием записи(специальность)");
+            }
+        }
+        return get(specialityEntity.getId());
     }
 
     @Override
@@ -106,7 +118,7 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
     public List<SpecialityEntity> getAllByFaculty(int id){
         List<SpecialityEntity> list = new ArrayList<>();
         try {
-            connection = Database.getInstance().getConnection();
+            connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_ALL_SPECIALITIES_BY_FACULTY_ID);
             statement.setInt(1,id);
             result = statement.executeQuery();

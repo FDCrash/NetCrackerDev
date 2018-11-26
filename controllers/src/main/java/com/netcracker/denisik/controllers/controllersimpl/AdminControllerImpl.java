@@ -51,15 +51,15 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Новый администратор");
         System.out.println("Введите логин: ");
         String login = scanner.nextLine();
-        if (UserServiceImpl.getInstance().checkLogin(login)) {
+       if (UserServiceImpl.getInstance().checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.nextLine();
             AdminServiceImpl.getInstance().addNew(new AdminDTO(new UserDTO(UserServiceImpl.getInstance()
                     .generateId(1000), RoleDTO.ADMIN,
                     login, password), false));
-        } else {
-            System.out.println("Логин занят");
-        }
+       } else {
+           System.out.println("Логин занят");
+       }
         editMenu();
     }
 
