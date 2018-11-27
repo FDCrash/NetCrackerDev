@@ -68,8 +68,7 @@ public class StudentDTO extends UserDTO {
         for (int i = 0; i < getWriteBook().size(); i++) {
             s.append(writeBook.get(i).toString()).append("\n");
         }
-        return "Имя: " + getName() + "\nРоль: " + getRoleDTO().name()
-                + "\nЛогин: " + getLogin() + "\nСпециальность: " + getSpeciality() +
+        return "Имя: " + getName() + new UserDTO(this).toString() + "\nСпециальность: " + getSpeciality() +
                 "\nНомер студенченского билета: " + getStudentId() +
                 "\nНомер группы:" + getGroupId() + "\nЗачетная книжка: " + s;
     }

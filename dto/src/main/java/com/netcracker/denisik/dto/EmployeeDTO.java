@@ -20,7 +20,6 @@ public class EmployeeDTO extends UserDTO {
     }
 
     public String toString() {
-        return "Имя: " + getName() + "\nЛогин: " + getLogin() + "\nРоль: "
-                + getRoleDTO().name() + "\n";
+        return "\nИмя: " + getName() + new UserDTO(this).toString();
     }
 }

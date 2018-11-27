@@ -20,7 +20,6 @@ public class AdminDTO extends UserDTO {
     }
 
     public String toString() {
-        return "Логин: " + getLogin() + "\nРоль: " + getRoleDTO().name()
-                + "\nСтатус: " + getStatus() + "\n";
+        return new UserDTO(this).toString() + "\nСтатус: " + getStatus() + "\n";
     }
 }
