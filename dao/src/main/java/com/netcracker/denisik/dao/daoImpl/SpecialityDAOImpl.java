@@ -106,6 +106,7 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
     @Override
     public void delete(int id) {
         try {
+            StudentDAOImpl.getInstance().setDefaultSpeciality(id);
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.DELETE_SPECIALITY_BY_ID);
             statement.setInt(1, id);

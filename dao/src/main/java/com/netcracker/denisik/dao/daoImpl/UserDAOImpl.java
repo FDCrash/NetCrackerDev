@@ -85,7 +85,7 @@ public class UserDAOImpl extends AbstractDao<UserEntity> {
                 break;
             case STUDENT:
                 StudentDAOImpl.getInstance().add(new StudentEntity(new UserEntity(userEntity),
-                        "", 0, 0, 0, new ArrayList<>()));
+                        "", 0, 0, 0,new ArrayList<>(0)));
         }
         return get(userEntity.getId());
     }

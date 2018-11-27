@@ -80,7 +80,7 @@ public class AdminControllerImpl implements Controller {
             System.out.println(adminDTO.toString());
             System.out.println("Введите логин: ");
             String login = scanner.nextLine();
-            if (login.equals(adminDTO.getLogin()) || UserServiceImpl.getInstance().checkLogin(login)) {
+            if (!login.equals(adminDTO.getLogin()) || UserServiceImpl.getInstance().checkLogin(login)) {
                 System.out.println("Введите пароль: ");
                 String password = scanner.nextLine();
                 AdminServiceImpl.getInstance().updateInfo(new AdminDTO(new UserDTO(adminDTO.getId(), RoleDTO.ADMIN,

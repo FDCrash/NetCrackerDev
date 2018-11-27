@@ -59,7 +59,7 @@ public class UserControllerImpl implements Controller {
         String role = scanner.nextLine();
         System.out.println("Введите логин: ");
         String login = scanner.nextLine();
-        if (UserServiceImpl.getInstance().checkLogin(login)) {
+        if (!UserServiceImpl.getInstance().checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.nextLine();
             UserServiceImpl.getInstance().
@@ -92,7 +92,7 @@ public class UserControllerImpl implements Controller {
             String role = scanner.nextLine();
             System.out.println("Введите логин: ");
             String login = scanner.nextLine();
-            if (login.equals(userDTO.getLogin()) || UserServiceImpl.getInstance().checkLogin(login)) {
+            if (login.equals(userDTO.getLogin()) || !UserServiceImpl.getInstance().checkLogin(login)) {
                 switch (RoleDTO.valueOf(role.toUpperCase())) {
                     case ADMIN:
                         System.out.println("Введите пароль: ");

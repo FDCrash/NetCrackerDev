@@ -70,7 +70,7 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
                         result.getInt(7), SpecialityDAOImpl.getInstance()
                         .get(result.getInt(8)), WriteBookDAO.getInstance().get(result.getInt(6))));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             System.out.println("Проблемы с бд(студенты)");
         } finally {
             try {
@@ -124,7 +124,9 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
     @Override
     public void delete(int id) {
         try {
-            WriteBookDAO.getInstance().delete(get(id).getStudentId());
+            if(id!=0) {
+                WriteBookDAO.getInstance().delete(get(id).getStudentId());
+            }
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.DELETE_STUDENT_BY_ID);
             statement.setInt(1, id);
@@ -170,7 +172,6 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
                 System.out.println("Проблемы с закрытием LoginPass в бд(студент)");
             }
         }
-
     }
 
     public List<StudentEntity> getAllByGroup(int id) {
@@ -183,6 +184,24 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
         return getAll().stream()
                 .filter(student -> student.getSpecialityEntity().getName().equals(speciality))
                 .collect(Collectors.toList());
+    }
+
+    public void setDefaultSpeciality(int id){
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.SET_DEFAULT_SPECIALITY);
+            statement.setInt(1, 0);
+            statement.setInt(2,id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Проблемы с изменением id спец из бд(студент)");
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием id спец в бд(студент)");
+            }
+        }
     }
 
 }

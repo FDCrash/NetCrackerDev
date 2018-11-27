@@ -67,12 +67,16 @@ public class SpecialityControllerImpl implements Controller {
         try {
             int k = Integer.parseInt(scanner.nextLine());
             SpecialityDTO specialityDTO = SpecialityServiceImpl.getInstance().getAll().get(k - 1);
+            if(!specialityDTO.getName().equals("Переводится")){
             System.out.println("Введите название специальности: ");
             String name = scanner.nextLine();
             System.out.println("Введите название факультета: ");
             String faculty = scanner.nextLine();
             SpecialityServiceImpl.getInstance().
                     updateInfo(new SpecialityDTO(specialityDTO.getId(), name, faculty));
+            }else{
+                System.out.println("Эту специальность нельзя изменять");
+            }
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
@@ -91,9 +95,13 @@ public class SpecialityControllerImpl implements Controller {
         System.out.println("Выберите позицию для удаления: ");
         try {
             int k = Integer.parseInt(scanner.nextLine());
-            SpecialityServiceImpl.getInstance().
-                    deleteInfo(SpecialityServiceImpl.getInstance().getAll().get(k - 1).getId());
-        } catch (IndexOutOfBoundsException e) {
+            if (!SpecialityServiceImpl.getInstance().getAll().get(k - 1).getName().equals("Переводится")) {
+                SpecialityServiceImpl.getInstance().
+                        deleteInfo(SpecialityServiceImpl.getInstance().getAll().get(k - 1).getId());
+            }else{
+                System.out.println("Эту специальность нельзя удалять");
+            }
+        }catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
         editMenu();

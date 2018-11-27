@@ -32,6 +32,7 @@ public class SqlRequest {
     public static final String CHANGE_STATUS = "UPDATE admins SET status=true WHERE id=(SELECT id FROM users WHERE login=?)";
     public static final String NEW_LOGIN_PASS = "UPDATE users SET login=?,password=? WHERE id=(SELECT id FROM students WHERE studentId=?)";
     public static final String GET_USER_BY_LOGIN = "SELECT * FROM users WHERE login=?";
+    public static final String SET_DEFAULT_SPECIALITY ="UPDATE students SET specialityId=? WHERE specialityId=?";
 
     private SqlRequest() {
     }

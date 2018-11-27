@@ -57,7 +57,7 @@ public class WriteBookDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Проблемы с бд(зачетки)");
+            System.out.println("Не найдено зачетки с бд(зачетки)");
         } finally {
             try {
                 statement.close();

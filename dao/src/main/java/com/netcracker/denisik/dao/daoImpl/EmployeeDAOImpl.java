@@ -82,7 +82,7 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             addUser(new UserEntity(employeeEntity.getId(), employeeEntity.getRole(),
-                    employeeEntity.getLogin(), employeeEntity.getName()));
+                    employeeEntity.getLogin(), employeeEntity.getPassword()));
             statement = connection.prepareStatement(SqlRequest.ADD_EMPLOYEE);
             statement.setInt(1, employeeEntity.getId());
             statement.setString(2, employeeEntity.getName());

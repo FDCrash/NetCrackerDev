@@ -79,10 +79,14 @@ public class FacultyControllerImpl implements Controller {
         try {
             int k = Integer.parseInt(scanner.nextLine());
             facultyDTO = FacultyServiceImpl.getInstance().getAll().get(k - 1);
-            System.out.println("Введите название факультета: ");
-            String name = scanner.nextLine();
-            FacultyServiceImpl.getInstance().updateInfo(new FacultyDTO(facultyDTO.getId(), name,
-                    facultyDTO.getSpecialities(), facultyDTO.getSpecialitiesId()));
+            if(!facultyDTO.getName().equals("Абитура")) {
+                System.out.println("Введите название факультета: ");
+                String name = scanner.nextLine();
+                FacultyServiceImpl.getInstance().updateInfo(new FacultyDTO(facultyDTO.getId(), name,
+                        facultyDTO.getSpecialities(), facultyDTO.getSpecialitiesId()));
+            }else{
+                System.out.println("Этот факультет нельзя изменять");
+            }
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
@@ -101,7 +105,11 @@ public class FacultyControllerImpl implements Controller {
         System.out.println("Выберите позицию для удаления: ");
         try {
             int k = Integer.parseInt(scanner.nextLine());
-            FacultyServiceImpl.getInstance().deleteInfo(FacultyServiceImpl.getInstance().getAll().get(k - 1).getId());
+            if (!FacultyServiceImpl.getInstance().getAll().get(k - 1).getName().equals("Абитура")) {
+                FacultyServiceImpl.getInstance().deleteInfo(FacultyServiceImpl.getInstance().getAll().get(k - 1).getId());
+            }else{
+                System.out.println("Этот факультет нельзя удалять");
+            }
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
