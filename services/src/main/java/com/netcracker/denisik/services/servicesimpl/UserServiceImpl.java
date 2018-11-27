@@ -14,12 +14,12 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
     private UserConverter userConverter;
     private static UserServiceImpl instance;
 
-    private UserServiceImpl(){
+    private UserServiceImpl() {
         userConverter = new UserConverter();
     }
 
-    public static UserServiceImpl getInstance(){
-        if(instance == null){
+    public static UserServiceImpl getInstance() {
+        if (instance == null) {
             instance = new UserServiceImpl();
         }
         return instance;
@@ -62,7 +62,7 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
 
     public String registration(int id, String login, String pass) {
         if (StudentDAOImpl.getInstance().checkStudId(id)) {
-            if (!UserDAOImpl.getInstance().checkLogin(login)) {
+            if (!UserDAOImpl.getInstance().checkUserLogin(login)) {
                 StudentDAOImpl.getInstance().addNewLoginPass(id, login, pass);
                 return "Вы успешно зарегистрированы!";
             }
@@ -72,7 +72,7 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
     }
 
     public boolean checkLogin(String login) {
-        return !UserDAOImpl.getInstance().checkLogin(login);
+        return UserDAOImpl.getInstance().checkUserLogin(login);
     }
 
     public Enum authentication(String login, String pass) {

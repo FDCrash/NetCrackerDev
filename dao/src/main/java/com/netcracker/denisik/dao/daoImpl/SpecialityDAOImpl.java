@@ -4,8 +4,6 @@ import com.netcracker.denisik.dao.AbstractDao;
 import com.netcracker.denisik.entities.SpecialityEntity;
 import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
-import com.netcracker.denisik.storage.SpecialityList;
-import com.netcracker.denisik.storage.StudentList;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,10 +12,11 @@ import java.util.List;
 public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
     private static SpecialityDAOImpl instance;
 
-    private SpecialityDAOImpl(){}
+    private SpecialityDAOImpl() {
+    }
 
-    public static SpecialityDAOImpl getInstance(){
-        if(instance==null){
+    public static SpecialityDAOImpl getInstance() {
+        if (instance == null) {
             instance = new SpecialityDAOImpl();
         }
         return instance;
@@ -29,10 +28,10 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_SPECIALITY_BY_ID);
-            statement.setInt(1,id);
+            statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                specialityEntity= new SpecialityEntity(result.getInt(1),
+                specialityEntity = new SpecialityEntity(result.getInt(1),
                         result.getString(2),
                         FacultyDAOImpl.getInstance().
                                 getFacultyBySpeciality(result.getInt(3)));
@@ -83,7 +82,7 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
             statement = connection.prepareStatement(SqlRequest.ADD_SPECIALITY);
             statement.setInt(1, specialityEntity.getId());
             statement.setString(2, specialityEntity.getName());
-            statement.setInt(3,specialityEntity.getFaculty().getId());
+            statement.setInt(3, specialityEntity.getFaculty().getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Проблемы с записью бд(специальность)");
@@ -106,26 +105,32 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
 
     @Override
     public void delete(int id) {
-        StudentList.getInstance().get().stream()
-                .filter(student -> student.getSpecialityEntity().getId()==id)
-                .forEach(student-> student.setSpecialityEntity(new SpecialityEntity(0,"Переводится", 0)));
-        FacultyDAOImpl.getInstance()
-                .get(get(id).getFaculty().getId())
-                .getSpecialities()
-                .remove(get(id));
-        getAll().remove(get(id));
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.DELETE_SPECIALITY_BY_ID);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Проблемы с удалением из бд(специальность)");
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием удаления в бд(специальность)");
+            }
+        }
     }
 
-    public List<SpecialityEntity> getAllByFaculty(int id){
+    public List<SpecialityEntity> getAllByFaculty(int id) {
         List<SpecialityEntity> list = new ArrayList<>();
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_ALL_SPECIALITIES_BY_FACULTY_ID);
-            statement.setInt(1,id);
+            statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
                 list.add(new SpecialityEntity(result.getInt(1),
-                        result.getString(2),result.getInt(3)));
+                        result.getString(2), result.getInt(3)));
             }
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(специальности по факультету)");

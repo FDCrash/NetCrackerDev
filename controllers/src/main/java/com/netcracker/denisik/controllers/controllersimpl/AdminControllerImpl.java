@@ -35,12 +35,12 @@ public class AdminControllerImpl implements Controller {
     @Override
     public void getAll() {
         System.out.println("Адинистраторы:");
-        try{
+        try {
             for (AdminDTO adminDTO : AdminServiceImpl.getInstance().getAll()) {
                 String s = adminDTO.toString();
                 System.out.println(s);
             }
-        }catch (NullPointerException | NoSuchElementException e){
+        } catch (NullPointerException | NoSuchElementException e) {
             System.out.println("Администраторы отсутствуют");
         }
         editMenu();
@@ -51,15 +51,15 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Новый администратор");
         System.out.println("Введите логин: ");
         String login = scanner.nextLine();
-       if (UserServiceImpl.getInstance().checkLogin(login)) {
+        if (!UserServiceImpl.getInstance().checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.nextLine();
             AdminServiceImpl.getInstance().addNew(new AdminDTO(new UserDTO(UserServiceImpl.getInstance()
                     .generateId(1000), RoleDTO.ADMIN,
                     login, password), false));
-       } else {
-           System.out.println("Логин занят");
-       }
+        } else {
+            System.out.println("Логин занят");
+        }
         editMenu();
     }
 
@@ -68,7 +68,7 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Адинистраторы:");
         int i = 1;
         AdminDTO adminDTO;
-        for (AdminDTO admin :  AdminServiceImpl.getInstance().getAll()) {
+        for (AdminDTO admin : AdminServiceImpl.getInstance().getAll()) {
             String s = admin.toString();
             System.out.println(i + ". " + s);
             i++;
@@ -76,7 +76,7 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Выберите позицию для изменения: ");
         try {
             int k = Integer.parseInt(scanner.nextLine());
-            adminDTO =  AdminServiceImpl.getInstance().getAll().get(k - 1);
+            adminDTO = AdminServiceImpl.getInstance().getAll().get(k - 1);
             System.out.println(adminDTO.toString());
             System.out.println("Введите логин: ");
             String login = scanner.nextLine();
@@ -88,7 +88,7 @@ public class AdminControllerImpl implements Controller {
             } else {
                 System.out.println("Новый логин занят");
             }
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
         editMenu();
@@ -98,7 +98,7 @@ public class AdminControllerImpl implements Controller {
     public void delete() {
         System.out.println("Адинистраторы:");
         int i = 1;
-        for (AdminDTO adminDTO :  AdminServiceImpl.getInstance().getAll()) {
+        for (AdminDTO adminDTO : AdminServiceImpl.getInstance().getAll()) {
             String s = adminDTO.toString();
             System.out.println(i + ". " + s);
             i++;
@@ -106,8 +106,8 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Выберите позицию для удаления: ");
         try {
             int k = Integer.parseInt(scanner.nextLine());
-            AdminServiceImpl.getInstance().deleteInfo( AdminServiceImpl.getInstance().getAll().get(k - 1).getId());
-        }catch (IndexOutOfBoundsException e){
+            AdminServiceImpl.getInstance().deleteInfo(AdminServiceImpl.getInstance().getAll().get(k - 1).getId());
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
         editMenu();

@@ -41,12 +41,12 @@ public class UserControllerImpl implements Controller {
     @Override
     public void getAll() {
         System.out.println("Пользователи:");
-        try{
+        try {
             for (UserDTO userDTO : UserServiceImpl.getInstance().getAll()) {
                 String s = userDTO.toString();
                 System.out.println(s);
             }
-        }catch (NullPointerException | NoSuchElementException e){
+        } catch (NullPointerException | NoSuchElementException e) {
             System.out.println("Пользователи отсутствуют");
         }
         editMenu();
@@ -65,7 +65,7 @@ public class UserControllerImpl implements Controller {
             UserServiceImpl.getInstance().
                     addNew(new UserDTO(UserServiceImpl.getInstance().generateId(1000),
                             RoleDTO.valueOf(role.toUpperCase()),
-                    login, password));
+                            login, password));
         } else {
             System.out.println("Логин занят");
         }
@@ -138,7 +138,7 @@ public class UserControllerImpl implements Controller {
             } else {
                 System.out.println("Логин занят");
             }
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
         editMenu();
@@ -161,7 +161,7 @@ public class UserControllerImpl implements Controller {
             } else {
                 UserServiceImpl.getInstance().deleteInfo(UserServiceImpl.getInstance().getAll().get(k - 1).getId());
             }
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
         editMenu();

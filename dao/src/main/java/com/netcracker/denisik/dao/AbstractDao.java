@@ -14,7 +14,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
     protected PreparedStatement statement;
     protected ResultSet result;
 
-    public void addUser(UserEntity userEntity){
+    public void addUser(UserEntity userEntity) {
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.ADD_USER);
@@ -24,14 +24,30 @@ public abstract class AbstractDao<T> implements IDao<T> {
             statement.setString(4, userEntity.getPassword());
             statement.executeUpdate();
         } catch (SQLException e) {
-        System.out.println("Проблемы с записью бд(пользователь)");
-    } finally {
-        try {
-            statement.close();
-        } catch (SQLException e) {
-            System.out.println("Проблемы с закрытием записи(пользователь)");
+            System.out.println("Проблемы с записью бд(пользователь)");
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием записи(пользователь)");
+            }
         }
     }
-    }
 
+    public void deleteUser(int id) {
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.DELETE_USER_BY_ID);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Проблемы с записью бд(пользователь)");
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием записи(пользователь)");
+            }
+        }
+    }
 }

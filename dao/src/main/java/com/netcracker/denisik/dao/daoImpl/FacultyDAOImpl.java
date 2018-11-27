@@ -5,14 +5,10 @@ import com.netcracker.denisik.entities.FacultyEntity;
 import com.netcracker.denisik.entities.SpecialityEntity;
 import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
-import com.netcracker.denisik.storage.FacultyList;
-import com.netcracker.denisik.storage.SpecialityList;
-import com.netcracker.denisik.storage.StudentList;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FacultyDAOImpl extends AbstractDao<FacultyEntity> {
     private static FacultyDAOImpl instance;
@@ -90,8 +86,8 @@ public class FacultyDAOImpl extends AbstractDao<FacultyEntity> {
             statement.executeUpdate();
             facultyEntity.getSpecialities()
                     .forEach(specialityEntity -> SpecialityDAOImpl.getInstance()
-                    .add(new SpecialityEntity(specialityEntity.getId(),specialityEntity.getName()
-                    ,facultyEntity.getId())));
+                            .add(new SpecialityEntity(specialityEntity.getId(), specialityEntity.getName()
+                                    , facultyEntity.getId())));
         } catch (SQLException e) {
             System.out.println("Проблемы с записью бд(факультет)");
         } finally {
@@ -112,15 +108,25 @@ public class FacultyDAOImpl extends AbstractDao<FacultyEntity> {
 
     @Override
     public void delete(int id) {
-        StudentList.getInstance().get().stream()
-                .filter(student -> student.getSpecialityEntity().getFaculty().getId() == id)
-                .collect(Collectors.toList())
-                .forEach(speciality -> speciality.setSpecialityEntity(new SpecialityEntity(0, "Переводится", 0)));
-        SpecialityList.getInstance().get().removeAll(get(id).getSpecialities());
-        getAll().remove(get(id));
+        try {
+            get(id).getSpecialities()
+                    .forEach(specialityEntity -> SpecialityDAOImpl.getInstance().delete(specialityEntity.getId()));
+            connection = DatabaseConnector.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.DELETE_FACULTY_BY_ID);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Проблемы с удалением из бд(факультет)");
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием удаления в бд(факультет)");
+            }
+        }
     }
 
-    public FacultyEntity getFacultyBySpeciality(int id){
+    public FacultyEntity getFacultyBySpeciality(int id) {
         FacultyEntity facultyEntity = null;
         try {
             connection = DatabaseConnector.getInstance().getConnection();

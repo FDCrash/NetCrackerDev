@@ -35,12 +35,12 @@ public class FacultyControllerImpl implements Controller {
     @Override
     public void getAll() {
         System.out.println("Факультеты:");
-        try{
+        try {
             for (FacultyDTO facultyDTO : FacultyServiceImpl.getInstance().getAll()) {
                 String s = facultyDTO.toString();
                 System.out.println(s);
             }
-        }catch (NullPointerException | NoSuchElementException e){
+        } catch (NullPointerException | NoSuchElementException e) {
             System.out.println("Факультеты отсутствуют");
         }
         editMenu();
@@ -83,7 +83,7 @@ public class FacultyControllerImpl implements Controller {
             String name = scanner.nextLine();
             FacultyServiceImpl.getInstance().updateInfo(new FacultyDTO(facultyDTO.getId(), name,
                     facultyDTO.getSpecialities(), facultyDTO.getSpecialitiesId()));
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
         editMenu();
@@ -102,7 +102,7 @@ public class FacultyControllerImpl implements Controller {
         try {
             int k = Integer.parseInt(scanner.nextLine());
             FacultyServiceImpl.getInstance().deleteInfo(FacultyServiceImpl.getInstance().getAll().get(k - 1).getId());
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
         editMenu();

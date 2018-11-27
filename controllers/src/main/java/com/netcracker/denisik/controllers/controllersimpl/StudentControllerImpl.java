@@ -39,12 +39,12 @@ public class StudentControllerImpl implements Controller {
     @Override
     public void getAll() {
         System.out.println("Студенты:");
-        try{
+        try {
             for (StudentDTO studentDTO : StudentServiceImpl.getInstance().getAll()) {
                 String s = studentDTO.toString();
                 System.out.println(s);
             }
-        }catch (NullPointerException | NoSuchElementException e){
+        } catch (NullPointerException | NoSuchElementException e) {
             System.out.println("Студенты отсутствуют");
         }
         editMenu();
@@ -98,15 +98,15 @@ public class StudentControllerImpl implements Controller {
                     studentDTO.getLogin(), studentDTO.getPassword()), name, number, group, speciality, fillBook(n)));
             UserServiceImpl.getInstance().updateInfo(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
                     studentDTO.getLogin(), studentDTO.getPassword()));
-        }catch (IndexOutOfBoundsException e){
-                System.out.println("Вы ввели неверный номер из списка");
-            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Вы ввели неверный номер из списка");
+        }
         editMenu();
     }
 
     private List<WriteBookDTO> fillBook(int n) {
-        List<Integer> marks=new ArrayList<>();
-        List<String> subjects=new ArrayList<>();
+        List<Integer> marks = new ArrayList<>();
+        List<String> subjects = new ArrayList<>();
         int kol;
         List<WriteBookDTO> writeBook = new ArrayList<>();
         String subj;
@@ -115,16 +115,16 @@ public class StudentControllerImpl implements Controller {
             marks.clear();
             subjects.clear();
             System.out.println("Введите колво предметов за " + i + " семестр: ");
-            kol=Integer.parseInt(scanner.nextLine());
-            for(int j=1; j <=kol;j++){
+            kol = Integer.parseInt(scanner.nextLine());
+            for (int j = 1; j <= kol; j++) {
                 System.out.println("Введите название " + j + " предмета :");
-                subj=scanner.nextLine();
+                subj = scanner.nextLine();
                 System.out.println("Введите оценку по " + subj + " предмету: ");
-                mark=Integer.parseInt(scanner.nextLine());
+                mark = Integer.parseInt(scanner.nextLine());
                 marks.add(mark);
                 subjects.add(subj);
             }
-            writeBook.add(new WriteBookDTO(i,subjects,marks));
+            writeBook.add(new WriteBookDTO(i, subjects, marks));
         }
         return writeBook;
     }
@@ -142,7 +142,7 @@ public class StudentControllerImpl implements Controller {
         try {
             int k = Integer.parseInt(scanner.nextLine());
             StudentServiceImpl.getInstance().deleteInfo(StudentServiceImpl.getInstance().getAll().get(k - 1).getId());
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
         editMenu();

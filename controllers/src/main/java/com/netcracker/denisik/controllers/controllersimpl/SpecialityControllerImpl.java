@@ -3,7 +3,6 @@ package com.netcracker.denisik.controllers.controllersimpl;
 import com.netcracker.denisik.controllers.Controller;
 import com.netcracker.denisik.dto.SpecialityDTO;
 import com.netcracker.denisik.services.servicesimpl.SpecialityServiceImpl;
-import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -35,10 +34,9 @@ public class SpecialityControllerImpl implements Controller {
         System.out.println("Специальности:");
         try {
             for (SpecialityDTO specialityDTO : SpecialityServiceImpl.getInstance().getAll()) {
-                String s = specialityDTO.toString();
-                System.out.println(s);
+                System.out.println(specialityDTO);
             }
-        }catch (NullPointerException | NoSuchElementException e){
+        } catch (NullPointerException | NoSuchElementException e) {
             System.out.println("Специальности отсутствуют");
         }
         editMenu();
@@ -75,7 +73,7 @@ public class SpecialityControllerImpl implements Controller {
             String faculty = scanner.nextLine();
             SpecialityServiceImpl.getInstance().
                     updateInfo(new SpecialityDTO(specialityDTO.getId(), name, faculty));
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
         editMenu();
@@ -95,7 +93,7 @@ public class SpecialityControllerImpl implements Controller {
             int k = Integer.parseInt(scanner.nextLine());
             SpecialityServiceImpl.getInstance().
                     deleteInfo(SpecialityServiceImpl.getInstance().getAll().get(k - 1).getId());
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
         editMenu();

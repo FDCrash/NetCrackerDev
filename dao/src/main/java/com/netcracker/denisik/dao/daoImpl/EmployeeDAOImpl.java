@@ -6,8 +6,6 @@ import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.entities.UserEntity;
 import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
-import com.netcracker.denisik.storage.EmployeeList;
-import com.netcracker.denisik.storage.UserList;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -83,8 +81,8 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
     public EmployeeEntity add(EmployeeEntity employeeEntity) {
         try {
             connection = DatabaseConnector.getInstance().getConnection();
-            addUser(new UserEntity(employeeEntity.getId(),employeeEntity.getRole(),
-                    employeeEntity.getLogin(),employeeEntity.getName()));
+            addUser(new UserEntity(employeeEntity.getId(), employeeEntity.getRole(),
+                    employeeEntity.getLogin(), employeeEntity.getName()));
             statement = connection.prepareStatement(SqlRequest.ADD_EMPLOYEE);
             statement.setInt(1, employeeEntity.getId());
             statement.setString(2, employeeEntity.getName());
@@ -110,7 +108,20 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
 
     @Override
     public void delete(int id) {
-        getAll().remove(get(id));
-        UserDAOImpl.getInstance().getAll().remove(UserDAOImpl.getInstance().get(id));
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.DELETE_EMPLOYEE_BY_ID);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            deleteUser(id);
+        } catch (SQLException e) {
+            System.out.println("Проблемы с удалением из бд(сотрудник)");
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием удаления в бд(сотрудник)");
+            }
+        }
     }
 }

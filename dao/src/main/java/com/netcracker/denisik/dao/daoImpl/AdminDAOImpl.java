@@ -108,15 +108,38 @@ public class AdminDAOImpl extends AbstractDao<AdminEntity> {
 
     @Override
     public void delete(int id) {
-        if(!get(id).getStatus()) {
-            getAll().remove(get(id));
-            UserDAOImpl.getInstance().getAll().remove(UserDAOImpl.getInstance().get(id));
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.DELETE_ADMIN_BY_ID);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            deleteUser(id);
+        }
+        catch (SQLException e){
+            System.out.println("Проблемы с удалением из бд(админ)");
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием удаления в бд(админ)");
+            }
         }
     }
 
     public void changeStatus(String login) {
-        getAll().stream()
-                .filter(admin -> admin.getLogin().equals(login))
-                .findFirst().get().setStatus(true);
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.CHANGE_STATUS);
+            statement.setString(1, login);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Проблемы с удалением из бд(админ)");
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием удаления в бд(админ)");
+            }
+        }
     }
 }

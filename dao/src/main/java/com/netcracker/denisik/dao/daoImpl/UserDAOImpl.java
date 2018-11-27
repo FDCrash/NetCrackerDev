@@ -10,12 +10,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOImpl extends AbstractDao <UserEntity>{
+public class UserDAOImpl extends AbstractDao<UserEntity> {
     private static UserDAOImpl instance;
-    private UserDAOImpl(){}
 
-    public static UserDAOImpl getInstance(){
-        if(instance==null){
+    private UserDAOImpl() {
+    }
+
+    public static UserDAOImpl getInstance() {
+        if (instance == null) {
             instance = new UserDAOImpl();
         }
         return instance;
@@ -23,24 +25,24 @@ public class UserDAOImpl extends AbstractDao <UserEntity>{
 
     @Override
     public UserEntity get(int id) {
-        UserEntity userEntity=null;
+        UserEntity userEntity = null;
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_USER_BY_ID);
-            statement.setInt(1,id);
+            statement.setInt(1, id);
             result = statement.executeQuery();
-            while(result.next()){
-                userEntity =new UserEntity(result.getInt(1),
+            while (result.next()) {
+                userEntity = new UserEntity(result.getInt(1),
                         Role.valueOf(result.getString(2)),
-                        result.getString(3),result.getString(4));
+                        result.getString(3), result.getString(4));
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Проблемы с бд(пользователь)");
-        }finally {
+        } finally {
             try {
                 statement.close();
                 result.close();
-            }catch(SQLException e){
+            } catch (SQLException e) {
                 System.out.println("Проблемы с закрытием(пользователь)");
             }
         }
@@ -49,23 +51,23 @@ public class UserDAOImpl extends AbstractDao <UserEntity>{
 
     @Override
     public List<UserEntity> getAll() {
-        List<UserEntity> list=new ArrayList<>();
+        List<UserEntity> list = new ArrayList<>();
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_ALL_USERS);
             result = statement.executeQuery();
-            while(result.next()){
+            while (result.next()) {
                 list.add(new UserEntity(result.getInt(1),
                         Role.valueOf(result.getString(2)),
-                        result.getString(3),result.getString(4)));
+                        result.getString(3), result.getString(4)));
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Проблемы с бд(пользователи)");
-        }finally {
+        } finally {
             try {
                 statement.close();
                 result.close();
-            }catch(SQLException e){
+            } catch (SQLException e) {
                 System.out.println("Проблемы с закрытием(пользователи)");
             }
         }
@@ -101,11 +103,11 @@ public class UserDAOImpl extends AbstractDao <UserEntity>{
                         EmployeeDAOImpl.getInstance().get(k).getName()));
                 break;
             case STUDENT:
-                StudentEntity studentEntity= StudentDAOImpl.getInstance().get(k);
+                StudentEntity studentEntity = StudentDAOImpl.getInstance().get(k);
                 StudentDAOImpl.getInstance().update(new StudentEntity(new UserEntity(user),
                         studentEntity.getName(), studentEntity.getStudentId(),
                         studentEntity.getGroupId(), studentEntity.getSpecialityEntity().getId(),
-                       studentEntity.getWriteBook()));
+                        studentEntity.getWriteBook()));
         }
         return get(user.getId());
     }
@@ -130,8 +132,23 @@ public class UserDAOImpl extends AbstractDao <UserEntity>{
                 .findFirst().get().getRole();
     }
 
-    public boolean checkLogin(String login) {
-        return getAll().stream()
-                .anyMatch(user -> user.getLogin().equals(login));
+    public boolean checkUserLogin(String login) {
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.GET_USER_BY_LOGIN);
+            statement.setString(1, login);
+            result = statement.executeQuery();
+            return result.wasNull();
+        } catch (SQLException e) {
+            System.out.println("Проблемы с проверкой в бд(админ)");
+        } finally {
+            try {
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием проверки в бд(админ)");
+            }
+        }
+        return false;
     }
 }

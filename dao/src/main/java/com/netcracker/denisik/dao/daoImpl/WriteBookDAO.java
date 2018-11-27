@@ -17,66 +17,67 @@ public class WriteBookDAO {
     private ResultSet result;
     private static WriteBookDAO instance;
 
-    private WriteBookDAO(){}
+    private WriteBookDAO() {
+    }
 
-    public static WriteBookDAO getInstance(){
-        if(instance==null){
+    public static WriteBookDAO getInstance() {
+        if (instance == null) {
             instance = new WriteBookDAO();
         }
         return instance;
     }
 
-    public List<WriteBook> get(int id){
-        List<WriteBook> list=new ArrayList<>();
+    public List<WriteBook> get(int id) {
+        List<WriteBook> list = new ArrayList<>();
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_WRITEBOOK_BY_STUD_ID);
-            statement.setInt(1,id);
+            statement.setInt(1, id);
             result = statement.executeQuery();
             int semester;
-            List<String> subjects=new ArrayList<>();
-            List<Integer> marks=new ArrayList<>();
+            List<String> subjects = new ArrayList<>();
+            List<Integer> marks = new ArrayList<>();
             result.next();
-            semester=result.getInt(1);
+            semester = result.getInt(1);
             result.previous();
-            while(result.next()){
-                if(semester==result.getInt(1)){
+            while (result.next()) {
+                if (semester == result.getInt(1)) {
                     subjects.add(result.getString(2));
                     marks.add(result.getInt(3));
-                }else {
+                } else {
                     list.add(new WriteBook(semester, subjects, marks));
                     subjects.clear();
                     marks.clear();
-                    semester=result.getInt(1);
+                    semester = result.getInt(1);
                     subjects.add(result.getString(2));
                     marks.add(result.getInt(3));
                 }
-                if(result.isLast()){
+                if (result.isLast()) {
                     list.add(new WriteBook(semester, subjects, marks));
                 }
             }
-        }catch (SQLException e){
-            System.out.println("Проблемы с бд(студенты)");
-        }finally {
+        } catch (SQLException e) {
+            System.out.println("Проблемы с бд(зачетки)");
+        } finally {
             try {
                 statement.close();
                 result.close();
-            }catch(SQLException e){
-                System.out.println("Проблемы с закрытием(студенты)");
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием(зачетки)");
             }
         }
         return list;
     }
 
-    public void add(WriteBook writeBook,int id){
+    public void add(WriteBook writeBook, int id) {
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.ADD_WRITEBOOK);
-            for(int i=0;i<writeBook.getMarks().size();i++){
-                statement.setInt(1,id);
-                statement.setInt(2,writeBook.getSem());
-                statement.setString(3,writeBook.getSubjects().get(i));
-                statement.setInt(4,writeBook.getMarks().get(i));
+            for (int i = 0; i < writeBook.getMarks().size(); i++) {
+                statement.setInt(1, id);
+                statement.setInt(2, writeBook.getSem());
+                statement.setString(3, writeBook.getSubjects().get(i));
+                statement.setInt(4, writeBook.getMarks().get(i));
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -86,6 +87,23 @@ public class WriteBookDAO {
                 statement.close();
             } catch (SQLException e) {
                 System.out.println("Проблемы с закрытием записи в бд(зачетка)");
+            }
+        }
+    }
+
+    public void delete(int id) {
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            statement = connection.prepareStatement(SqlRequest.DELETE_WRITEBOOK_BY_ID);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Проблемы с удалением из бд(зачетка)");
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Проблемы с закрытием удаления в бд(зачетка)");
             }
         }
     }

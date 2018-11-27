@@ -22,6 +22,16 @@ public class SqlRequest {
     public static final String ADD_SPECIALITY = "INSERT INTO specialities (id, name,facultyId) VALUES (?, ?, ?)";
     public static final String ADD_STUDENT = "INSERT INTO students (id, name,studentId,groupId,specialityId) VALUES (?, ?, ?, ?, ?)";
     public static final String ADD_WRITEBOOK = "INSERT INTO writebook (id, semester,subject,mark) VALUES (?, ?, ?, ?)";
+    public static final String DELETE_ADMIN_BY_ID = "DELETE FROM admins WHERE id=?";
+    public static final String DELETE_EMPLOYEE_BY_ID = "DELETE FROM employees WHERE id=?";
+    public static final String DELETE_STUDENT_BY_ID = "DELETE FROM students WHERE id=?";
+    public static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE id=?";
+    public static final String DELETE_FACULTY_BY_ID = "DELETE FROM faculties WHERE id=?";
+    public static final String DELETE_SPECIALITY_BY_ID = "DELETE FROM specialities WHERE id=?";
+    public static final String DELETE_WRITEBOOK_BY_ID = "DELETE FROM writebook WHERE id=?";
+    public static final String CHANGE_STATUS = "UPDATE admins SET status=true WHERE id=(SELECT id FROM users WHERE login=?)";
+    public static final String NEW_LOGIN_PASS = "UPDATE users SET login=?,password=? WHERE id=(SELECT id FROM students WHERE studentId=?)";
+    public static final String GET_USER_BY_LOGIN = "SELECT * FROM users WHERE login=?";
 
     private SqlRequest() {
     }
