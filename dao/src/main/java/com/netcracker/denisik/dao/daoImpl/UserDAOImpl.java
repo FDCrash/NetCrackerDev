@@ -131,9 +131,10 @@ public class UserDAOImpl extends AbstractDao<UserEntity> {
             statement = connection.prepareStatement(SqlRequest.GET_USER_BY_LOGIN);
             statement.setString(1, login);
             result = statement.executeQuery();
-            return result.wasNull();
+            result.next();
+            result.getString(1);
         } catch (SQLException e) {
-            System.out.println("Проблемы с проверкой в бд(админ)");
+            return true;
         } finally {
             ClosingUtil.close(statement);
             ClosingUtil.close(result);

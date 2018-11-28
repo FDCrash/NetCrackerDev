@@ -47,7 +47,7 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Новый администратор");
         System.out.println("Введите логин: ");
         String login = scanner.nextLine();
-        if (!UserServiceImpl.getInstance().checkLogin(login)) {
+        if (UserServiceImpl.getInstance().checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.nextLine();
             AdminServiceImpl.getInstance().add(new AdminDTO(new UserDTO(UserServiceImpl.getInstance()
@@ -76,7 +76,7 @@ public class AdminControllerImpl implements Controller {
             System.out.println(adminDTO.toString());
             System.out.println("Введите логин: ");
             String login = scanner.nextLine();
-            if (!login.equals(adminDTO.getLogin()) || UserServiceImpl.getInstance().checkLogin(login)) {
+            if (login.equals(adminDTO.getLogin()) || UserServiceImpl.getInstance().checkLogin(login)) {
                 System.out.println("Введите пароль: ");
                 String password = scanner.nextLine();
                 AdminServiceImpl.getInstance().update(new AdminDTO(new UserDTO(adminDTO.getId(), RoleDTO.ADMIN,
