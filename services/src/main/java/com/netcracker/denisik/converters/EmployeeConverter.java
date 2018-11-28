@@ -9,14 +9,22 @@ import com.netcracker.denisik.entities.UserEntity;
 
 public class EmployeeConverter {
     public EmployeeEntity convert(EmployeeDTO employeeDTO) {
-        return new EmployeeEntity(new UserEntity(employeeDTO.getId(),
-                Role.valueOf(employeeDTO.getRoleDTO().name()), employeeDTO.getLogin(),
-                employeeDTO.getPassword()), employeeDTO.getName());
+        EmployeeEntity employeeEntity=new EmployeeEntity();
+        employeeEntity.setId(employeeDTO.getId());
+        employeeEntity.setRole(Role.valueOf(employeeDTO.getRoleDTO().name()));
+        employeeEntity.setLogin(employeeDTO.getLogin());
+        employeeEntity.setPassword(employeeDTO.getPassword());
+        employeeEntity.setName(employeeDTO.getName());
+        return employeeEntity;
     }
 
     public EmployeeDTO convert(EmployeeEntity employeeEntity) {
-        return new EmployeeDTO(new UserDTO(employeeEntity.getId(),
-                RoleDTO.valueOf(employeeEntity.getRole().name()), employeeEntity.getLogin(),
-                employeeEntity.getPassword()), employeeEntity.getName());
+        EmployeeDTO employeeDTO=new EmployeeDTO();
+        employeeDTO.setId(employeeEntity.getId());
+        employeeDTO.setRoleDTO(RoleDTO.valueOf(employeeEntity.getRole().name()));
+        employeeDTO.setLogin(employeeEntity.getLogin());
+        employeeDTO.setPassword(employeeEntity.getPassword());
+        employeeDTO.setName(employeeEntity.getName());
+        return employeeDTO;
     }
 }

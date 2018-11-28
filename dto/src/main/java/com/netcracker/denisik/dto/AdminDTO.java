@@ -20,6 +20,6 @@ public class AdminDTO extends UserDTO {
     }
 
     public String toString() {
-        return new UserDTO(this).toString() + "\nСтатус: " + getStatus() + "\n";
+        return new UserDTO(this).toString() + "Статус: " + getStatus() + "\n";
     }
 }

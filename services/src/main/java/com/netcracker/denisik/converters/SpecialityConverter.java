@@ -7,8 +7,9 @@ import com.netcracker.denisik.entities.SpecialityEntity;
 
 public class SpecialityConverter {
     public SpecialityEntity convert(SpecialityDTO specialityDTO) {
-        SpecialityEntity specialityEntity = new SpecialityEntity(specialityDTO.getId(),
-                specialityDTO.getName(), 0);
+        SpecialityEntity specialityEntity = new SpecialityEntity();
+        specialityEntity.setId(specialityDTO.getId());
+        specialityEntity.setName(specialityDTO.getName());
         for (FacultyEntity facultyEntity : FacultyDAOImpl.getInstance().getAll()) {
             if (facultyEntity.getName().equals(specialityDTO.getFaculty())) {
                 specialityEntity.setFaculty(facultyEntity);
@@ -19,7 +20,10 @@ public class SpecialityConverter {
     }
 
     public SpecialityDTO convert(SpecialityEntity specialityEntity) {
-        return new SpecialityDTO(specialityEntity.getId(), specialityEntity.getName()
-                , specialityEntity.getFaculty().getName());
+        SpecialityDTO specialityDTO=new SpecialityDTO();
+        specialityDTO.setId(specialityEntity.getId());
+        specialityDTO.setName(specialityEntity.getName());
+        specialityDTO.setFaculty(specialityEntity.getFaculty().getName());
+        return specialityDTO;
     }
 }

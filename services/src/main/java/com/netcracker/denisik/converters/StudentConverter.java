@@ -16,12 +16,19 @@ public class StudentConverter {
         studentDTO.getWriteBook().
                 forEach(writeBookDTO -> writeBooks.
                         add(new WriteBook(writeBookDTO.getSem(),writeBookDTO.getSubjects(),writeBookDTO.getMarks())));
-        return new StudentEntity(new UserEntity(studentDTO.getId(),
-                Role.valueOf(studentDTO.getRoleDTO().name()), studentDTO.getLogin(),
-                studentDTO.getPassword()), studentDTO.getName(), studentDTO.getStudentId(),
-                studentDTO.getGroupId(),SpecialityDAOImpl.getInstance().getAll().stream()
+        StudentEntity studentEntity=new StudentEntity();
+        studentEntity.setId(studentDTO.getId());
+        studentEntity.setRole(Role.valueOf(studentDTO.getRoleDTO().name()));
+        studentEntity.setLogin(studentDTO.getLogin());
+        studentEntity.setPassword(studentDTO.getPassword());
+        studentEntity.setName(studentDTO.getName());
+        studentEntity.setStudentId(studentDTO.getStudentId());
+        studentEntity.setGroupId(studentDTO.getGroupId());
+        studentEntity.setSpecialityEntity(SpecialityDAOImpl.getInstance().getAll().stream()
                 .filter(specialityEntity -> specialityEntity.getName().equals(studentDTO.getSpeciality()))
-                .findFirst().get(), writeBooks);
+                .findFirst().get());
+        studentEntity.setWriteBook(writeBooks);
+        return studentEntity;
     }
 
     public StudentDTO convert(StudentEntity studentEntity) {
@@ -29,9 +36,16 @@ public class StudentConverter {
         studentEntity.getWriteBook().
                 forEach(writeBook -> writeBookDTO.
                         add(new WriteBookDTO(writeBook.getSem(),writeBook.getSubjects(),writeBook.getMarks())));
-        return new StudentDTO(new UserDTO(studentEntity.getId(), RoleDTO.valueOf(studentEntity.getRole().name()),
-                studentEntity.getLogin(), studentEntity.getPassword()), studentEntity.getName(),
-                studentEntity.getStudentId(), studentEntity.getGroupId(),
-                studentEntity.getSpecialityEntity().getName(), writeBookDTO);
+        StudentDTO studentDTO=new StudentDTO();
+        studentDTO.setId(studentEntity.getId());
+        studentDTO.setRoleDTO(RoleDTO.valueOf(studentEntity.getRole().name()));
+        studentDTO.setLogin(studentEntity.getLogin());
+        studentDTO.setPassword(studentEntity.getPassword());
+        studentDTO.setName(studentEntity.getName());
+        studentDTO.setStudentId(studentEntity.getStudentId());
+        studentDTO.setGroupId(studentEntity.getGroupId());
+        studentDTO.setSpeciality(studentEntity.getSpecialityEntity().getName());
+        studentDTO.setWriteBook(writeBookDTO);
+        return studentDTO;
     }
 }

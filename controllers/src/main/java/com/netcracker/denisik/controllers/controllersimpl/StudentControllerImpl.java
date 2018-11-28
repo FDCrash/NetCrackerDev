@@ -9,9 +9,9 @@ import com.netcracker.denisik.dto.WriteBookDTO;
 import com.netcracker.denisik.services.servicesimpl.StudentServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class StudentControllerImpl implements Controller {
@@ -23,7 +23,7 @@ public class StudentControllerImpl implements Controller {
 
     @Override
     public void editMenu() {
-        int k;
+        int point;
         do {
             System.out.println("CRUD студентов:");
             System.out.println("1.Список студентов");
@@ -31,58 +31,58 @@ public class StudentControllerImpl implements Controller {
             System.out.println("3.Изменить");
             System.out.println("4.Удалить");
             System.out.println("0.Выйти");
-            k = Integer.parseInt(scanner.nextLine());
-            switchChange(k);
-        } while (k < 0 || k > 4);
+            point = Integer.parseInt(scanner.nextLine());
+            switchChange(point);
+        } while (point < 0 || point > 4);
     }
 
     @Override
     public void getAll() {
         System.out.println("Студенты:");
-        try {
-            for (StudentDTO studentDTO : StudentServiceImpl.getInstance().getAll()) {
-                String s = studentDTO.toString();
-                System.out.println(s);
-            }
-        } catch (NullPointerException | NoSuchElementException e) {
-            System.out.println("Студенты отсутствуют");
+        for (StudentDTO studentDTO : StudentServiceImpl.getInstance().getAll()) {
+            String s = studentDTO.toString();
+            System.out.println(s);
         }
         editMenu();
     }
 
     @Override
-    public void add() {
+    public void add()  {
         System.out.println("Новый студент");
         System.out.println("Введите имя: ");
         String name = scanner.nextLine();
         System.out.println("Введите номер студенченского билета: ");
-        int number = Integer.parseInt(scanner.nextLine());
+        int studentId = Integer.parseInt(scanner.nextLine());
         System.out.println("Введите номер группы: ");
         int group = Integer.parseInt(scanner.nextLine());
         System.out.println("Введите специальность: ");
         String speciality = scanner.nextLine();
         System.out.println("Введите колво семестров: ");
-        int n = Integer.parseInt(scanner.nextLine());
-        StudentServiceImpl.getInstance().
-                addNew(new StudentDTO(new UserDTO(UserServiceImpl.getInstance().generateId(1000),
-                        RoleDTO.STUDENT, "", ""), name, number, group, speciality, fillBook(n)));
+        int quantity = Integer.parseInt(scanner.nextLine());
+        try {
+            StudentServiceImpl.getInstance().
+                    add(new StudentDTO(new UserDTO(UserServiceImpl.getInstance().generateId(1000),
+                            RoleDTO.STUDENT, "", ""), name, studentId, group, speciality, fillBook(quantity)));
+        }catch (NullPointerException e){
+            System.out.println("При вводе допущена ошибка");
+        }
         editMenu();
     }
 
     @Override
     public void update() {
         System.out.println("Студенты:");
-        int z = 1;
+        int iterator = 1;
         StudentDTO studentDTO;
         for (StudentDTO student : StudentServiceImpl.getInstance().getAll()) {
             String s = student.toString();
-            System.out.println(z + ". " + s);
-            z++;
+            System.out.println(iterator + ". " + s);
+            iterator++;
         }
         System.out.println("Выберите позицию для изменения: ");
         try {
-            int k = Integer.parseInt(scanner.nextLine());
-            studentDTO = StudentServiceImpl.getInstance().getAll().get(k - 1);
+            int index = Integer.parseInt(scanner.nextLine());
+            studentDTO = StudentServiceImpl.getInstance().getAll().get(index - 1);
             System.out.println(studentDTO);
             System.out.println("Введите имя: ");
             String name = scanner.nextLine();
@@ -93,13 +93,15 @@ public class StudentControllerImpl implements Controller {
             System.out.println("Введите специальность: ");
             String speciality = scanner.nextLine();
             System.out.println("Введите колво семестров: ");
-            int n = Integer.parseInt(scanner.nextLine());
-            StudentServiceImpl.getInstance().updateInfo(new StudentDTO(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
-                    studentDTO.getLogin(), studentDTO.getPassword()), name, number, group, speciality, fillBook(n)));
-            UserServiceImpl.getInstance().updateInfo(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
+            int quantity = Integer.parseInt(scanner.nextLine());
+            StudentServiceImpl.getInstance().update(new StudentDTO(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
+                    studentDTO.getLogin(), studentDTO.getPassword()), name, number, group, speciality, fillBook(quantity)));
+            UserServiceImpl.getInstance().update(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
                     studentDTO.getLogin(), studentDTO.getPassword()));
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
+        }catch (NullPointerException e){
+            System.out.println("При вводе допущена ошибка");
         }
         editMenu();
     }
@@ -132,16 +134,16 @@ public class StudentControllerImpl implements Controller {
     @Override
     public void delete() {
         System.out.println("Студенты:");
-        int i = 1;
+        int iterator = 1;
         for (StudentDTO studentDTO : StudentServiceImpl.getInstance().getAll()) {
             String s = studentDTO.toString();
-            System.out.println(i + ". " + s);
-            i++;
+            System.out.println(iterator + ". " + s);
+            iterator++;
         }
         System.out.println("Выберите позицию для удаления: ");
         try {
-            int k = Integer.parseInt(scanner.nextLine());
-            StudentServiceImpl.getInstance().deleteInfo(StudentServiceImpl.getInstance().getAll().get(k - 1).getId());
+            int index = Integer.parseInt(scanner.nextLine());
+            StudentServiceImpl.getInstance().delete(StudentServiceImpl.getInstance().getAll().get(index - 1).getId());
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }
@@ -158,10 +160,10 @@ public class StudentControllerImpl implements Controller {
         Menu.getInstance().studentMenu();
     }
 
-    public void getAllByGroup() {
-        int k = StudentServiceImpl.getInstance().getByLogin(Menu.getInstance().getLogin()).getGroupId();
-        System.out.println("Студенты группы: " + k);
-        for (StudentDTO studentDTO : StudentServiceImpl.getInstance().getAllByGroup(k)) {
+    public void getAllByGroup(){
+        int index = StudentServiceImpl.getInstance().getByLogin(Menu.getInstance().getLogin()).getGroupId();
+        System.out.println("Студенты группы: " + index);
+        for (StudentDTO studentDTO : StudentServiceImpl.getInstance().getAllByGroup(index)) {
             System.out.println("Студент: " + studentDTO.getName());
         }
         System.out.println("------------------------------");

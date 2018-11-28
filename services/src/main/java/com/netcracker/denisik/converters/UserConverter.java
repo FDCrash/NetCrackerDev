@@ -7,12 +7,20 @@ import com.netcracker.denisik.entities.UserEntity;
 
 public class UserConverter {
     public UserEntity convert(UserDTO userDTO) {
-        return new UserEntity(userDTO.getId(), Role.valueOf(userDTO.getRoleDTO().name()), userDTO.getLogin(),
-                userDTO.getPassword());
+        UserEntity userEntity=new UserEntity();
+        userEntity.setId(userDTO.getId());
+        userEntity.setRole(Role.valueOf(userDTO.getRoleDTO().name()));
+        userEntity.setLogin(userDTO.getLogin());
+        userEntity.setPassword(userDTO.getPassword());
+        return userEntity;
     }
 
     public UserDTO convert(UserEntity userEntity) {
-        return new UserDTO(userEntity.getId(), RoleDTO.valueOf(userEntity.getRole().name()), userEntity.getLogin(),
-                userEntity.getPassword());
+        UserDTO userDTO=new UserDTO();
+        userDTO.setId(userEntity.getId());
+        userDTO.setRoleDTO(RoleDTO.valueOf(userEntity.getRole().name()));
+        userDTO.setLogin(userEntity.getLogin());
+        userDTO.setPassword(userEntity.getPassword());
+        return userDTO;
     }
 }

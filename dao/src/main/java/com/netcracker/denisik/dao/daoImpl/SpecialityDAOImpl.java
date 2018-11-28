@@ -2,6 +2,7 @@ package com.netcracker.denisik.dao.daoImpl;
 
 import com.netcracker.denisik.dao.AbstractDao;
 import com.netcracker.denisik.entities.SpecialityEntity;
+import com.netcracker.denisik.sql.ClosingUtil;
 import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
 
@@ -39,12 +40,8 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(специальность)");
         } finally {
-            try {
-                statement.close();
-                result.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием(специальность)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return specialityEntity;
     }
@@ -65,12 +62,8 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(специальности)");
         } finally {
-            try {
-                statement.close();
-                result.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием(специальности)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return list;
     }
@@ -87,11 +80,8 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с записью бд(специальность)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием записи(специальность)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return get(specialityEntity.getId());
     }
@@ -114,11 +104,7 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с удалением из бд(специальность)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием удаления в бд(специальность)");
-            }
+            ClosingUtil.close(statement);
         }
     }
 
@@ -136,12 +122,8 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(специальности по факультету)");
         } finally {
-            try {
-                statement.close();
-                result.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием(специальности по факультету)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return list;
     }

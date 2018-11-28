@@ -5,6 +5,7 @@ import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.services.servicesimpl.AdminServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
 
+import java.sql.SQLException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -40,23 +41,23 @@ public class Menu {
     }
 
     public void startMenu() {
-        int k;
-        boolean bool = false;
+        int point;
+        boolean action = false;
         System.out.println("Входное меню");
         do {
             System.out.println("1.Войти");
             System.out.println("2.Зарегистрироваться");
             System.out.println("0.Выйти");
             try {
-                k = Integer.parseInt(scanner.nextLine());
-                switch (k) {
+                point = Integer.parseInt(scanner.nextLine());
+                switch (point) {
                     case 1:
                         authenticationMenu();
-                        bool = true;
+                        action = true;
                         break;
                     case 2:
                         registrationMenu();
-                        bool = true;
+                        action = true;
                         break;
                     case 0:
                         return;
@@ -66,20 +67,20 @@ public class Menu {
             } catch (NumberFormatException e) {
                 System.out.println("Введен неверный символ!");
             }
-        } while (!bool);
+        } while (!action);
     }
 
     private void registrationMenu() {
-        int idStud;
+        int studentId;
         String pass, login;
         try {
             System.out.println("Введите свой номер студенченского билета:");
-            idStud = Integer.parseInt(scanner.nextLine());
+            studentId = Integer.parseInt(scanner.nextLine());
             System.out.println("Введите желаемый логин:");
             login = scanner.nextLine();
             System.out.println("Введите желаемый пароль:");
             pass = scanner.nextLine();
-            System.out.println(UserServiceImpl.getInstance().registration(idStud, login, pass));
+            System.out.println(UserServiceImpl.getInstance().registration(studentId, login, pass));
         } catch (NumberFormatException e) {
             System.out.println("Введен неверный символ!");
         }
@@ -118,8 +119,8 @@ public class Menu {
     }
 
     public void adminMenu() {
-        int k;
-        boolean bool = false;
+        int point;
+        boolean action = false;
         do {
             System.out.println("Меню админа:");
             System.out.println("1.CRUD Админов");
@@ -130,36 +131,35 @@ public class Menu {
             System.out.println("6.CRUD Специальностей");
             System.out.println("0.Выйти");
             try {
-                k = Integer.parseInt(scanner.nextLine());
-                switch (k) {
+                point = Integer.parseInt(scanner.nextLine());
+                switch (point) {
                     case 1:
                         adminController.editMenu();
-                        bool = true;
+                        action = true;
                         break;
                     case 2:
                         employeeController.editMenu();
-                        bool = true;
+                        action = true;
                         break;
                     case 3:
                         studentController.editMenu();
-                        bool = true;
+                        action = true;
                         break;
                     case 4:
                         userController.editMenu();
-                        bool = true;
+                        action = true;
                         break;
                     case 5:
                         facultyController.editMenu();
-                        bool = true;
+                        action = true;
                         break;
                     case 6:
                         specialityController.editMenu();
-                        bool = true;
+                        action = true;
                         break;
                     case 0:
-                        ;
                         startMenu();
-                        bool = true;
+                        action = true;
                         return;
                     default:
                         System.out.println("Выберите позицию из списка");
@@ -167,31 +167,31 @@ public class Menu {
             } catch (NumberFormatException e) {
                 System.out.println("Введен не верный символ!");
             }
-        } while (!bool);
+        } while (!action);
     }
 
     public void employeeMenu() {
-        int k;
-        boolean bool = false;
+        int point;
+        boolean action = false;
         do {
             System.out.println("Меню сотрудника:");
             System.out.println("1.CRUD Студентов");
             System.out.println("2.CRUD Специальностей");
             System.out.println("0.Выйти");
             try {
-                k = Integer.parseInt(scanner.nextLine());
-                switch (k) {
+                point = Integer.parseInt(scanner.nextLine());
+                switch (point) {
                     case 1:
                         studentController.editMenu();
-                        bool = true;
+                        action = true;
                         break;
                     case 2:
                         specialityController.editMenu();
-                        bool = true;
+                        action = true;
                         break;
                     case 0:
                         startMenu();
-                        bool = true;
+                        action = true;
                         return;
                     default:
                         System.out.println("Выберите позицию из списка");
@@ -199,12 +199,12 @@ public class Menu {
             } catch (NumberFormatException e) {
                 System.out.println("Введен не верный символ!");
             }
-        } while (!bool);
+        } while (!action);
     }
 
     public void studentMenu() {
-        int k;
-        boolean bool = false;
+        int point;
+        boolean action = false;
         do {
             System.out.println("Меню студента:");
             System.out.println("1.Просмотреть зачетку");
@@ -212,23 +212,23 @@ public class Menu {
             System.out.println("3.Просмотреть специальность");
             System.out.println("0.Выйти");
             try {
-                k = Integer.parseInt(scanner.nextLine());
-                switch (k) {
+                point = Integer.parseInt(scanner.nextLine());
+                switch (point) {
                     case 1:
                         studentController.showWriteBook();
-                        bool = true;
+                        action = true;
                         break;
                     case 2:
                         studentController.getAllByGroup();
-                        bool = true;
+                        action = true;
                         break;
                     case 3:
                         studentController.getAllBySpeciality();
-                        bool = true;
+                        action = true;
                         break;
                     case 0:
                         startMenu();
-                        bool = true;
+                        action = true;
                         return;
                     default:
                         System.out.println("Выберите позицию из списка");
@@ -236,7 +236,7 @@ public class Menu {
             } catch (NumberFormatException e) {
                 System.out.println("Введен не верный символ!");
             }
-        } while (!bool);
+        } while (!action);
     }
 
     public void setRole(Role role) {

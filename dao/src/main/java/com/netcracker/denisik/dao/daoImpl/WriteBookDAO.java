@@ -1,6 +1,7 @@
 package com.netcracker.denisik.dao.daoImpl;
 
 import com.netcracker.denisik.entities.WriteBook;
+import com.netcracker.denisik.sql.ClosingUtil;
 import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
 
@@ -59,12 +60,8 @@ public class WriteBookDAO {
         } catch (SQLException e) {
             System.out.println("Не найдено зачетки с бд(зачетки)");
         } finally {
-            try {
-                statement.close();
-                result.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием(зачетки)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return list;
     }
@@ -83,11 +80,7 @@ public class WriteBookDAO {
         } catch (SQLException e) {
             System.out.println("Проблемы с записью бд(зачетка)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием записи в бд(зачетка)");
-            }
+            ClosingUtil.close(statement);
         }
     }
 
@@ -100,11 +93,7 @@ public class WriteBookDAO {
         } catch (SQLException e) {
             System.out.println("Проблемы с удалением из бд(зачетка)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием удаления в бд(зачетка)");
-            }
+            ClosingUtil.close(statement);
         }
     }
 }

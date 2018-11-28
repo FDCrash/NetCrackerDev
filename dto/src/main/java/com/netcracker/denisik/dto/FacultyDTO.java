@@ -11,6 +11,13 @@ public class FacultyDTO extends BaseDTO {
     public FacultyDTO() {
     }
 
+    public FacultyDTO(int id, String name) {
+        super(id);
+        this.name = name;
+        this.specialities = new ArrayList<>();
+        this.specialitiesId = new ArrayList<>();
+    }
+
     public FacultyDTO(int id, String name, List<String> specialities, List<Integer> specialitiesId) {
         super(id);
         this.name = name;

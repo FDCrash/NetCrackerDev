@@ -1,15 +1,16 @@
 package com.netcracker.denisik.services;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface CRUDService<T> {
-    void addNew(T t);
+    void add(T t) throws SQLException;
 
-    void deleteInfo(int id);
+    void delete(int id) throws SQLException;
 
-    void updateInfo(T t);
+    void update(T t) throws SQLException;
 
-    List<T> getAll();
+    List<T> getAll() throws SQLException;
 
-    T get(int id);
+    T get(int id) throws SQLException;
 }

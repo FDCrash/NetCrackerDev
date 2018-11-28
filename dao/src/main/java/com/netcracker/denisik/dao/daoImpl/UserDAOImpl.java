@@ -3,6 +3,7 @@ package com.netcracker.denisik.dao.daoImpl;
 
 import com.netcracker.denisik.dao.AbstractDao;
 import com.netcracker.denisik.entities.*;
+import com.netcracker.denisik.sql.ClosingUtil;
 import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
 
@@ -39,12 +40,8 @@ public class UserDAOImpl extends AbstractDao<UserEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(пользователь)");
         } finally {
-            try {
-                statement.close();
-                result.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием(пользователь)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return userEntity;
     }
@@ -64,12 +61,8 @@ public class UserDAOImpl extends AbstractDao<UserEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(пользователи)");
         } finally {
-            try {
-                statement.close();
-                result.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием(пользователи)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return list;
     }
@@ -142,12 +135,8 @@ public class UserDAOImpl extends AbstractDao<UserEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с проверкой в бд(админ)");
         } finally {
-            try {
-                statement.close();
-                result.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием проверки в бд(админ)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return false;
     }

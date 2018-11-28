@@ -4,6 +4,7 @@ import com.netcracker.denisik.dao.AbstractDao;
 import com.netcracker.denisik.entities.EmployeeEntity;
 import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.entities.UserEntity;
+import com.netcracker.denisik.sql.ClosingUtil;
 import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
 
@@ -41,12 +42,8 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с чтением бд(сотрудник)");
         } finally {
-            try {
-                statement.close();
-                result.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с чтением закрытием(сотрудник)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return employeeEntity;
     }
@@ -67,12 +64,8 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с чтением бд(сотрудники)");
         } finally {
-            try {
-                statement.close();
-                result.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с чтением закрытием(сотрудники)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return list;
     }
@@ -90,11 +83,7 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с записью бд(сотрудник)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием записи в бд(сотрудник)");
-            }
+            ClosingUtil.close(statement);
         }
         return get(employeeEntity.getId());
     }
@@ -117,11 +106,7 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с удалением из бд(сотрудник)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием удаления в бд(сотрудник)");
-            }
+            ClosingUtil.close(statement);
         }
     }
 }

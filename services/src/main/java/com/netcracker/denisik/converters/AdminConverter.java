@@ -2,20 +2,28 @@ package com.netcracker.denisik.converters;
 
 import com.netcracker.denisik.dto.AdminDTO;
 import com.netcracker.denisik.dto.RoleDTO;
-import com.netcracker.denisik.dto.UserDTO;
 import com.netcracker.denisik.entities.AdminEntity;
 import com.netcracker.denisik.entities.Role;
-import com.netcracker.denisik.entities.UserEntity;
 
 public class AdminConverter {
 
     public AdminEntity convert(AdminDTO adminDTO) {
-        return new AdminEntity(new UserEntity(adminDTO.getId(), Role.valueOf(adminDTO.getRoleDTO().name()), adminDTO.getLogin(),
-                adminDTO.getPassword()), adminDTO.getStatus());
+        AdminEntity adminEntity = new AdminEntity();
+        adminEntity.setId(adminDTO.getId());
+        adminEntity.setRole(Role.valueOf(adminDTO.getRoleDTO().name()));
+        adminEntity.setLogin(adminDTO.getLogin());
+        adminEntity.setPassword(adminDTO.getPassword());
+        adminEntity.setStatus(adminDTO.getStatus());
+        return adminEntity;
     }
 
     public AdminDTO convert(AdminEntity adminEntity) {
-        return new AdminDTO(new UserDTO(adminEntity.getId(), RoleDTO.valueOf(adminEntity.getRole().name()),
-                adminEntity.getLogin(), adminEntity.getPassword()), adminEntity.getStatus());
+        AdminDTO adminDTO = new AdminDTO();
+        adminDTO.setId(adminEntity.getId());
+        adminDTO.setRoleDTO(RoleDTO.valueOf(adminEntity.getRole().name()));
+        adminDTO.setLogin(adminEntity.getLogin());
+        adminDTO.setPassword(adminEntity.getPassword());
+        adminDTO.setStatus(adminEntity.getStatus());
+        return adminDTO;
     }
 }

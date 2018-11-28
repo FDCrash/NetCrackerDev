@@ -1,6 +1,7 @@
 package com.netcracker.denisik.dao;
 
 import com.netcracker.denisik.entities.UserEntity;
+import com.netcracker.denisik.sql.ClosingUtil;
 import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
 
@@ -9,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class AbstractDao<T> implements IDao<T> {
+public abstract class AbstractDao<T> implements Dao<T> {
     protected Connection connection;
     protected PreparedStatement statement;
     protected ResultSet result;
@@ -26,11 +27,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
         } catch (SQLException e) {
             System.out.println("Проблемы с записью бд(пользователь)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием записи(пользователь)");
-            }
+            ClosingUtil.close(statement);
         }
     }
 
@@ -43,11 +40,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
         } catch (SQLException e) {
             System.out.println("Проблемы с записью бд(пользователь)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием записи(пользователь)");
-            }
+            ClosingUtil.close(statement);
         }
     }
 }

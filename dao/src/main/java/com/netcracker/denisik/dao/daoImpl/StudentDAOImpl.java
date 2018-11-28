@@ -5,6 +5,7 @@ import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.entities.StudentEntity;
 import com.netcracker.denisik.entities.UserEntity;
 import com.netcracker.denisik.entities.WriteBook;
+import com.netcracker.denisik.sql.ClosingUtil;
 import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
 
@@ -45,12 +46,8 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(студент)");
         } finally {
-            try {
-                statement.close();
-                result.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием(студент)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return studentEntity;
     }
@@ -73,12 +70,8 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
         } catch (SQLException | NullPointerException e) {
             System.out.println("Проблемы с бд(студенты)");
         } finally {
-            try {
-                statement.close();
-                result.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием(студенты)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return list;
     }
@@ -105,11 +98,7 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с записью бд(студент)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием записи в бд(студент)");
-            }
+            ClosingUtil.close(statement);
         }
         return get(studentEntity.getId());
     }
@@ -135,11 +124,7 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с удалением из бд(студент)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием удаления в бд(студент)");
-            }
+            ClosingUtil.close(statement);
         }
     }
 
@@ -166,11 +151,7 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с изменением LoginPass из бд(студент)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием LoginPass в бд(студент)");
-            }
+            ClosingUtil.close(statement);
         }
     }
 
@@ -196,11 +177,7 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
         } catch (SQLException e) {
             System.out.println("Проблемы с изменением id спец из бд(студент)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием id спец в бд(студент)");
-            }
+            ClosingUtil.close(statement);
         }
     }
 

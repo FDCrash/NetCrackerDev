@@ -3,13 +3,16 @@ package com.netcracker.denisik.services.servicesimpl;
 import com.netcracker.denisik.converters.SpecialityConverter;
 import com.netcracker.denisik.dao.daoImpl.SpecialityDAOImpl;
 import com.netcracker.denisik.dto.SpecialityDTO;
+import com.netcracker.denisik.services.AbstractService;
 import com.netcracker.denisik.services.CRUDService;
+import com.netcracker.denisik.sql.DatabaseConnector;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.SplittableRandom;
 import java.util.stream.Collectors;
 
-public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
+public class SpecialityServiceImpl extends AbstractService<SpecialityDTO> {
     private SpecialityConverter specialityConverter;
     private static SpecialityServiceImpl instance;
 
@@ -25,40 +28,109 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
     }
 
     @Override
-    public void addNew(SpecialityDTO specialityDTO) {
-        SpecialityDAOImpl.getInstance().add(specialityConverter.convert(specialityDTO));
-
+    public void add(SpecialityDTO specialityDTO) {
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            SpecialityDAOImpl.getInstance().add(specialityConverter.convert(specialityDTO));
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     @Override
-    public void deleteInfo(int id) {
-        SpecialityDAOImpl.getInstance().delete(id);
+    public void delete(int id){
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            SpecialityDAOImpl.getInstance().delete(id);
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     @Override
-    public void updateInfo(SpecialityDTO specialityDTO) {
-        SpecialityDAOImpl.getInstance().update(specialityConverter.convert(specialityDTO));
+    public void update(SpecialityDTO specialityDTO) {
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            SpecialityDAOImpl.getInstance().update(specialityConverter.convert(specialityDTO));
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     @Override
     public List<SpecialityDTO> getAll() {
-        return SpecialityDAOImpl.getInstance().getAll().stream()
-                .map(speciality -> specialityConverter.convert(speciality))
-                .collect(Collectors.toList());
+        List<SpecialityDTO> specialityDTO=null;
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            specialityDTO=SpecialityDAOImpl.getInstance().getAll().stream()
+                    .map(speciality -> specialityConverter.convert(speciality))
+                    .collect(Collectors.toList());
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return specialityDTO;
     }
 
     @Override
-    public SpecialityDTO get(int id) {
-        return specialityConverter.convert(SpecialityDAOImpl.getInstance().get(id));
+    public SpecialityDTO get(int id){
+        SpecialityDTO specialityDTO=null;
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            specialityDTO=specialityConverter.convert(SpecialityDAOImpl.getInstance().get(id));
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return specialityDTO;
     }
 
     public int generateId(int bound) {
         SplittableRandom splittableRandom = new SplittableRandom();
-        int k;
-        do {
-            k = splittableRandom.nextInt(1, bound);
+        int id=-1;
+        try {
+            connection = DatabaseConnector.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            do {
+                id = splittableRandom.nextInt(1, bound);
 
-        } while (SpecialityDAOImpl.getInstance().get(k) != null);
-        return k;
+            } while (SpecialityDAOImpl.getInstance().get(id) != null);
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return id;
     }
 }

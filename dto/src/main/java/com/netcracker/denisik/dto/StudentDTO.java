@@ -14,6 +14,16 @@ public class StudentDTO extends UserDTO {
     }
 
     public StudentDTO(UserDTO userDTO, String name,
+                      int studentId, int groupId, String speciality) {
+        super(userDTO);
+        this.name = name;
+        this.studentId = studentId;
+        this.groupId = groupId;
+        this.speciality = speciality;
+        this.writeBook = new ArrayList<>();
+    }
+
+    public StudentDTO(UserDTO userDTO, String name,
                       int studentId, int groupId, String speciality, List<WriteBookDTO> writeBook) {
         super(userDTO);
         this.name = name;
@@ -68,7 +78,7 @@ public class StudentDTO extends UserDTO {
         for (int i = 0; i < getWriteBook().size(); i++) {
             s.append(writeBook.get(i).toString()).append("\n");
         }
-        return "Имя: " + getName() + new UserDTO(this).toString() + "\nСпециальность: " + getSpeciality() +
+        return "Имя: " + getName() + "\n" + new UserDTO(this).toString() + "Специальность: " + getSpeciality() +
                 "\nНомер студенченского билета: " + getStudentId() +
                 "\nНомер группы:" + getGroupId() + "\nЗачетная книжка: " + s;
     }

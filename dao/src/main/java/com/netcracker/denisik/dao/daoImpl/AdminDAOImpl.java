@@ -1,9 +1,11 @@
 package com.netcracker.denisik.dao.daoImpl;
 
+import com.netcracker.denisik.SystemLogger;
 import com.netcracker.denisik.dao.AbstractDao;
 import com.netcracker.denisik.entities.AdminEntity;
 import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.entities.UserEntity;
+import com.netcracker.denisik.sql.ClosingUtil;
 import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
 
@@ -38,15 +40,13 @@ public class AdminDAOImpl extends AbstractDao<AdminEntity> {
                         result.getString(3),result.getString(4)),
                         result.getBoolean(5));
             }
+            SystemLogger.getInstance().logInfo(getClass(),"Получение админа из бд");
         }catch (SQLException e){
             System.out.println("Проблемы с бд(админ)");
+            SystemLogger.getInstance().logError(getClass(),"Проблемы с бд(админ)");
         }finally {
-            try {
-                statement.close();
-                result.close();
-            }catch(SQLException e){
-                System.out.println("Проблемы с закрытием(админ)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return adminEntity;
     }
@@ -64,15 +64,13 @@ public class AdminDAOImpl extends AbstractDao<AdminEntity> {
                         result.getString(3),result.getString(4)),
                         result.getBoolean(5)));
             }
+            SystemLogger.getInstance().logInfo(getClass(),"Получение админов из бд");
         }catch (SQLException e){
             System.out.println("Проблемы с бд(админы)");
+            SystemLogger.getInstance().logError(getClass(),"Проблемы с бд(админы)");
         }finally {
-            try {
-                statement.close();
-                result.close();
-            }catch(SQLException e){
-                System.out.println("Проблемы с закрытием(админы)");
-            }
+            ClosingUtil.close(statement);
+            ClosingUtil.close(result);
         }
         return list;
     }
@@ -87,14 +85,12 @@ public class AdminDAOImpl extends AbstractDao<AdminEntity> {
             statement.setInt(1, adminEntity.getId());
             statement.setBoolean(2, adminEntity.getStatus());
             statement.executeUpdate();
+            SystemLogger.getInstance().logInfo(getClass(),"Добавление админа в бд");
         } catch (SQLException e) {
             System.out.println("Проблемы с записью бд(админ)");
+            SystemLogger.getInstance().logError(getClass(),"Проблемы с записью бд(админ)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием записи в бд(админ)");
-            }
+            ClosingUtil.close(statement);
         }
         return get(adminEntity.getId());
     }
@@ -103,6 +99,7 @@ public class AdminDAOImpl extends AbstractDao<AdminEntity> {
     public AdminEntity update(AdminEntity admin) {
         delete(admin.getId());
         add(admin);
+        SystemLogger.getInstance().logInfo(getClass(),"Обновление админа в бд");
         return get(admin.getId());
     }
 
@@ -114,15 +111,13 @@ public class AdminDAOImpl extends AbstractDao<AdminEntity> {
             statement.setInt(1, id);
             statement.executeUpdate();
             deleteUser(id);
+            SystemLogger.getInstance().logInfo(getClass(),"Удаление админа из бд");
         }
         catch (SQLException e){
             System.out.println("Проблемы с удалением из бд(админ)");
+            SystemLogger.getInstance().logError(getClass(),"Проблемы с удалинием бд(админ)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием удаления в бд(админ)");
-            }
+            ClosingUtil.close(statement);
         }
     }
 
@@ -132,14 +127,12 @@ public class AdminDAOImpl extends AbstractDao<AdminEntity> {
             statement = connection.prepareStatement(SqlRequest.CHANGE_STATUS);
             statement.setString(1, login);
             statement.executeUpdate();
+            SystemLogger.getInstance().logInfo(getClass(),"Изменение статуса админа в бд");
         } catch (SQLException e) {
-            System.out.println("Проблемы с удалением из бд(админ)");
+            SystemLogger.getInstance().logError(getClass(),"Проблемы с изменением статуса в бд(админ)");
+            System.out.println("Проблемы с изменением статуса в бд(админ)");
         } finally {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("Проблемы с закрытием удаления в бд(админ)");
-            }
+            ClosingUtil.close(statement);
         }
     }
 }

@@ -1,8 +1,10 @@
 package com.netcracker.denisik.controllers;
 
+import java.sql.SQLException;
+
 public interface Controller {
-    default void switchChange(int k) {
-        switch (k) {
+    default void switchChange(int point) {
+        switch (point) {
             case 1:
                 getAll();
                 break;
