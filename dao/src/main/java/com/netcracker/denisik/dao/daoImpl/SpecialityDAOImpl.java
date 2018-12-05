@@ -1,6 +1,7 @@
 package com.netcracker.denisik.dao.daoImpl;
 
 import com.netcracker.denisik.dao.AbstractDao;
+import com.netcracker.denisik.entities.FacultyEntity;
 import com.netcracker.denisik.entities.SpecialityEntity;
 import com.netcracker.denisik.sql.ClosingUtil;
 import com.netcracker.denisik.sql.DatabaseConnector;
@@ -25,17 +26,17 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
 
     @Override
     public SpecialityEntity get(int id) {
-        SpecialityEntity specialityEntity = null;
+        SpecialityEntity specialityEntity = new SpecialityEntity();
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_SPECIALITY_BY_ID);
             statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                specialityEntity = new SpecialityEntity(result.getInt(1),
-                        result.getString(2),
-                        FacultyDAOImpl.getInstance().
-                                getFacultyBySpeciality(result.getInt(3)));
+                specialityEntity.setId(result.getInt(1));
+                specialityEntity.setName(result.getString(2));
+                specialityEntity.setFaculty(FacultyDAOImpl.getInstance().
+                        getFacultyBySpeciality(result.getInt(3)));
             }
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(специальность)");
@@ -54,10 +55,12 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
             statement = connection.prepareStatement(SqlRequest.GET_ALL_SPECIALITIES);
             result = statement.executeQuery();
             while (result.next()) {
-                list.add(new SpecialityEntity(result.getInt(1),
-                        result.getString(2),
-                        FacultyDAOImpl.getInstance().
-                                getFacultyBySpeciality(result.getInt(3))));
+                SpecialityEntity specialityEntity=new SpecialityEntity();
+                specialityEntity.setId(result.getInt(1));
+                specialityEntity.setName(result.getString(2));
+                specialityEntity.setFaculty(FacultyDAOImpl.getInstance().
+                        getFacultyBySpeciality(result.getInt(3)));
+                list.add(specialityEntity);
             }
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(специальности)");
@@ -116,8 +119,14 @@ public class SpecialityDAOImpl extends AbstractDao<SpecialityEntity> {
             statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                list.add(new SpecialityEntity(result.getInt(1),
-                        result.getString(2), result.getInt(3)));
+                SpecialityEntity specialityEntity=new SpecialityEntity();
+                specialityEntity.setId(result.getInt(1));
+                specialityEntity.setName(result.getString(2));
+                FacultyEntity facultyEntity=new FacultyEntity();
+                facultyEntity.setId(result.getInt(3));
+                facultyEntity.setName("");
+                specialityEntity.setFaculty(facultyEntity);
+                list.add(specialityEntity);
             }
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(специальности по факультету)");

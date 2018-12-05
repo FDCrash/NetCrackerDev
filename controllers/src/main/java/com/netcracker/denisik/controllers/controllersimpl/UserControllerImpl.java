@@ -59,10 +59,13 @@ public class UserControllerImpl implements Controller {
             if (UserServiceImpl.getInstance().checkLogin(login)) {
                 System.out.println("Введите пароль: ");
                 String password = scanner.nextLine();
+                UserDTO userDTO=new UserDTO();
+                userDTO.setId(UserServiceImpl.getInstance().generateId(1000));
+                userDTO.setRoleDTO(RoleDTO.valueOf(role.toUpperCase()));
+                userDTO.setLogin(login);
+                userDTO.setPassword(password);
                 UserServiceImpl.getInstance().
-                        add(new UserDTO(UserServiceImpl.getInstance().generateId(1000),
-                                RoleDTO.valueOf(role.toUpperCase()),
-                                login, password));
+                        add(userDTO);
             } else {
                 System.out.println("Логин занят");
             }

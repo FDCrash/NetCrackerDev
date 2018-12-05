@@ -1,5 +1,6 @@
 package com.netcracker.denisik.dao.daoImpl;
 
+import com.netcracker.denisik.entities.Semester;
 import com.netcracker.denisik.entities.WriteBook;
 import com.netcracker.denisik.sql.ClosingUtil;
 import com.netcracker.denisik.sql.DatabaseConnector;
@@ -28,8 +29,8 @@ public class WriteBookDAO {
         return instance;
     }
 
-    public List<WriteBook> get(int id) {
-        List<WriteBook> list = new ArrayList<>();
+    public WriteBook get(int id) {
+        List<Semester> list = new ArrayList<>();
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_WRITEBOOK_BY_STUD_ID);
@@ -46,7 +47,7 @@ public class WriteBookDAO {
                     subjects.add(result.getString(2));
                     marks.add(result.getInt(3));
                 } else {
-                    list.add(new WriteBook(semester, subjects, marks));
+                    list.add(new Semester(semester, subjects, marks));
                     subjects.clear();
                     marks.clear();
                     semester = result.getInt(1);
@@ -54,7 +55,7 @@ public class WriteBookDAO {
                     marks.add(result.getInt(3));
                 }
                 if (result.isLast()) {
-                    list.add(new WriteBook(semester, subjects, marks));
+                    list.add(new Semester(semester, subjects, marks));
                 }
             }
         } catch (SQLException e) {
@@ -63,18 +64,18 @@ public class WriteBookDAO {
             ClosingUtil.close(statement);
             ClosingUtil.close(result);
         }
-        return list;
+        return new WriteBook(list);
     }
 
-    public void add(WriteBook writeBook, int id) {
+    public void add(Semester semester, int id) {
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.ADD_WRITEBOOK);
-            for (int i = 0; i < writeBook.getMarks().size(); i++) {
+            for (int i = 0; i < semester.getMarks().size(); i++) {
                 statement.setInt(1, id);
-                statement.setInt(2, writeBook.getSem());
-                statement.setString(3, writeBook.getSubjects().get(i));
-                statement.setInt(4, writeBook.getMarks().get(i));
+                statement.setInt(2, semester.getSem());
+                statement.setString(3, semester.getSubjects().get(i));
+                statement.setInt(4, semester.getMarks().get(i));
                 statement.executeUpdate();
             }
         } catch (SQLException e) {

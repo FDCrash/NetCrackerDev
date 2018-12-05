@@ -27,16 +27,16 @@ public class FacultyDAOImpl extends AbstractDao<FacultyEntity> {
 
     @Override
     public FacultyEntity get(int id) {
-        FacultyEntity facultyEntity = null;
+        FacultyEntity facultyEntity = new FacultyEntity();
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_FACULTY_BY_ID);
             statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                facultyEntity = new FacultyEntity(result.getInt(1),
-                        result.getString(2),
-                        SpecialityDAOImpl.getInstance().getAllByFaculty(id));
+                facultyEntity.setId(result.getInt(1));
+                facultyEntity.setName(result.getString(2));
+                facultyEntity.setSpecialities(SpecialityDAOImpl.getInstance().getAllByFaculty(id));
             }
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(факультет)");
@@ -55,10 +55,11 @@ public class FacultyDAOImpl extends AbstractDao<FacultyEntity> {
             statement = connection.prepareStatement(SqlRequest.GET_ALL_FACULTIES);
             result = statement.executeQuery();
             while (result.next()) {
-                list.add(new FacultyEntity(result.getInt(1),
-                        result.getString(2),
-                        SpecialityDAOImpl.getInstance().
-                                getAllByFaculty(result.getInt(1))));
+                FacultyEntity facultyEntity=new FacultyEntity();
+                facultyEntity.setId(result.getInt(1));
+                facultyEntity.setName(result.getString(2));
+                facultyEntity.setSpecialities(SpecialityDAOImpl.getInstance().getAllByFaculty(1));
+                list.add(facultyEntity);
             }
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(факультеты)");

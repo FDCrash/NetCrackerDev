@@ -26,16 +26,17 @@ public class UserDAOImpl extends AbstractDao<UserEntity> {
 
     @Override
     public UserEntity get(int id) {
-        UserEntity userEntity = null;
+        UserEntity userEntity = new UserEntity();
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_USER_BY_ID);
             statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                userEntity = new UserEntity(result.getInt(1),
-                        Role.valueOf(result.getString(2)),
-                        result.getString(3), result.getString(4));
+                userEntity.setId(result.getInt(1));
+                userEntity.setRole(Role.valueOf(result.getString(2)));
+                userEntity.setLogin(result.getString(3));
+                userEntity.setPassword(result.getString(4));
             }
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(пользователь)");
@@ -54,9 +55,12 @@ public class UserDAOImpl extends AbstractDao<UserEntity> {
             statement = connection.prepareStatement(SqlRequest.GET_ALL_USERS);
             result = statement.executeQuery();
             while (result.next()) {
-                list.add(new UserEntity(result.getInt(1),
-                        Role.valueOf(result.getString(2)),
-                        result.getString(3), result.getString(4)));
+                UserEntity userEntity=new UserEntity();
+                userEntity.setId(result.getInt(1));
+                userEntity.setRole(Role.valueOf(result.getString(2)));
+                userEntity.setLogin(result.getString(3));
+                userEntity.setPassword(result.getString(4));
+                list.add(userEntity);
             }
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(пользователи)");
@@ -78,7 +82,7 @@ public class UserDAOImpl extends AbstractDao<UserEntity> {
                 break;
             case STUDENT:
                 StudentDAOImpl.getInstance().add(new StudentEntity(new UserEntity(userEntity),
-                        "", 0, 0, 0,new ArrayList<>(0)));
+                        "", 0, 0, 0,null));
         }
         return get(userEntity.getId());
     }

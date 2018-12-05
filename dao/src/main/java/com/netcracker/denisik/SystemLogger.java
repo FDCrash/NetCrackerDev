@@ -23,6 +23,7 @@ public class SystemLogger {
 
     public void logInfo(Class sender, String message) {
         logger = Logger.getLogger(sender);
+        System.out.println(logger.getName());
         logger.info(message);
     }
 }

@@ -27,17 +27,18 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
 
     @Override
     public EmployeeEntity get(int id) {
-        EmployeeEntity employeeEntity = null;
+        EmployeeEntity employeeEntity = new EmployeeEntity();
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_EMPLOYEE_BY_ID);
             statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                employeeEntity = new EmployeeEntity(new UserEntity(result.getInt(1),
-                        Role.valueOf(result.getString(2)),
-                        result.getString(3), result.getString(4)),
-                        result.getString(5));
+                employeeEntity.setId(result.getInt(1));
+                employeeEntity.setRole(Role.valueOf(result.getString(2)));
+                employeeEntity.setLogin(result.getString(3));
+                employeeEntity.setPassword(result.getString(4));
+                employeeEntity.setName(result.getString(5));
             }
         } catch (SQLException e) {
             System.out.println("Проблемы с чтением бд(сотрудник)");
@@ -56,10 +57,13 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
             statement = connection.prepareStatement(SqlRequest.GET_ALL_EMPLOYEES);
             result = statement.executeQuery();
             while (result.next()) {
-                list.add(new EmployeeEntity(new UserEntity(result.getInt(1),
-                        Role.valueOf(result.getString(2)),
-                        result.getString(3), result.getString(4)),
-                        result.getString(5)));
+                EmployeeEntity employeeEntity=new EmployeeEntity();
+                employeeEntity.setId(result.getInt(1));
+                employeeEntity.setRole(Role.valueOf(result.getString(2)));
+                employeeEntity.setLogin(result.getString(3));
+                employeeEntity.setPassword(result.getString(4));
+                employeeEntity.setName(result.getString(5));
+                list.add(employeeEntity);
             }
         } catch (SQLException e) {
             System.out.println("Проблемы с чтением бд(сотрудники)");
@@ -74,8 +78,7 @@ public class EmployeeDAOImpl extends AbstractDao<EmployeeEntity> {
     public EmployeeEntity add(EmployeeEntity employeeEntity) {
         try {
             connection = DatabaseConnector.getInstance().getConnection();
-            addUser(new UserEntity(employeeEntity.getId(), employeeEntity.getRole(),
-                    employeeEntity.getLogin(), employeeEntity.getPassword()));
+            addUser(employeeEntity);
             statement = connection.prepareStatement(SqlRequest.ADD_EMPLOYEE);
             statement.setInt(1, employeeEntity.getId());
             statement.setString(2, employeeEntity.getName());

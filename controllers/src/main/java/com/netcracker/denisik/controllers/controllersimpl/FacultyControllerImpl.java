@@ -57,8 +57,12 @@ public class FacultyControllerImpl implements Controller {
                 specialities.add(scanner.nextLine());
                 specialitiesId.add(SpecialityServiceImpl.getInstance().generateId(50));
             }
-            FacultyServiceImpl.getInstance().add(new FacultyDTO(FacultyServiceImpl.getInstance().generateId(50),
-                    name, specialities, specialitiesId));
+            FacultyDTO facultyDTO=new FacultyDTO();
+            facultyDTO.setId(FacultyServiceImpl.getInstance().generateId(50));
+            facultyDTO.setName(name);
+            facultyDTO.setSpecialitiesId(specialitiesId);
+            facultyDTO.setSpecialities(specialities);
+            FacultyServiceImpl.getInstance().add(facultyDTO);
         }catch (NullPointerException e){
             System.out.println("При введении допущена ошибка");
         }
@@ -82,8 +86,8 @@ public class FacultyControllerImpl implements Controller {
             if(!facultyDTO.getName().equals("Абитура")) {
                 System.out.println("Введите название факультета: ");
                 String name = scanner.nextLine();
-                FacultyServiceImpl.getInstance().update(new FacultyDTO(facultyDTO.getId(), name,
-                        facultyDTO.getSpecialities(), facultyDTO.getSpecialitiesId()));
+                facultyDTO.setName(name);
+                FacultyServiceImpl.getInstance().update(facultyDTO);
             }else{
                 System.out.println("Этот факультет нельзя изменять");
             }

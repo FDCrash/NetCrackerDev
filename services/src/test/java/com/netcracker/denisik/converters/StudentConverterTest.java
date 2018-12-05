@@ -58,6 +58,6 @@ public class StudentConverterTest {
         Assert.assertEquals(studentEntity.getStudentId(), studentTestEntity.getStudentId());
         Assert.assertEquals(studentEntity.getGroupId(), studentTestEntity.getGroupId());
         Assert.assertEquals("Переводится", studentTestEntity.getSpecialityEntity().getName());
-        Assert.assertEquals(0, studentTestEntity.getWriteBook().size());
+        Assert.assertEquals(0, studentTestEntity.getWriteBook().getSemester().size());
     }
 }

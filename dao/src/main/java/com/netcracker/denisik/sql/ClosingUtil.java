@@ -1,5 +1,7 @@
 package com.netcracker.denisik.sql;
 
+import com.netcracker.denisik.SystemLogger;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +16,7 @@ public class ClosingUtil {
             }
             catch(SQLException e){
                 System.out.println();
-               // PaymentSystemLogger.getInstance().logError(ClosingUtil.class, e.getMessage());
+                SystemLogger.getInstance().logError(ClosingUtil.class, "Ошибка при закрытии запроса");
             }
         }
     }
@@ -26,7 +28,7 @@ public class ClosingUtil {
             }
             catch(SQLException e){
                 System.out.println();
-                //PaymentSystemLogger.getInstance().logError(ClosingUtil.class, e.getMessage());
+                SystemLogger.getInstance().logError(ClosingUtil.class, "Ошибка при закрытии resultSet");
             }
         }
     }

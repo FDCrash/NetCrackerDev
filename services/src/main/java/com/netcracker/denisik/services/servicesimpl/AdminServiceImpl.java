@@ -3,23 +3,21 @@ package com.netcracker.denisik.services.servicesimpl;
 import com.netcracker.denisik.converters.AdminConverter;
 import com.netcracker.denisik.dao.daoImpl.AdminDAOImpl;
 import com.netcracker.denisik.dto.AdminDTO;
-import com.netcracker.denisik.services.AbstractService;
-import com.netcracker.denisik.sql.DatabaseConnector;
+import com.netcracker.denisik.services.CRUDService;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AdminServiceImpl extends AbstractService<AdminDTO> {
+public class AdminServiceImpl implements CRUDService<AdminDTO> {
     private AdminConverter adminConverter;
     private static AdminServiceImpl instance;
 
-    private AdminServiceImpl(){
+    private AdminServiceImpl() {
         adminConverter = new AdminConverter();
     }
 
-    public static AdminServiceImpl getInstance(){
-        if(instance == null){
+    public static AdminServiceImpl getInstance() {
+        if (instance == null) {
             instance = new AdminServiceImpl();
         }
         return instance;
@@ -27,103 +25,32 @@ public class AdminServiceImpl extends AbstractService<AdminDTO> {
 
     @Override
     public void add(AdminDTO adminDTO) {
-        try {
-            connection= DatabaseConnector.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            AdminDAOImpl.getInstance().add(adminConverter.convert(adminDTO));
-            connection.commit();
-        }catch (SQLException e){
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        }
+        AdminDAOImpl.getInstance().add(adminConverter.convert(adminDTO));
     }
 
     @Override
     public void delete(int id) {
-        try {
-            connection= DatabaseConnector.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            AdminDAOImpl.getInstance().delete(id);
-            connection.commit();
-        }catch (SQLException e){
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        }
+        AdminDAOImpl.getInstance().delete(id);
     }
 
     @Override
     public void update(AdminDTO adminDTO) {
-        try {
-            connection= DatabaseConnector.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            AdminDAOImpl.getInstance().update(adminConverter.convert(adminDTO));
-            connection.commit();
-        }catch (SQLException e){
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        }
+        AdminDAOImpl.getInstance().update(adminConverter.convert(adminDTO));
     }
 
     @Override
-    public List<AdminDTO> getAll(){
-        List<AdminDTO> adminDTO = null;
-        try {
-            connection= DatabaseConnector.getInstance().getConnection();
-            connection.setAutoCommit(false);
-             adminDTO= AdminDAOImpl.getInstance()
-                    .getAll().stream()
-                    .map(admin -> adminConverter.convert(admin)).collect(Collectors.toList());
-            connection.commit();
-        }catch (SQLException e){
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        }
-        return adminDTO;
+    public List<AdminDTO> getAll() {
+        return AdminDAOImpl.getInstance()
+                .getAll().stream()
+                .map(admin -> adminConverter.convert(admin)).collect(Collectors.toList());
     }
 
     @Override
     public AdminDTO get(int id) {
-        AdminDTO adminDTO = null;
-        try {
-            connection= DatabaseConnector.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            adminDTO= adminConverter.convert(AdminDAOImpl.getInstance().get(id));
-            connection.commit();
-        }catch (SQLException e){
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        }
-        return adminDTO;
+        return adminConverter.convert(AdminDAOImpl.getInstance().get(id));
     }
 
     public void changeStatusAdmin(String login) {
-        AdminDTO adminDTO = null;
-        try {
-            connection= DatabaseConnector.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            AdminDAOImpl.getInstance().changeStatus(login);
-            connection.commit();
-        }catch (SQLException e){
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        }
+        AdminDAOImpl.getInstance().changeStatus(login);
     }
 }

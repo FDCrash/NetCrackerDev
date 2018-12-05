@@ -60,9 +60,17 @@ public class StudentControllerImpl implements Controller {
         System.out.println("Введите колво семестров: ");
         int quantity = Integer.parseInt(scanner.nextLine());
         try {
-            StudentServiceImpl.getInstance().
-                    add(new StudentDTO(new UserDTO(UserServiceImpl.getInstance().generateId(1000),
-                            RoleDTO.STUDENT, "", ""), name, studentId, group, speciality, fillBook(quantity)));
+            StudentDTO studentDTO=new StudentDTO();
+            studentDTO.setId(UserServiceImpl.getInstance().generateId(1000));
+            studentDTO.setRoleDTO(RoleDTO.STUDENT);
+            studentDTO.setLogin("");
+            studentDTO.setPassword("");
+            studentDTO.setName(name);
+            studentDTO.setStudentId(studentId);
+            studentDTO.setGroupId(group);
+            studentDTO.setSpeciality(speciality);
+            studentDTO.setWriteBook(fillBook(quantity));
+            StudentServiceImpl.getInstance().add(studentDTO);
         }catch (NullPointerException e){
             System.out.println("При вводе допущена ошибка");
         }
@@ -87,17 +95,20 @@ public class StudentControllerImpl implements Controller {
             System.out.println("Введите имя: ");
             String name = scanner.nextLine();
             System.out.println("Введите номер студенченского билета: ");
-            int number = Integer.parseInt(scanner.nextLine());
+            int studentId = Integer.parseInt(scanner.nextLine());
             System.out.println("Введите номер группы: ");
             int group = Integer.parseInt(scanner.nextLine());
             System.out.println("Введите специальность: ");
             String speciality = scanner.nextLine();
             System.out.println("Введите колво семестров: ");
             int quantity = Integer.parseInt(scanner.nextLine());
-            StudentServiceImpl.getInstance().update(new StudentDTO(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
-                    studentDTO.getLogin(), studentDTO.getPassword()), name, number, group, speciality, fillBook(quantity)));
-            UserServiceImpl.getInstance().update(new UserDTO(studentDTO.getId(), RoleDTO.STUDENT,
-                    studentDTO.getLogin(), studentDTO.getPassword()));
+            studentDTO.setName(name);
+            studentDTO.setStudentId(studentId);
+            studentDTO.setGroupId(group);
+            studentDTO.setSpeciality(speciality);
+            studentDTO.setWriteBook(fillBook(quantity));
+            StudentServiceImpl.getInstance().update(studentDTO);
+            UserServiceImpl.getInstance().update(studentDTO);
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }catch (NullPointerException e){
@@ -126,6 +137,10 @@ public class StudentControllerImpl implements Controller {
                 marks.add(mark);
                 subjects.add(subj);
             }
+            WriteBookDTO writeBookDTO=new WriteBookDTO();
+            writeBookDTO.setSem(i);
+            writeBookDTO.setSubjects(subjects);
+            writeBookDTO.setMarks(marks);
             writeBook.add(new WriteBookDTO(i, subjects, marks));
         }
         return writeBook;

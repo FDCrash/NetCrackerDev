@@ -80,7 +80,11 @@ public class Menu {
             login = scanner.nextLine();
             System.out.println("Введите желаемый пароль:");
             pass = scanner.nextLine();
-            System.out.println(UserServiceImpl.getInstance().registration(studentId, login, pass));
+            if(UserServiceImpl.getInstance().registration(studentId, login, pass)){
+                System.out.println("Вы успешно зарегестрированы");
+            }else{
+                System.out.println("Ошибка регистрации");
+            }
         } catch (NumberFormatException e) {
             System.out.println("Введен неверный символ!");
         }

@@ -47,8 +47,11 @@ public class SpecialityControllerImpl implements Controller {
         System.out.println("Введите название факультета: ");
         String faculty = scanner.nextLine();
         try {
-            SpecialityServiceImpl.getInstance().
-                    add(new SpecialityDTO(SpecialityServiceImpl.getInstance().generateId(50), name, faculty));
+            SpecialityDTO specialityDTO=new SpecialityDTO();
+            specialityDTO.setId(SpecialityServiceImpl.getInstance().generateId(50));
+            specialityDTO.setName(name);
+            specialityDTO.setFaculty(faculty);
+            SpecialityServiceImpl.getInstance().add(specialityDTO);
         }catch (NullPointerException e){
             System.out.println("При вводе допущена ошибка");
         }
@@ -73,8 +76,9 @@ public class SpecialityControllerImpl implements Controller {
                 String name = scanner.nextLine();
                 System.out.println("Введите название факультета: ");
                 String faculty = scanner.nextLine();
-                SpecialityServiceImpl.getInstance().
-                        update(new SpecialityDTO(specialityDTO.getId(), name, faculty));
+                specialityDTO.setFaculty(faculty);
+                specialityDTO.setName(name);
+                SpecialityServiceImpl.getInstance().update(specialityDTO);
             } else {
                 System.out.println("Эту специальность нельзя изменять");
             }

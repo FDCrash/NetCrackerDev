@@ -4,7 +4,7 @@ import com.netcracker.denisik.dao.AbstractDao;
 import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.entities.StudentEntity;
 import com.netcracker.denisik.entities.UserEntity;
-import com.netcracker.denisik.entities.WriteBook;
+import com.netcracker.denisik.entities.Semester;
 import com.netcracker.denisik.sql.ClosingUtil;
 import com.netcracker.denisik.sql.DatabaseConnector;
 import com.netcracker.denisik.sql.SqlRequest;
@@ -29,19 +29,23 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
 
     @Override
     public StudentEntity get(int id) {
-        StudentEntity studentEntity = null;
+        StudentEntity studentEntity = new StudentEntity();
         try {
             connection = DatabaseConnector.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_STUDENT_BY_ID);
             statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                studentEntity = new StudentEntity(new UserEntity(result.getInt(1),
-                        Role.valueOf(result.getString(2)),
-                        result.getString(3), result.getString(4)),
-                        result.getString(5), result.getInt(6),
-                        result.getInt(7), SpecialityDAOImpl.getInstance()
-                        .get(result.getInt(8)), WriteBookDAO.getInstance().get(result.getInt(6)));
+                studentEntity.setId(result.getInt(1));
+                studentEntity.setRole(Role.valueOf(result.getString(2)));
+                studentEntity.setLogin(result.getString(3));
+                studentEntity.setPassword(result.getString(4));
+                studentEntity.setName(result.getString(5));
+                studentEntity.setStudentId(result.getInt(6));
+                studentEntity.setGroupId(result.getInt(7));
+                studentEntity.setSpecialityEntity(SpecialityDAOImpl.getInstance()
+                        .get(result.getInt(8)));
+                studentEntity.setWriteBook(WriteBookDAO.getInstance().get(result.getInt(6)));
             }
         } catch (SQLException e) {
             System.out.println("Проблемы с бд(студент)");
@@ -60,12 +64,18 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
             statement = connection.prepareStatement(SqlRequest.GET_ALL_STUDENTS);
             result = statement.executeQuery();
             while (result.next()) {
-                list.add(new StudentEntity(new UserEntity(result.getInt(1),
-                        Role.valueOf(result.getString(2)),
-                        result.getString(3), result.getString(4)),
-                        result.getString(5), result.getInt(6),
-                        result.getInt(7), SpecialityDAOImpl.getInstance()
-                        .get(result.getInt(8)), WriteBookDAO.getInstance().get(result.getInt(6))));
+                StudentEntity studentEntity=new StudentEntity();
+                studentEntity.setId(result.getInt(1));
+                studentEntity.setRole(Role.valueOf(result.getString(2)));
+                studentEntity.setLogin(result.getString(3));
+                studentEntity.setPassword(result.getString(4));
+                studentEntity.setName(result.getString(5));
+                studentEntity.setStudentId(result.getInt(6));
+                studentEntity.setGroupId(result.getInt(7));
+                studentEntity.setSpecialityEntity(SpecialityDAOImpl.getInstance()
+                        .get(result.getInt(8)));
+                studentEntity.setWriteBook(WriteBookDAO.getInstance().get(result.getInt(6)));
+                list.add(studentEntity);
             }
         } catch (SQLException | NullPointerException e) {
             System.out.println("Проблемы с бд(студенты)");
@@ -83,8 +93,7 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
             if (studentEntity.getLogin().equals("")) {
                 studentEntity.setLogin(null);
             }
-            addUser(new UserEntity(studentEntity.getId(), studentEntity.getRole(),
-                    studentEntity.getLogin(), studentEntity.getPassword()));
+            addUser(studentEntity);
             statement = connection.prepareStatement(SqlRequest.ADD_STUDENT);
             statement.setInt(1, studentEntity.getId());
             statement.setString(2, studentEntity.getName());
@@ -92,8 +101,8 @@ public class StudentDAOImpl extends AbstractDao<StudentEntity> {
             statement.setInt(4, studentEntity.getGroupId());
             statement.setInt(5, studentEntity.getSpecialityEntity().getId());
             statement.executeUpdate();
-            for (WriteBook writeBook : studentEntity.getWriteBook()) {
-                WriteBookDAO.getInstance().add(writeBook, studentEntity.getStudentId());
+            for (Semester semester : studentEntity.getWriteBook().getSemester()) {
+                WriteBookDAO.getInstance().add(semester, studentEntity.getStudentId());
             }
         } catch (SQLException e) {
             System.out.println("Проблемы с записью бд(студент)");

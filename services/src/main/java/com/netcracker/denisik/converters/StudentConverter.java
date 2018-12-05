@@ -3,7 +3,6 @@ package com.netcracker.denisik.converters;
 import com.netcracker.denisik.dao.daoImpl.SpecialityDAOImpl;
 import com.netcracker.denisik.dto.RoleDTO;
 import com.netcracker.denisik.dto.StudentDTO;
-import com.netcracker.denisik.dto.UserDTO;
 import com.netcracker.denisik.dto.WriteBookDTO;
 import com.netcracker.denisik.entities.*;
 
@@ -12,10 +11,10 @@ import java.util.List;
 
 public class StudentConverter {
     public StudentEntity convert(StudentDTO studentDTO) {
-        List<WriteBook> writeBooks=new ArrayList<>();
+        List<Semester> semesters =new ArrayList<>();
         studentDTO.getWriteBook().
-                forEach(writeBookDTO -> writeBooks.
-                        add(new WriteBook(writeBookDTO.getSem(),writeBookDTO.getSubjects(),writeBookDTO.getMarks())));
+                forEach(writeBookDTO -> semesters.
+                        add(new Semester(writeBookDTO.getSem(),writeBookDTO.getSubjects(),writeBookDTO.getMarks())));
         StudentEntity studentEntity=new StudentEntity();
         studentEntity.setId(studentDTO.getId());
         studentEntity.setRole(Role.valueOf(studentDTO.getRoleDTO().name()));
@@ -27,13 +26,13 @@ public class StudentConverter {
         studentEntity.setSpecialityEntity(SpecialityDAOImpl.getInstance().getAll().stream()
                 .filter(specialityEntity -> specialityEntity.getName().equals(studentDTO.getSpeciality()))
                 .findFirst().get());
-        studentEntity.setWriteBook(writeBooks);
+        studentEntity.setWriteBook(new WriteBook(semesters));
         return studentEntity;
     }
 
     public StudentDTO convert(StudentEntity studentEntity) {
         List<WriteBookDTO> writeBookDTO=new ArrayList<>();
-        studentEntity.getWriteBook().
+        studentEntity.getWriteBook().getSemester().
                 forEach(writeBook -> writeBookDTO.
                         add(new WriteBookDTO(writeBook.getSem(),writeBook.getSubjects(),writeBook.getMarks())));
         StudentDTO studentDTO=new StudentDTO();

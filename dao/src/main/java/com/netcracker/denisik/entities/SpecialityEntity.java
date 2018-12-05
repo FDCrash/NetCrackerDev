@@ -13,6 +13,26 @@ public class SpecialityEntity extends BaseEntity {
         this.faculty = faculty;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SpecialityEntity)) return false;
+        if (!super.equals(o)) return false;
+
+        SpecialityEntity that = (SpecialityEntity) o;
+
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        return getFaculty().equals(that.getFaculty());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + getFaculty().hashCode();
+        return result;
+    }
+
     public SpecialityEntity(int id, String name, int facultyId) {
         super(id);
         this.name = name;

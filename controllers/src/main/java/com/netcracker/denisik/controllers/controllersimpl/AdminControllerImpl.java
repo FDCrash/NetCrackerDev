@@ -50,9 +50,14 @@ public class AdminControllerImpl implements Controller {
         if (UserServiceImpl.getInstance().checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.nextLine();
-            AdminServiceImpl.getInstance().add(new AdminDTO(new UserDTO(UserServiceImpl.getInstance()
-                    .generateId(1000), RoleDTO.ADMIN,
-                    login, password), false));
+            AdminDTO adminDTO=new AdminDTO();
+            adminDTO.setId(UserServiceImpl.getInstance()
+                    .generateId(1000));
+            adminDTO.setRoleDTO(RoleDTO.ADMIN);
+            adminDTO.setLogin(login);
+            adminDTO.setPassword(password);
+            adminDTO.setStatus(false);
+            AdminServiceImpl.getInstance().add(adminDTO);
         } else {
             System.out.println("Логин занят");
         }
@@ -79,8 +84,9 @@ public class AdminControllerImpl implements Controller {
             if (login.equals(adminDTO.getLogin()) || UserServiceImpl.getInstance().checkLogin(login)) {
                 System.out.println("Введите пароль: ");
                 String password = scanner.nextLine();
-                AdminServiceImpl.getInstance().update(new AdminDTO(new UserDTO(adminDTO.getId(), RoleDTO.ADMIN,
-                        login, password), false));
+                adminDTO.setLogin(login);
+                adminDTO.setPassword(password);
+                AdminServiceImpl.getInstance().update(adminDTO);
             } else {
                 System.out.println("Новый логин занят");
             }

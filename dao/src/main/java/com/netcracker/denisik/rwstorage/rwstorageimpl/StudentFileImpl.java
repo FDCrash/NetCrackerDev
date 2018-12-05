@@ -40,7 +40,7 @@ public class StudentFileImpl implements RWStorage {
                 int groupId = (int) (long) jsonObject.get("groupId");
                 int specialityId = (int) (long) jsonObject.get("specialityId");
                 JSONArray semester = (JSONArray) jsonObject.get("writeBook");
-                List<WriteBook> writeBooks = new ArrayList<>();
+                List<Semester> semesters = new ArrayList<>();
                 for(Object object1:semester){
                     JSONObject jsonObj= (JSONObject) object1;
                     JSONArray subject= (JSONArray) jsonObj.get("subjects");
@@ -55,10 +55,10 @@ public class StudentFileImpl implements RWStorage {
                     while(iteratorMark.hasNext()){
                         marks.add(iteratorMark.next().intValue());
                     }
-                    writeBooks.add(new WriteBook((int) (long)jsonObj.get("semester"),subjects,marks));
+                    semesters.add(new Semester((int) (long)jsonObj.get("semester"),subjects,marks));
                 }
                 students.add(new StudentEntity(new UserEntity(id,role,login,pass),
-                        name,studentId,groupId,specialityId, writeBooks));
+                        name,studentId,groupId,specialityId, new WriteBook(semester)));
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
@@ -81,16 +81,16 @@ public class StudentFileImpl implements RWStorage {
             jsonObject.put("specialityId", studentEntity.getSpecialityEntity().getId());
             JSONArray writeBook = new JSONArray();
             int i=0;
-            for (WriteBook semesters:studentEntity.getWriteBook()) {
+            for (Semester semesters:studentEntity.getWriteBook().getSemester()) {
                 JSONObject sem=new JSONObject();
                 sem.put("semester", semesters.getSem());
                 JSONArray subject= new JSONArray();
-                for(String s: studentEntity.getWriteBook().get(i).getSubjects()){
+                for(String s: studentEntity.getWriteBook().getSemester().get(i).getSubjects()){
                     subject.add(s);
                 }
                 sem.put("subjects", subject);
                 JSONArray mark= new JSONArray();
-                for(Integer marks: studentEntity.getWriteBook().get(i).getMarks()){
+                for(Integer marks: studentEntity.getWriteBook().getSemester().get(i).getMarks()){
                     mark.add(marks);
                 }
                 sem.put("marks", mark);

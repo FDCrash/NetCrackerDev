@@ -53,9 +53,13 @@ public class EmployeeControllerImpl implements Controller {
         if (UserServiceImpl.getInstance().checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.nextLine();
-            EmployeeServiceImpl.getInstance().
-                    add(new EmployeeDTO(new UserDTO(UserServiceImpl.getInstance().generateId(1000), RoleDTO.EMPLOYEE,
-                            login, password), name));
+            EmployeeDTO employeeDTO=new EmployeeDTO();
+            employeeDTO.setId(UserServiceImpl.getInstance().generateId(1000));
+            employeeDTO.setRoleDTO(RoleDTO.EMPLOYEE);
+            employeeDTO.setLogin(login);
+            employeeDTO.setPassword(password);
+            employeeDTO.setName(name);
+            EmployeeServiceImpl.getInstance().add(employeeDTO);
         } else {
             System.out.println("Логин занят");
         }
@@ -84,8 +88,10 @@ public class EmployeeControllerImpl implements Controller {
             if (login.equals(employeeDTO.getName()) || UserServiceImpl.getInstance().checkLogin(login)) {
                 System.out.println("Введите пароль: ");
                 String password = scanner.nextLine();
-                EmployeeServiceImpl.getInstance().update(new EmployeeDTO(new UserDTO(employeeDTO.getId(), RoleDTO.EMPLOYEE,
-                        login, password), name));
+                employeeDTO.setLogin(login);
+                employeeDTO.setPassword(password);
+                employeeDTO.setName(name);
+                EmployeeServiceImpl.getInstance().update(employeeDTO);
             } else {
                 System.out.println("Новый логин занят");
             }
