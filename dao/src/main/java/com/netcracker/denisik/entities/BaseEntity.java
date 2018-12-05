@@ -1,5 +1,11 @@
 package com.netcracker.denisik.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public abstract class BaseEntity {
     private int id;
 
@@ -10,23 +16,10 @@ public abstract class BaseEntity {
         this.id = id;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BaseEntity)) return false;
-
-        BaseEntity that = (BaseEntity) o;
-
-        return getId() == that.getId();
-    }
-
-    @Override
-    public int hashCode() {
-        return getId();
     }
 
     public void setId(int id) {

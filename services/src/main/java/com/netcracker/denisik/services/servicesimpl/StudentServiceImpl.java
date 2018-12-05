@@ -1,69 +1,64 @@
 package com.netcracker.denisik.services.servicesimpl;
 
 import com.netcracker.denisik.converters.StudentConverter;
-import com.netcracker.denisik.dao.daoImpl.StudentDAOImpl;
+import com.netcracker.denisik.dao.StudentRepository;
 import com.netcracker.denisik.dto.StudentDTO;
 import com.netcracker.denisik.services.CRUDService;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class StudentServiceImpl implements CRUDService<StudentDTO> {
     private StudentConverter studentConverter;
-    private static StudentServiceImpl instance;
+    private final StudentRepository studentRepository;
 
-    private StudentServiceImpl() {
-        studentConverter = new StudentConverter();
-    }
-
-    public static StudentServiceImpl getInstance() {
-        if (instance == null) {
-            instance = new StudentServiceImpl();
-        }
-        return instance;
+    private StudentServiceImpl(StudentRepository studentRepository, StudentConverter studentConverter) {
+        this.studentConverter = studentConverter;
+        this.studentRepository = studentRepository;
     }
 
     @Override
     public void add(StudentDTO studentDTO) {
-        StudentDAOImpl.getInstance().add(studentConverter.convert(studentDTO));
+        studentRepository.save(studentConverter.convert(studentDTO));
     }
 
     @Override
     public void delete(int id) {
-        StudentDAOImpl.getInstance().delete(id);
+        studentRepository.delete(id);
     }
 
     public StudentDTO getByLogin(String login) {
-        return studentConverter.convert(StudentDAOImpl.getInstance().getByLogin(login));
+        return studentConverter.convert(studentRepository.getByLogin(login));
     }
 
     public List<StudentDTO> getAllByGroup(int number) {
-        return StudentDAOImpl.getInstance().getAllByGroup(number)
-                .stream().map(student -> studentConverter.convert(student))
+        return StreamSupport.stream(studentRepository.getAllByGroupId(number).spliterator(), false)
+                .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
     }
 
     public List<StudentDTO> getAllBySpeciality(String speciality) {
-        return StudentDAOImpl.getInstance().getAllBySpeciality(speciality)
-                .stream().map(student -> studentConverter.convert(student))
+        return StreamSupport.stream(studentRepository.getAllBySpecialityEntity(speciality).spliterator(), false)
+                .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
     }
 
     @Override
     public void update(StudentDTO studentDTO) {
-        StudentDAOImpl.getInstance().update(studentConverter.convert(studentDTO));
+        studentRepository.save(studentConverter.convert(studentDTO));
     }
 
 
     @Override
     public List<StudentDTO> getAll() {
-        return StudentDAOImpl.getInstance().getAll().stream()
+        return StreamSupport.stream(studentRepository.findAll().spliterator(), false)
                 .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
     }
 
     @Override
     public StudentDTO get(int id) {
-        return studentConverter.convert(StudentDAOImpl.getInstance().get(id));
+        return studentConverter.convert(studentRepository.findOne(id));
     }
 }

@@ -1,16 +1,18 @@
 package com.netcracker.denisik.entities;
 
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Semester {
+@Entity
+public class SemesterEntity {
     private int sem;
     private List<String> subjects;
     private List<Integer> marks;
 
-    public Semester(){}
+    public SemesterEntity(){}
 
-    public Semester(int sem, List<String> subjects, List<Integer> marks) {
+    public SemesterEntity(int sem, List<String> subjects, List<Integer> marks) {
         this.sem = sem;
         this.subjects = new ArrayList<>(subjects);
         this.marks = new ArrayList<>(marks);
@@ -33,7 +35,6 @@ public class Semester {
     }
 
     public int getSem() {
-
         return sem;
     }
 

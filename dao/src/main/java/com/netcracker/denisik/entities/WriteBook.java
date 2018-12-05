@@ -1,28 +1,32 @@
 package com.netcracker.denisik.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class WriteBook {
-    private List<Semester> semester;
+    private List<SemesterEntity> semesterEntity;
 
     public WriteBook(){
-        semester=new ArrayList<>();
+        semesterEntity =new ArrayList<>();
     }
 
-    public WriteBook(List<Semester> semester) {
-        this.semester = semester;
+    public WriteBook(List<SemesterEntity> semesterEntity) {
+        this.semesterEntity = semesterEntity;
     }
 
     public WriteBook(WriteBook writeBook){
-        this.semester=writeBook.getSemester();
+        this.semesterEntity =writeBook.getSemesterEntity();
     }
 
-    public List<Semester> getSemester() {
-        return semester;
+    @OneToMany
+    public List<SemesterEntity> getSemesterEntity() {
+        return semesterEntity;
     }
 
-    public void setSemester(List<Semester> semester) {
-        this.semester = semester;
+    public void setSemesterEntity(List<SemesterEntity> semesterEntity) {
+        this.semesterEntity = semesterEntity;
     }
 }

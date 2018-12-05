@@ -1,5 +1,9 @@
 package com.netcracker.denisik.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
+@Entity
 public class SpecialityEntity extends BaseEntity {
     private String name;
     private FacultyEntity faculty;
@@ -11,26 +15,6 @@ public class SpecialityEntity extends BaseEntity {
         super(id);
         this.name = name;
         this.faculty = faculty;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SpecialityEntity)) return false;
-        if (!super.equals(o)) return false;
-
-        SpecialityEntity that = (SpecialityEntity) o;
-
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        return getFaculty().equals(that.getFaculty());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + getFaculty().hashCode();
-        return result;
     }
 
     public SpecialityEntity(int id, String name, int facultyId) {
@@ -47,6 +31,7 @@ public class SpecialityEntity extends BaseEntity {
         this.name = name;
     }
 
+    @OneToMany(mappedBy = "specialities")
     public FacultyEntity getFaculty() {
         return faculty;
     }

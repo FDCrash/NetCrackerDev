@@ -1,8 +1,10 @@
 package com.netcracker.denisik.entities;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class FacultyEntity extends BaseEntity {
     private String name;
     private List<SpecialityEntity> specialities;
@@ -38,27 +40,9 @@ public class FacultyEntity extends BaseEntity {
         this.specialities.add(speciality);
     }
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "faculty_speciality", joinColumns = @JoinColumn(name = "faculty_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "speciality_id", referencedColumnName = "id"))
     public List<SpecialityEntity> getSpecialities() {
         return specialities;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FacultyEntity)) return false;
-        if (!super.equals(o)) return false;
-
-        FacultyEntity that = (FacultyEntity) o;
-
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        return getSpecialities() != null ? getSpecialities().equals(that.getSpecialities()) : that.getSpecialities() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getSpecialities() != null ? getSpecialities().hashCode() : 0);
-        return result;
     }
 }

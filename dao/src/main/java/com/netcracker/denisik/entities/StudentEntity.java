@@ -1,9 +1,11 @@
 package com.netcracker.denisik.entities;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Entity
 public class StudentEntity extends UserEntity {
     private String name;
     private int studentId;
@@ -22,33 +24,6 @@ public class StudentEntity extends UserEntity {
         this.groupId = groupId;
         this.specialityEntity= new SpecialityEntity();
         this.writeBook = new WriteBook();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof StudentEntity)) return false;
-        if (!super.equals(o)) return false;
-
-        StudentEntity that = (StudentEntity) o;
-
-        if (getStudentId() != that.getStudentId()) return false;
-        if (getGroupId() != that.getGroupId()) return false;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        if (getSpecialityEntity() != null ? !getSpecialityEntity().equals(that.getSpecialityEntity()) : that.getSpecialityEntity() != null)
-            return false;
-        return getWriteBook() != null ? getWriteBook().equals(that.getWriteBook()) : that.getWriteBook() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + getStudentId();
-        result = 31 * result + getGroupId();
-        result = 31 * result + (getSpecialityEntity() != null ? getSpecialityEntity().hashCode() : 0);
-        result = 31 * result + (getWriteBook() != null ? getWriteBook().hashCode() : 0);
-        return result;
     }
 
     public StudentEntity(UserEntity userEntity, String name, int studentId,
@@ -95,6 +70,7 @@ public class StudentEntity extends UserEntity {
         this.studentId = studentId;
     }
 
+    @OneToMany(mappedBy = "students")
     public SpecialityEntity getSpecialityEntity() {
         return specialityEntity;
     }
@@ -103,7 +79,7 @@ public class StudentEntity extends UserEntity {
         this.specialityEntity = speciality;
     }
 
-
+    @OneToOne(cascade = CascadeType.ALL)
     public WriteBook getWriteBook() {
         return writeBook;
     }

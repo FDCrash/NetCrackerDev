@@ -1,21 +1,26 @@
 package com.netcracker.denisik.converters;
 
-import com.netcracker.denisik.dao.daoImpl.FacultyDAOImpl;
+import com.netcracker.denisik.dao.FacultyRepository;
 import com.netcracker.denisik.dto.SpecialityDTO;
 import com.netcracker.denisik.entities.FacultyEntity;
 import com.netcracker.denisik.entities.SpecialityEntity;
 
+import java.util.stream.StreamSupport;
+
 public class SpecialityConverter {
+    private final FacultyRepository facultyRepository;
+
+    public SpecialityConverter(FacultyRepository facultyRepository){
+        this.facultyRepository=facultyRepository;
+    }
+
     public SpecialityEntity convert(SpecialityDTO specialityDTO) {
         SpecialityEntity specialityEntity = new SpecialityEntity();
         specialityEntity.setId(specialityDTO.getId());
         specialityEntity.setName(specialityDTO.getName());
-        for (FacultyEntity facultyEntity : FacultyDAOImpl.getInstance().getAll()) {
-            if (facultyEntity.getName().equals(specialityDTO.getFaculty())) {
-                specialityEntity.setFaculty(facultyEntity);
-                break;
-            }
-        }
+        StreamSupport.stream(facultyRepository.findAll().spliterator(),false)
+                .filter(facultyEntity -> facultyEntity.getName().equals(specialityDTO.getFaculty()))
+                .findFirst().get();
         return specialityEntity;
     }
 

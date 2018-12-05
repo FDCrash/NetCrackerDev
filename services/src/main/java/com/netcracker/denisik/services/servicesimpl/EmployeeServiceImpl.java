@@ -1,52 +1,47 @@
 package com.netcracker.denisik.services.servicesimpl;
 
 import com.netcracker.denisik.converters.EmployeeConverter;
-import com.netcracker.denisik.dao.daoImpl.EmployeeDAOImpl;
+import com.netcracker.denisik.dao.EmployeeRepository;
 import com.netcracker.denisik.dto.EmployeeDTO;
 import com.netcracker.denisik.services.CRUDService;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class EmployeeServiceImpl implements CRUDService<EmployeeDTO> {
     private EmployeeConverter employeeConverter;
-    private static EmployeeServiceImpl instance;
+    private final EmployeeRepository employeeRepository;
 
-    private EmployeeServiceImpl() {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         employeeConverter = new EmployeeConverter();
-    }
-
-    public static EmployeeServiceImpl getInstance() {
-        if (instance == null) {
-            instance = new EmployeeServiceImpl();
-        }
-        return instance;
+        this.employeeRepository= employeeRepository;
     }
 
     @Override
     public void add(EmployeeDTO employeeDTO) {
-        EmployeeDAOImpl.getInstance().add(employeeConverter.convert(employeeDTO));
+        employeeRepository.save(employeeConverter.convert(employeeDTO));
     }
 
     @Override
     public void delete(int id) {
-        EmployeeDAOImpl.getInstance().delete(id);
+        employeeRepository.delete(id);
     }
 
     @Override
     public void update(EmployeeDTO employeeDTO) {
-        EmployeeDAOImpl.getInstance().update(employeeConverter.convert(employeeDTO));
+        employeeRepository.save(employeeConverter.convert(employeeDTO));
     }
 
     @Override
     public List<EmployeeDTO> getAll() {
-        return EmployeeDAOImpl.getInstance().getAll().stream()
+        return StreamSupport.stream(employeeRepository.findAll().spliterator(),false)
                 .map(employee -> employeeConverter.convert(employee))
                 .collect(Collectors.toList());
     }
 
     @Override
     public EmployeeDTO get(int id) {
-        return employeeConverter.convert(EmployeeDAOImpl.getInstance().get(id));
+        return employeeConverter.convert(employeeRepository.findOne(id));
     }
 }

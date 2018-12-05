@@ -1,62 +1,47 @@
 package com.netcracker.denisik.services.servicesimpl;
 
 import com.netcracker.denisik.converters.FacultyConverter;
-import com.netcracker.denisik.dao.daoImpl.FacultyDAOImpl;
+import com.netcracker.denisik.dao.FacultyRepository;
 import com.netcracker.denisik.dto.FacultyDTO;
 import com.netcracker.denisik.services.CRUDService;
 
 import java.util.List;
-import java.util.SplittableRandom;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
     private FacultyConverter facultyConverter;
-    private static FacultyServiceImpl instance;
+    private final FacultyRepository facultyRepository;
 
-    private FacultyServiceImpl() {
+    public FacultyServiceImpl(FacultyRepository facultyRepository) {
         facultyConverter = new FacultyConverter();
-    }
-
-    public static FacultyServiceImpl getInstance() {
-        if (instance == null) {
-            instance = new FacultyServiceImpl();
-        }
-        return instance;
+        this.facultyRepository = facultyRepository;
     }
 
     @Override
     public void add(FacultyDTO facultyDTO) {
-        FacultyDAOImpl.getInstance().add(facultyConverter.convert(facultyDTO));
+        facultyRepository.save(facultyConverter.convert(facultyDTO));
     }
 
     @Override
     public void delete(int id) {
-        FacultyDAOImpl.getInstance().delete(id);
+        facultyRepository.delete(id);
     }
 
     @Override
     public void update(FacultyDTO facultyDTO) {
-        FacultyDAOImpl.getInstance().update(facultyConverter.convert(facultyDTO));
+        facultyRepository.save(facultyConverter.convert(facultyDTO));
     }
 
     @Override
     public List<FacultyDTO> getAll() {
-        return FacultyDAOImpl.getInstance().getAll().stream()
+        return StreamSupport.stream(facultyRepository.findAll().spliterator(), false)
                 .map(faculty -> facultyConverter.convert(faculty))
                 .collect(Collectors.toList());
     }
 
     @Override
     public FacultyDTO get(int id) {
-        return facultyConverter.convert(FacultyDAOImpl.getInstance().get(id));
-    }
-
-    public int generateId(int bound) {
-        SplittableRandom splittableRandom = new SplittableRandom();
-        int id;
-        do {
-            id = splittableRandom.nextInt(1, bound);
-        } while (FacultyDAOImpl.getInstance().get(id) != null);
-        return id;
+        return facultyConverter.convert(facultyRepository.findOne(id));
     }
 }
