@@ -8,14 +8,14 @@ public class StudentDTO extends UserDTO {
     private int studentId;
     private int groupId;
     private String speciality;
-    private List<Integer> writeBook;
+    private List<WriteBookDTO> writeBook;
 
     public StudentDTO() {
     }
 
-    public StudentDTO(int id, RoleDTO roleDTO, String login, String pass, String name,
-                      int studentId, int groupId, String speciality, List<Integer> writeBook) {
-        super(id, roleDTO, login, pass);
+    public StudentDTO(UserDTO userDTO, String name,
+                      int studentId, int groupId, String speciality, List<WriteBookDTO> writeBook) {
+        super(userDTO);
         this.name = name;
         this.studentId = studentId;
         this.groupId = groupId;
@@ -47,11 +47,11 @@ public class StudentDTO extends UserDTO {
         return studentId;
     }
 
-    public List<Integer> getWriteBook() {
+    public List<WriteBookDTO> getWriteBook() {
         return writeBook;
     }
 
-    public void setWriteBook(List<Integer> writeBook) {
+    public void setWriteBook(List<WriteBookDTO> writeBook) {
         this.writeBook = writeBook;
     }
 
@@ -63,14 +63,14 @@ public class StudentDTO extends UserDTO {
         return groupId;
     }
 
-    public String toString(){
-        String s="\n";
-        for(int i=0;i<getWriteBook().size();i++){
-            s+=writeBook.get(i).toString()+" ";
+    public String toString() {
+        StringBuilder s = new StringBuilder("\n");
+        for (int i = 0; i < getWriteBook().size(); i++) {
+            s.append(writeBook.get(i).toString()).append("\n");
         }
         return "Имя: " + getName() + "\nРоль: " + getRoleDTO().name()
-                + "\nЛогин: " + getLogin() + "\nСпециальность: " + getSpeciality()+
+                + "\nЛогин: " + getLogin() + "\nСпециальность: " + getSpeciality() +
                 "\nНомер студенченского билета: " + getStudentId() +
-                "\nНомер группы:" + getGroupId() + "\nЗачетная книжка: " + s + "\n";
+                "\nНомер группы:" + getGroupId() + "\nЗачетная книжка: " + s;
     }
 }

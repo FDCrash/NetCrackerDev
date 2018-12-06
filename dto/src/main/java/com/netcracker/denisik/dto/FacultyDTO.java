@@ -5,14 +5,17 @@ import java.util.List;
 
 public class FacultyDTO extends BaseDTO {
     private String name;
+    private List<Integer> specialitiesId;
     private List<String> specialities;
 
-    public FacultyDTO(){}
+    public FacultyDTO() {
+    }
 
-    public FacultyDTO(int id,String name, List<String> specialities){
+    public FacultyDTO(int id, String name, List<String> specialities, List<Integer> specialitiesId) {
         super(id);
-        this.name=name;
-        this.specialities=new ArrayList<>(specialities);
+        this.name = name;
+        this.specialities = new ArrayList<>(specialities);
+        this.specialitiesId = new ArrayList<>(specialitiesId);
     }
 
     public String getName() {
@@ -31,10 +34,18 @@ public class FacultyDTO extends BaseDTO {
         return specialities;
     }
 
-    public String toString(){
-        String s="\n";
-        for(int i=1;i<=getSpecialities().size();i++){
-            s+=i+". " +specialities.get(i-1) + "\n";
+    public List<Integer> getSpecialitiesId() {
+        return specialitiesId;
+    }
+
+    public void setSpecialitiesId(List<Integer> specialitiesId) {
+        this.specialitiesId = specialitiesId;
+    }
+
+    public String toString() {
+        StringBuilder s = new StringBuilder("\n");
+        for (int i = 1; i <= getSpecialities().size(); i++) {
+            s.append(i).append(") ").append(specialities.get(i - 1)).append("\n");
         }
         return "Факультет: " + getName() + s;
     }

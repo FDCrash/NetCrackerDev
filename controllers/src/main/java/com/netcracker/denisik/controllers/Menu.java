@@ -5,44 +5,238 @@ import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.services.servicesimpl.AdminServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
+
+import static com.netcracker.denisik.entities.Role.*;
 
 public class Menu {
     private Role role;
-    private UserServiceImpl userService;
+    private String login;
     private Scanner scanner;
     private StudentControllerImpl studentController;
     private EmployeeControllerImpl employeeController;
     private AdminControllerImpl adminController;
     private SpecialityControllerImpl specialityController;
     private FacultyControllerImpl facultyController;
-    private AdminServiceImpl adminService;
     private static Menu instance;
+    private UserControllerImpl userController;
 
-    public static Menu getInstance(){
+    public static Menu getInstance() {
+        if (instance == null) {
+            instance = new Menu();
+        }
         return instance;
     }
 
-    private Menu(){
+    private Menu() {
+        scanner = new Scanner(System.in);
+        studentController = new StudentControllerImpl();
+        employeeController = new EmployeeControllerImpl();
+        adminController = new AdminControllerImpl();
+        facultyController = new FacultyControllerImpl();
+        specialityController = new SpecialityControllerImpl();
+        userController = new UserControllerImpl();
     }
 
     public void startMenu() {
-
+        int k;
+        boolean bool = false;
+        System.out.println("Входное меню");
+        do {
+            System.out.println("1.Войти");
+            System.out.println("2.Зарегистрироваться");
+            System.out.println("0.Выйти");
+            try {
+                k = Integer.parseInt(scanner.nextLine());
+                switch (k) {
+                    case 1:
+                        authenticationMenu();
+                        bool = true;
+                        break;
+                    case 2:
+                        registrationMenu();
+                        bool = true;
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        System.out.println("Выберите позицию из списка");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Введен неверный символ!");
+            }
+        } while (!bool);
     }
 
-    public void authenticationMenu(){
+    private void registrationMenu() {
+        int idStud;
+        String pass, login;
+        try {
+            System.out.println("Введите свой номер студенченского билета:");
+            idStud = Integer.parseInt(scanner.nextLine());
+            System.out.println("Введите желаемый логин:");
+            login = scanner.nextLine();
+            System.out.println("Введите желаемый пароль:");
+            pass = scanner.nextLine();
+            System.out.println(UserServiceImpl.getInstance().registration(idStud, login, pass));
+        } catch (NumberFormatException e) {
+            System.out.println("Введен неверный символ!");
+        }
+        startMenu();
     }
 
-    public void adminMenu(){
-
+    private void authenticationMenu() {
+        String pass;
+        System.out.println("Введите логин:");
+        login = scanner.nextLine();
+        System.out.println("Введите пароль:");
+        pass = scanner.nextLine();
+        try {
+            switch ((Role) UserServiceImpl.getInstance().authentication(login, pass)) {
+                case ADMIN:
+                    AdminServiceImpl.getInstance().changeStatusAdmin(login);
+                    setRole(ADMIN);
+                    adminMenu();
+                    break;
+                case EMPLOYEE:
+                    setRole(EMPLOYEE);
+                    employeeMenu();
+                    break;
+                case STUDENT:
+                    setRole(STUDENT);
+                    studentMenu();
+                    break;
+                default:
+                    System.out.println("Неправильный логин или пароль");
+                    startMenu();
+            }
+        } catch (NullPointerException | NoSuchElementException e) {
+            System.out.println("Неверный логин или пароль");
+            startMenu();
+        }
     }
 
-    public void employeeMenu(){
-
+    public void adminMenu() {
+        int k;
+        boolean bool = false;
+        do {
+            System.out.println("Меню админа:");
+            System.out.println("1.CRUD Админов");
+            System.out.println("2.CRUD Сотрудников");
+            System.out.println("3.CRUD Студентов");
+            System.out.println("4.CRUD Пользователей");
+            System.out.println("5.CRUD Факультетов");
+            System.out.println("6.CRUD Специальностей");
+            System.out.println("0.Выйти");
+            try {
+                k = Integer.parseInt(scanner.nextLine());
+                switch (k) {
+                    case 1:
+                        adminController.editMenu();
+                        bool = true;
+                        break;
+                    case 2:
+                        employeeController.editMenu();
+                        bool = true;
+                        break;
+                    case 3:
+                        studentController.editMenu();
+                        bool = true;
+                        break;
+                    case 4:
+                        userController.editMenu();
+                        bool = true;
+                        break;
+                    case 5:
+                        facultyController.editMenu();
+                        bool = true;
+                        break;
+                    case 6:
+                        specialityController.editMenu();
+                        bool = true;
+                        break;
+                    case 0:
+                        ;
+                        startMenu();
+                        bool = true;
+                        return;
+                    default:
+                        System.out.println("Выберите позицию из списка");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Введен не верный символ!");
+            }
+        } while (!bool);
     }
 
-    public void studentMenu(){
+    public void employeeMenu() {
+        int k;
+        boolean bool = false;
+        do {
+            System.out.println("Меню сотрудника:");
+            System.out.println("1.CRUD Студентов");
+            System.out.println("2.CRUD Специальностей");
+            System.out.println("0.Выйти");
+            try {
+                k = Integer.parseInt(scanner.nextLine());
+                switch (k) {
+                    case 1:
+                        studentController.editMenu();
+                        bool = true;
+                        break;
+                    case 2:
+                        specialityController.editMenu();
+                        bool = true;
+                        break;
+                    case 0:
+                        startMenu();
+                        bool = true;
+                        return;
+                    default:
+                        System.out.println("Выберите позицию из списка");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Введен не верный символ!");
+            }
+        } while (!bool);
+    }
 
+    public void studentMenu() {
+        int k;
+        boolean bool = false;
+        do {
+            System.out.println("Меню студента:");
+            System.out.println("1.Просмотреть зачетку");
+            System.out.println("2.Просмотреть группу");
+            System.out.println("3.Просмотреть специальность");
+            System.out.println("0.Выйти");
+            try {
+                k = Integer.parseInt(scanner.nextLine());
+                switch (k) {
+                    case 1:
+                        studentController.showWriteBook();
+                        bool = true;
+                        break;
+                    case 2:
+                        studentController.getAllByGroup();
+                        bool = true;
+                        break;
+                    case 3:
+                        studentController.getAllBySpeciality();
+                        bool = true;
+                        break;
+                    case 0:
+                        startMenu();
+                        bool = true;
+                        return;
+                    default:
+                        System.out.println("Выберите позицию из списка");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Введен не верный символ!");
+            }
+        } while (!bool);
     }
 
     public void setRole(Role role) {
@@ -53,5 +247,11 @@ public class Menu {
         return role;
     }
 
-    public void searchInfo(){}
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getLogin() {
+        return login;
+    }
 }
