@@ -1,17 +1,19 @@
 package com.netcracker.denisik.controllers.controllersimpl;
 
 import com.netcracker.denisik.controllers.Controller;
-import com.netcracker.denisik.dto.AdminDTO;
 import com.netcracker.denisik.dto.RoleDTO;
 import com.netcracker.denisik.dto.UserDTO;
-import com.netcracker.denisik.services.servicesimpl.AdminServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
+@org.springframework.stereotype.Controller
 public class AdminControllerImpl implements Controller {
     private Scanner scanner;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     public AdminControllerImpl() {
         scanner = new Scanner(System.in);
@@ -35,7 +37,7 @@ public class AdminControllerImpl implements Controller {
     @Override
     public void getAll() {
         System.out.println("Адинистраторы:");
-        for (AdminDTO adminDTO : AdminServiceImpl.getInstance().getAll()) {
+        for (UserDTO adminDTO : userService.getAllAdmins()) {
             String s = adminDTO.toString();
             System.out.println(s);
         }
@@ -47,17 +49,17 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Новый администратор");
         System.out.println("Введите логин: ");
         String login = scanner.nextLine();
-        if (UserServiceImpl.getInstance().checkLogin(login)) {
+        if (userService.checkLogin(login)) {
             System.out.println("Введите пароль: ");
             String password = scanner.nextLine();
-            AdminDTO adminDTO=new AdminDTO();
-            adminDTO.setId(UserServiceImpl.getInstance()
-                    .generateId(1000));
-            adminDTO.setRoleDTO(RoleDTO.ADMIN);
-            adminDTO.setLogin(login);
-            adminDTO.setPassword(password);
-            adminDTO.setStatus(false);
-            AdminServiceImpl.getInstance().add(adminDTO);
+
+            String name="";
+            UserDTO userDTO=new UserDTO();
+            userDTO.setRoleDTO(RoleDTO.ADMIN);
+            userDTO.setLogin(login);
+            userDTO.setPassword(password);
+            userDTO.setName(name);
+            userService.add(userDTO);
         } else {
             System.out.println("Логин занят");
         }
@@ -68,8 +70,8 @@ public class AdminControllerImpl implements Controller {
     public void update() {
         System.out.println("Адинистраторы:");
         int iterator = 1;
-        AdminDTO adminDTO;
-        for (AdminDTO admin : AdminServiceImpl.getInstance().getAll()) {
+        UserDTO adminDTO;
+        for (UserDTO admin : userService.getAll()) {
             String s = admin.toString();
             System.out.println(iterator + ". " + s);
             iterator++;
@@ -77,16 +79,16 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Выберите позицию для изменения: ");
         try {
             int index = Integer.parseInt(scanner.nextLine());
-            adminDTO = AdminServiceImpl.getInstance().getAll().get(index - 1);
+            adminDTO = userService.getAll().get(index - 1);
             System.out.println(adminDTO.toString());
             System.out.println("Введите логин: ");
             String login = scanner.nextLine();
-            if (login.equals(adminDTO.getLogin()) || UserServiceImpl.getInstance().checkLogin(login)) {
+            if (login.equals(adminDTO.getLogin()) || userService.checkLogin(login)) {
                 System.out.println("Введите пароль: ");
                 String password = scanner.nextLine();
                 adminDTO.setLogin(login);
                 adminDTO.setPassword(password);
-                AdminServiceImpl.getInstance().update(adminDTO);
+                userService.update(adminDTO);
             } else {
                 System.out.println("Новый логин занят");
             }
@@ -100,7 +102,7 @@ public class AdminControllerImpl implements Controller {
     public void delete() {
         System.out.println("Адинистраторы:");
         int iterator = 1;
-        for (AdminDTO adminDTO : AdminServiceImpl.getInstance().getAll()) {
+        for (UserDTO adminDTO : userService.getAll()) {
             String s = adminDTO.toString();
             System.out.println(iterator + ". " + s);
             iterator++;
@@ -108,7 +110,7 @@ public class AdminControllerImpl implements Controller {
         System.out.println("Выберите позицию для удаления: ");
         try {
             int index = Integer.parseInt(scanner.nextLine());
-            AdminServiceImpl.getInstance().delete(AdminServiceImpl.getInstance().getAll().get(index - 1).getId());
+            userService.delete(userService.getAll().get(index - 1).getId());
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Вы ввели неверный номер из списка");
         }

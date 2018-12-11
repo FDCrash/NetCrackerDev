@@ -1,34 +1,34 @@
 package com.netcracker.denisik.converters;
 
-import com.netcracker.denisik.dao.FacultyRepository;
+import com.netcracker.denisik.dto.FacultyDTO;
 import com.netcracker.denisik.dto.SpecialityDTO;
-import com.netcracker.denisik.entities.FacultyEntity;
-import com.netcracker.denisik.entities.SpecialityEntity;
+import com.netcracker.denisik.entities.Faculty;
+import com.netcracker.denisik.entities.Speciality;
+import org.springframework.stereotype.Component;
 
-import java.util.stream.StreamSupport;
-
+@Component
 public class SpecialityConverter {
-    private final FacultyRepository facultyRepository;
-
-    public SpecialityConverter(FacultyRepository facultyRepository){
-        this.facultyRepository=facultyRepository;
+    public Speciality convert(SpecialityDTO specialityDTO) {
+        Faculty faculty = new Faculty();
+        faculty.setId(specialityDTO.getFaculty().getId());
+        faculty.setName(specialityDTO.getFaculty().getName());
+        Speciality speciality = new Speciality();
+        speciality.setId(specialityDTO.getId());
+        speciality.setName(specialityDTO.getName());
+        speciality.setFaculty(faculty);
+        faculty.setSpeciality(speciality);
+        return speciality;
     }
 
-    public SpecialityEntity convert(SpecialityDTO specialityDTO) {
-        SpecialityEntity specialityEntity = new SpecialityEntity();
-        specialityEntity.setId(specialityDTO.getId());
-        specialityEntity.setName(specialityDTO.getName());
-        StreamSupport.stream(facultyRepository.findAll().spliterator(),false)
-                .filter(facultyEntity -> facultyEntity.getName().equals(specialityDTO.getFaculty()))
-                .findFirst().get();
-        return specialityEntity;
-    }
-
-    public SpecialityDTO convert(SpecialityEntity specialityEntity) {
-        SpecialityDTO specialityDTO=new SpecialityDTO();
-        specialityDTO.setId(specialityEntity.getId());
-        specialityDTO.setName(specialityEntity.getName());
-        specialityDTO.setFaculty(specialityEntity.getFaculty().getName());
+    public SpecialityDTO convert(Speciality speciality) {
+        FacultyDTO facultyDTO = new FacultyDTO();
+        facultyDTO.setId(speciality.getFaculty().getId());
+        facultyDTO.setName(speciality.getFaculty().getName());
+        SpecialityDTO specialityDTO = new SpecialityDTO();
+        specialityDTO.setId(speciality.getId());
+        specialityDTO.setName(speciality.getName());
+        specialityDTO.setFaculty(facultyDTO);
+        facultyDTO.setSpeciality(specialityDTO);
         return specialityDTO;
     }
 }

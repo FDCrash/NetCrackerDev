@@ -2,8 +2,10 @@ package com.netcracker.denisik.controllers.controllersimpl;
 
 import com.netcracker.denisik.controllers.Controller;
 import com.netcracker.denisik.dto.FacultyDTO;
+import com.netcracker.denisik.dto.SpecialityDTO;
 import com.netcracker.denisik.services.servicesimpl.FacultyServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.SpecialityServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,6 +14,10 @@ import java.util.Scanner;
 
 public class FacultyControllerImpl implements Controller {
     private Scanner scanner;
+    @Autowired
+    private FacultyServiceImpl facultyService;
+    @Autowired
+    private SpecialityServiceImpl specialityService;
 
     public FacultyControllerImpl() {
         scanner = new Scanner(System.in);
@@ -35,7 +41,7 @@ public class FacultyControllerImpl implements Controller {
     @Override
     public void getAll() {
         System.out.println("Факультеты:");
-        for (FacultyDTO facultyDTO : FacultyServiceImpl.getInstance().getAll()) {
+        for (FacultyDTO facultyDTO : facultyService.getAll()) {
             String s = facultyDTO.toString();
             System.out.println(s);
         }
@@ -48,21 +54,22 @@ public class FacultyControllerImpl implements Controller {
         System.out.println("Введите название факультета: ");
         String name = scanner.nextLine();
         System.out.println("Введите количество специальностей: ");
-        List<String> specialities = new ArrayList<>();
-        List<Integer> specialitiesId = new ArrayList<>();
+        List<SpecialityDTO> specialities = new ArrayList<>();
         int quantity = Integer.parseInt(scanner.nextLine());
         try {
             for (int i = 1; i <= quantity; i++) {
                 System.out.print(i + ". ");
-                specialities.add(scanner.nextLine());
-                specialitiesId.add(SpecialityServiceImpl.getInstance().generateId(50));
+                SpecialityDTO specialityDTO= new SpecialityDTO();
+                specialityDTO.setName(scanner.nextLine());
+                specialities.add(specialityDTO);
             }
             FacultyDTO facultyDTO=new FacultyDTO();
-            facultyDTO.setId(FacultyServiceImpl.getInstance().generateId(50));
             facultyDTO.setName(name);
-            facultyDTO.setSpecialitiesId(specialitiesId);
             facultyDTO.setSpecialities(specialities);
-            FacultyServiceImpl.getInstance().add(facultyDTO);
+            for (int i = 0; i < quantity; i++) {
+                specialities.get(i).setFaculty(facultyDTO);
+            }
+            facultyService.add(facultyDTO);
         }catch (NullPointerException e){
             System.out.println("При введении допущена ошибка");
         }
@@ -74,7 +81,7 @@ public class FacultyControllerImpl implements Controller {
         System.out.println("Факультеты:");
         int iterator = 1;
         FacultyDTO facultyDTO;
-        for (FacultyDTO faculty : FacultyServiceImpl.getInstance().getAll()) {
+        for (FacultyDTO faculty : facultyService.getAll()) {
             String s = faculty.toString();
             System.out.println(iterator + ". " + s);
             iterator++;
@@ -82,12 +89,12 @@ public class FacultyControllerImpl implements Controller {
         System.out.println("Выберите позицию для изменения");
         try {
             int index = Integer.parseInt(scanner.nextLine());
-            facultyDTO = FacultyServiceImpl.getInstance().getAll().get(index - 1);
+            facultyDTO = facultyService.getAll().get(index - 1);
             if(!facultyDTO.getName().equals("Абитура")) {
                 System.out.println("Введите название факультета: ");
                 String name = scanner.nextLine();
                 facultyDTO.setName(name);
-                FacultyServiceImpl.getInstance().update(facultyDTO);
+                facultyService.update(facultyDTO);
             }else{
                 System.out.println("Этот факультет нельзя изменять");
             }
@@ -101,7 +108,7 @@ public class FacultyControllerImpl implements Controller {
     public void delete() {
         System.out.println("Факультеты:");
         int iterator = 1;
-        for (FacultyDTO faculty : FacultyServiceImpl.getInstance().getAll()) {
+        for (FacultyDTO faculty : facultyService.getAll()) {
             String s = faculty.toString();
             System.out.println(iterator + ". " + s);
             iterator++;
@@ -109,8 +116,8 @@ public class FacultyControllerImpl implements Controller {
         System.out.println("Выберите позицию для удаления: ");
         try {
             int index = Integer.parseInt(scanner.nextLine());
-            if (!FacultyServiceImpl.getInstance().getAll().get(index - 1).getName().equals("Абитура")) {
-                FacultyServiceImpl.getInstance().delete(FacultyServiceImpl.getInstance().getAll().get(index - 1).getId());
+            if (!facultyService.getAll().get(index - 1).getName().equals("Абитура")) {
+                facultyService.delete(facultyService.getAll().get(index - 1).getId());
             }else{
                 System.out.println("Этот факультет нельзя удалять");
             }

@@ -5,24 +5,21 @@ import java.util.List;
 
 public class FacultyDTO extends BaseDTO {
     private String name;
-    private List<Integer> specialitiesId;
-    private List<String> specialities;
+    private List<SpecialityDTO> specialities;
 
     public FacultyDTO() {
     }
 
-    public FacultyDTO(int id, String name) {
+    public FacultyDTO(long id, String name) {
         super(id);
         this.name = name;
         this.specialities = new ArrayList<>();
-        this.specialitiesId = new ArrayList<>();
     }
 
-    public FacultyDTO(int id, String name, List<String> specialities, List<Integer> specialitiesId) {
+    public FacultyDTO(long id, String name, List<SpecialityDTO> specialities) {
         super(id);
         this.name = name;
         this.specialities = new ArrayList<>(specialities);
-        this.specialitiesId = new ArrayList<>(specialitiesId);
     }
 
     public String getName() {
@@ -33,26 +30,22 @@ public class FacultyDTO extends BaseDTO {
         this.name = name;
     }
 
-    public void setSpecialities(List<String> specialities) {
+    public void setSpecialities(List<SpecialityDTO> specialities) {
         this.specialities = specialities;
     }
 
-    public List<String> getSpecialities() {
+    public List<SpecialityDTO> getSpecialities() {
         return specialities;
     }
 
-    public List<Integer> getSpecialitiesId() {
-        return specialitiesId;
-    }
-
-    public void setSpecialitiesId(List<Integer> specialitiesId) {
-        this.specialitiesId = specialitiesId;
+    public void setSpeciality(SpecialityDTO speciality) {
+        this.specialities.add(speciality);
     }
 
     public String toString() {
         StringBuilder s = new StringBuilder("\n");
         for (int i = 1; i <= getSpecialities().size(); i++) {
-            s.append(i).append(") ").append(specialities.get(i - 1)).append("\n");
+            s.append(i).append(") ").append(specialities.get(i - 1).getName()).append("\n");
         }
         return "Факультет: " + getName() + s;
     }

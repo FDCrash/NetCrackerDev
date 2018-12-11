@@ -1,23 +1,17 @@
 package com.netcracker.denisik.dao;
 
-import com.netcracker.denisik.entities.StudentEntity;
+import com.netcracker.denisik.entities.Student;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface StudentRepository extends CrudRepository<StudentEntity,Integer> {
+public interface StudentRepository extends CrudRepository<Student,Long> {
 
-    StudentEntity getByLogin(String login);
+    Student getByStudentId(int studentId);
 
-    boolean existsByStudentId(int studentId);
+    List<Student> getAllBySpecialityEntity_Name(String speciality);
 
-    void addNewLoginPass(int id,String login,String password);
-
-    List<StudentEntity> getAllBySpecialityEntity(String speciality);
-
-    List<StudentEntity> getAllByGroupId(int groupId);
-
-    void setDefaultSpeciality(int id);
+    List<Student> getAllByGroupId(int groupId);
 }

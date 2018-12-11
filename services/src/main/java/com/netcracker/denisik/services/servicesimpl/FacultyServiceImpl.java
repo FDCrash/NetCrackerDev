@@ -4,15 +4,19 @@ import com.netcracker.denisik.converters.FacultyConverter;
 import com.netcracker.denisik.dao.FacultyRepository;
 import com.netcracker.denisik.dto.FacultyDTO;
 import com.netcracker.denisik.services.CRUDService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@Service
 public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
     private FacultyConverter facultyConverter;
-    private final FacultyRepository facultyRepository;
+    private FacultyRepository facultyRepository;
 
+    @Autowired
     public FacultyServiceImpl(FacultyRepository facultyRepository) {
         facultyConverter = new FacultyConverter();
         this.facultyRepository = facultyRepository;
@@ -24,7 +28,7 @@ public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(long id) {
         facultyRepository.delete(id);
     }
 
@@ -41,7 +45,7 @@ public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
     }
 
     @Override
-    public FacultyDTO get(int id) {
+    public FacultyDTO get(long id) {
         return facultyConverter.convert(facultyRepository.findOne(id));
     }
 }

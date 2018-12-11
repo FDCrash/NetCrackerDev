@@ -4,17 +4,21 @@ import com.netcracker.denisik.converters.SpecialityConverter;
 import com.netcracker.denisik.dao.SpecialityRepository;
 import com.netcracker.denisik.dto.SpecialityDTO;
 import com.netcracker.denisik.services.CRUDService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@Service
 public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
     private SpecialityConverter specialityConverter;
-    private final SpecialityRepository specialityRepository;
+    private SpecialityRepository specialityRepository;
 
-    public SpecialityServiceImpl(SpecialityRepository specialityRepository, SpecialityConverter specialityConverter) {
-        this.specialityConverter = specialityConverter;
+    @Autowired
+    public SpecialityServiceImpl(SpecialityRepository specialityRepository) {
+        specialityConverter = new SpecialityConverter();
         this.specialityRepository = specialityRepository;
     }
 
@@ -24,7 +28,7 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(long id) {
         specialityRepository.delete(id);
     }
 
@@ -41,7 +45,11 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
     }
 
     @Override
-    public SpecialityDTO get(int id) {
+    public SpecialityDTO get(long id) {
         return specialityConverter.convert(specialityRepository.findOne(id));
+    }
+
+    public SpecialityDTO getByName(String name){
+        return specialityConverter.convert(specialityRepository.getByName(name));
     }
 }

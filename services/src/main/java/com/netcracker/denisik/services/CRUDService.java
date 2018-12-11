@@ -5,11 +5,11 @@ import java.util.List;
 public interface CRUDService<T> {
     void add(T t);
 
-    void delete(int id);
+    void delete(long id);
 
     void update(T t);
 
     List<T> getAll();
 
-    T get(int id);
+    T get(long id);
 }

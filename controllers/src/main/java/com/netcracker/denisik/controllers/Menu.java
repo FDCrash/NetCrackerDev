@@ -2,42 +2,41 @@ package com.netcracker.denisik.controllers;
 
 import com.netcracker.denisik.controllers.controllersimpl.*;
 import com.netcracker.denisik.entities.Role;
-import com.netcracker.denisik.services.servicesimpl.AdminServiceImpl;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
-import java.sql.SQLException;
+import javax.annotation.Resource;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static com.netcracker.denisik.entities.Role.*;
 
+@Controller
 public class Menu {
     private Role role;
     private String login;
     private Scanner scanner;
-    private StudentControllerImpl studentController;
-    private EmployeeControllerImpl employeeController;
+//    private StudentControllerImpl studentController;
+//    private EmployeeControllerImpl employeeController;
     private AdminControllerImpl adminController;
     private SpecialityControllerImpl specialityController;
     private FacultyControllerImpl facultyController;
-    private static Menu instance;
-    private UserControllerImpl userController;
+//    private UserControllerImpl userController;
+@Autowired
+    private UserServiceImpl userService;
+//    @Autowired
+//    private AdminServiceImpl adminService;
 
-    public static Menu getInstance() {
-        if (instance == null) {
-            instance = new Menu();
-        }
-        return instance;
-    }
 
-    private Menu() {
+    public Menu() {
         scanner = new Scanner(System.in);
-        studentController = new StudentControllerImpl();
-        employeeController = new EmployeeControllerImpl();
+//        studentController = new StudentControllerImpl();
+//        employeeController = new EmployeeControllerImpl();
         adminController = new AdminControllerImpl();
         facultyController = new FacultyControllerImpl();
         specialityController = new SpecialityControllerImpl();
-        userController = new UserControllerImpl();
+    //    userController = new UserControllerImpl();
     }
 
     public void startMenu() {
@@ -80,7 +79,7 @@ public class Menu {
             login = scanner.nextLine();
             System.out.println("Введите желаемый пароль:");
             pass = scanner.nextLine();
-            if(UserServiceImpl.getInstance().registration(studentId, login, pass)){
+            if(userService.registration(studentId, login, pass)){
                 System.out.println("Вы успешно зарегестрированы");
             }else{
                 System.out.println("Ошибка регистрации");
@@ -98,9 +97,9 @@ public class Menu {
         System.out.println("Введите пароль:");
         pass = scanner.nextLine();
         try {
-            switch ((Role) UserServiceImpl.getInstance().authentication(login, pass)) {
+            switch ((Role) userService.authentication(login, pass)) {
                 case ADMIN:
-                    AdminServiceImpl.getInstance().changeStatusAdmin(login);
+                 //   adminService.changeStatusAdmin(login);
                     setRole(ADMIN);
                     adminMenu();
                     break;
@@ -142,17 +141,17 @@ public class Menu {
                         action = true;
                         break;
                     case 2:
-                        employeeController.editMenu();
-                        action = true;
-                        break;
-                    case 3:
-                        studentController.editMenu();
-                        action = true;
-                        break;
-                    case 4:
-                        userController.editMenu();
-                        action = true;
-                        break;
+//                        employeeController.editMenu();
+//                        action = true;
+//                        break;
+//                    case 3:
+//                        studentController.editMenu();
+//                        action = true;
+//                        break;
+//                    case 4:
+//                        userController.editMenu();
+//                        action = true;
+//                        break;
                     case 5:
                         facultyController.editMenu();
                         action = true;
@@ -186,7 +185,7 @@ public class Menu {
                 point = Integer.parseInt(scanner.nextLine());
                 switch (point) {
                     case 1:
-                        studentController.editMenu();
+                        //studentController.editMenu();
                         action = true;
                         break;
                     case 2:
@@ -218,18 +217,18 @@ public class Menu {
             try {
                 point = Integer.parseInt(scanner.nextLine());
                 switch (point) {
-                    case 1:
-                        studentController.showWriteBook();
-                        action = true;
-                        break;
-                    case 2:
-                        studentController.getAllByGroup();
-                        action = true;
-                        break;
-                    case 3:
-                        studentController.getAllBySpeciality();
-                        action = true;
-                        break;
+//                    case 1:
+//                        studentController.showWriteBook();
+//                        action = true;
+//                        break;
+//                    case 2:
+//                        studentController.getAllByGroup();
+//                        action = true;
+//                        break;
+//                    case 3:
+//                        studentController.getAllBySpeciality();
+//                        action = true;
+//                        break;
                     case 0:
                         startMenu();
                         action = true;
