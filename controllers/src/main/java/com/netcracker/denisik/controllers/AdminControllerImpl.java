@@ -1,4 +1,4 @@
-package com.netcracker.denisik.controllers.controllersimpl;
+package com.netcracker.denisik.controllers;
 
 import com.netcracker.denisik.controllers.Controller;
 import com.netcracker.denisik.dto.RoleDTO;
@@ -12,10 +12,11 @@ import java.util.Scanner;
 public class AdminControllerImpl implements Controller {
     private Scanner scanner;
 
-    @Autowired
     private UserServiceImpl userService;
 
-    public AdminControllerImpl() {
+    @Autowired
+    public AdminControllerImpl(UserServiceImpl userService) {
+        this.userService=userService;
         scanner = new Scanner(System.in);
     }
 

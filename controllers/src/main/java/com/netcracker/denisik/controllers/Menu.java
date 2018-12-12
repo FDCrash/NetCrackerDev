@@ -1,12 +1,10 @@
 package com.netcracker.denisik.controllers;
 
-import com.netcracker.denisik.controllers.controllersimpl.*;
 import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import javax.annotation.Resource;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -23,20 +21,20 @@ public class Menu {
     private SpecialityControllerImpl specialityController;
     private FacultyControllerImpl facultyController;
 //    private UserControllerImpl userController;
-@Autowired
     private UserServiceImpl userService;
 //    @Autowired
 //    private AdminServiceImpl adminService;
 
-
-    public Menu() {
+@Autowired
+    public Menu(UserServiceImpl userService,AdminControllerImpl adminController) {
         scanner = new Scanner(System.in);
 //        studentController = new StudentControllerImpl();
 //        employeeController = new EmployeeControllerImpl();
-        adminController = new AdminControllerImpl();
+        this.adminController = adminController;
         facultyController = new FacultyControllerImpl();
         specialityController = new SpecialityControllerImpl();
     //    userController = new UserControllerImpl();
+        this.userService=userService;
     }
 
     public void startMenu() {

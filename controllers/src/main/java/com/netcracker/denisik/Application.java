@@ -12,20 +12,21 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
 
-@EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class,
-        HibernateJpaAutoConfiguration.class,
-        DataSourceTransactionManagerAutoConfiguration.class })
-@SpringBootApplication()
-
+@SpringBootApplication
 public class Application  implements CommandLineRunner {
-    @Autowired
+
     private Menu menu;
+    @Autowired
+    public Application(Menu menu){
+        this.menu=menu;
+    }
 
     public static void main(String[] args) {
             SpringApplication.run(Application.class, args);

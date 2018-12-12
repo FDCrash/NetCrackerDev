@@ -20,7 +20,6 @@ public class FacultyConverter {
             speciality.setId(facultyDTO.getSpecialities().get(i).getId());
             speciality.setName(facultyDTO.getSpecialities().get(i).getName());
         }
-        Faculty faculty = new Faculty();
         faculty.setId(facultyDTO.getId());
         faculty.setName(facultyDTO.getName());
         faculty.setSpecialities(specialityEntities);

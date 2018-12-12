@@ -1,39 +1,26 @@
 package com.netcracker.denisik.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "writebook")
 public class WriteBook {
-    private long id;
-    private List<Semester> semester;
-
-    public WriteBook(){
-        semester =new ArrayList<>();
-    }
-
-    public WriteBook(List<Semester> semester) {
-        this.semester = semester;
-    }
 
     @Id
     @OneToOne(mappedBy = "writeBook")
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
+    private long id;
 
     @OneToMany(mappedBy = "id",cascade =CascadeType.ALL)
-    public List<Semester> getSemester() {
-        return semester;
-    }
-
-    public void setSemester(List<Semester> semester) {
-        this.semester = semester;
-    }
+    private List<Semester> semester;
 }

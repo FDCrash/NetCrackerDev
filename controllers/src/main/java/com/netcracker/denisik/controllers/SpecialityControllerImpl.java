@@ -1,4 +1,4 @@
-package com.netcracker.denisik.controllers.controllersimpl;
+package com.netcracker.denisik.controllers;
 
 import com.netcracker.denisik.controllers.Controller;
 import com.netcracker.denisik.dto.FacultyDTO;

@@ -18,12 +18,17 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class UserServiceImpl implements CRUDService<UserDTO> {
-    @Autowired
     private UserConverter userConverter;
-    @Autowired
     private StudentRepository studentRepository;
-    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public UserServiceImpl(UserConverter userConverter,StudentRepository studentRepository,UserRepository userRepository){
+        this.userRepository=userRepository;
+        this.studentRepository=studentRepository;
+        this.userConverter=userConverter;
+    }
+
 
     @Override
     public void add(UserDTO userDTO) {
