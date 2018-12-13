@@ -1,24 +1,17 @@
 package com.netcracker.denisik.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+
+@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "users")
-public class User {
-
-    @Id
-    @Column(name = "id",unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Inheritance(strategy = InheritanceType.JOINED)
+public class User extends BaseEntity{
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
@@ -32,5 +25,13 @@ public class User {
 
     @Column(name = "name")
     private String name;
-}
 
+    @Builder
+    public User(long id, Role role, String password, String login, String name) {
+        super(id);
+        this.role = role;
+        this.password = password;
+        this.login = login;
+        this.name = name;
+    }
+}

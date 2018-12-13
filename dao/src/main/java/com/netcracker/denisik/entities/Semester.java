@@ -1,27 +1,15 @@
 package com.netcracker.denisik.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "semesters")
-public class Semester {
-
-    @Id
-    @Column(name = "id", unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(name = "sem")
-    private int sem;
+public class Semester extends BaseEntity{
 
     @Column(name = "mark")
     private int mark;
@@ -29,4 +17,16 @@ public class Semester {
     @ManyToOne
     @JoinColumn(name = "subjects_id")
     private Subject subject;
+
+    @ManyToOne
+    @JoinColumn(name = "writebook_id")
+    private WriteBook writeBook;
+
+    @Builder
+    public Semester(long id, int mark, Subject subject, WriteBook writeBook) {
+        super(id);
+        this.mark = mark;
+        this.subject = subject;
+        this.writeBook = writeBook;
+    }
 }

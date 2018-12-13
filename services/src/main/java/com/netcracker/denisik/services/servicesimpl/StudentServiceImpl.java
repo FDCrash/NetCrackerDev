@@ -21,9 +21,9 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
     private UserConverter userConverter;
 
     @Autowired
-    private StudentServiceImpl(StudentRepository studentRepository,UserRepository userRepository) {
-        studentConverter = new StudentConverter();
-        userConverter=new UserConverter();
+    private StudentServiceImpl(StudentRepository studentRepository,UserRepository userRepository,StudentConverter studentConverter,UserConverter userConverter) {
+        this.studentConverter = studentConverter;
+        this.userConverter=userConverter;
         this.studentRepository = studentRepository;
         this.userRepository=userRepository;
     }
@@ -45,7 +45,7 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
     }
 
     public List<StudentDTO> getAllBySpeciality(String speciality) {
-        return studentRepository.getAllBySpecialityEntity_Name(speciality).stream()
+        return studentRepository.getAllBySpecialityName(speciality).stream()
                 .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
     }

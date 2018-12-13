@@ -1,28 +1,20 @@
 package com.netcracker.denisik.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Entity
-@Table(name = "students")
-public class Student {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@EqualsAndHashCode(callSuper = false)
+@Data
+@Entity
+@NoArgsConstructor
+@Table(name = "students")
+@PrimaryKeyJoinColumn(name = "id")
+public class Student extends User{
+
     @Column(name = "id")
     private long id;
-
-    @Column(name = "studentId",unique = true)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int studentId;
 
     @Column(name = "groupId")
     private int groupId;
@@ -34,4 +26,13 @@ public class Student {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "writebook_id")
     private WriteBook writeBook;
+
+    @Builder(builderMethodName = "builderStudent")
+    public Student(User user, long id, int groupId, Speciality speciality, WriteBook writeBook) {
+        super(id, user.getRole(), user.getPassword(), user.getLogin(), user.getName());
+        this.id = id;
+        this.groupId = groupId;
+        this.speciality = speciality;
+        this.writeBook = writeBook;
+    }
 }

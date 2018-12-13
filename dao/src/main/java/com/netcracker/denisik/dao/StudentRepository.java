@@ -9,9 +9,9 @@ import java.util.List;
 @Repository
 public interface StudentRepository extends CrudRepository<Student,Long> {
 
-    Student getByStudentId(int studentId);
+    Student getByWriteBookId(int studentId);
 
-    List<Student> getAllBySpecialityEntity_Name(String speciality);
+    List<Student> getAllBySpecialityName(String speciality);
 
     List<Student> getAllByGroupId(int groupId);
 }

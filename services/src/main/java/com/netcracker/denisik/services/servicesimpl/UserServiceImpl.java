@@ -11,7 +11,6 @@ import com.netcracker.denisik.services.CRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -23,10 +22,10 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
     private UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserConverter userConverter,StudentRepository studentRepository,UserRepository userRepository){
-        this.userRepository=userRepository;
-        this.studentRepository=studentRepository;
-        this.userConverter=userConverter;
+    public UserServiceImpl(UserConverter userConverter, StudentRepository studentRepository, UserRepository userRepository) {
+        this.userRepository = userRepository;
+        this.studentRepository = studentRepository;
+        this.userConverter = userConverter;
     }
 
 
@@ -59,7 +58,7 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
     }
 
     public List<UserDTO> getAllEmployees() {
-        return StreamSupport.stream(userRepository.findAll().spliterator(),false)
+        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .filter(user -> user.getRole().equals(Role.EMPLOYEE))
                 .map(employee -> userConverter.convert(employee))
                 .collect(Collectors.toList());
@@ -71,8 +70,8 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
     }
 
     public boolean registration(int id, String login, String pass) {
-        Student student =studentRepository.getByStudentId(id);
-        User user =userRepository.findOne(student.getId());
+        Student student = studentRepository.getByWriteBookId(id);
+        User user = userRepository.findOne(student.getId());
         if (isNull(student)) {
             if (checkLogin(login)) {
                 user.setLogin(login);
@@ -93,7 +92,7 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
         return userRepository.getRoleByLoginAndPassword(login, pass).getRole();
     }
 
-    public boolean isNull(Object obj){
-        return obj==null;
+    public boolean isNull(Object obj) {
+        return obj == null;
     }
 }

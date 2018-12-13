@@ -1,8 +1,6 @@
 package com.netcracker.denisik.converters;
 
-import com.netcracker.denisik.dto.SemesterDTO;
-import com.netcracker.denisik.dto.StudentDTO;
-import com.netcracker.denisik.dto.WriteBookDTO;
+import com.netcracker.denisik.dto.*;
 import com.netcracker.denisik.entities.*;
 import org.springframework.stereotype.Component;
 
@@ -19,61 +17,59 @@ public class StudentConverter {
 
     public Student convert(StudentDTO studentDTO) {
         List<Semester> semesterEntities =new ArrayList<>();
-        for(SemesterDTO semesterDTO:studentDTO.getWriteBook().getSemesterEntity()){
-//            Semester semester =new Semester();
-//            semester.setId(semesterDTO.getId());
-//            semester.setSem(semesterDTO.getSem());
-//            semester.setMark(semesterDTO.getMark());
-//            semester.setSubject(Subject.builder().Name(semesterDTO.getSubject()));
-//            semesterEntities.add(semester);
+        User user= User.builder()
+                .id(studentDTO.getId())
+                .login(studentDTO.getLogin())
+                .password(studentDTO.getPassword())
+                .role(Role.STUDENT)
+                .name(studentDTO.getName())
+                .build();
+        for(SemesterDTO semesterDTO:studentDTO.getWriteBook().getSemester()){
             semesterEntities.add(
                     Semester.builder()
                     .id(semesterDTO.getId())
-                    .sem(semesterDTO.getSem())
                     .mark(semesterDTO.getMark())
                     .subject(
                             Subject.builder()
-                            .name(semesterDTO.getSubject)
+                            .name(semesterDTO.getSubject())
                             .build())
                     .build());
         }
-//        Student student =new Student();
-//        student.setId(studentDTO.getId());
-//        student.setStudentId(studentDTO.getStudentId());
-//        student.setGroupId(studentDTO.getGroupId());
-//        student.setWriteBook(WriteBook.builder().(semesterEntities));
-//        student.setSpeciality(specialityConverter.convert(studentDTO.getSpeciality()));
-        return Student.builder()
+        return Student.builderStudent()
+                .user(user)
                 .id(studentDTO.getId())
-                .studentId(studentDTO.getStudentId())
                 .groupId(studentDTO.getGroupId())
                 .writeBook(
                         WriteBook.builder()
-                        .semester(semesterEntities).build())
+                        .semesters(semesterEntities).build())
                 .speciality(specialityConverter.convert(studentDTO.getSpeciality()))
                 .build();
     }
 
     public StudentDTO convert(Student student) {
         List<SemesterDTO> semesterDTOS=new ArrayList<>();
-        for(Semester semester : student.getWriteBook().getSemester()){
-            SemesterDTO semesterDTO=new SemesterDTO();
-            semesterDTO.setId(semester.getId());
-            semesterDTO.setSem(semester.getSem());
-            semesterDTO.setMark(semester.getMark());
-            semesterDTO.setSubject(semester.getSubject().getSubject());
-            semesterDTOS.add(semesterDTO);
+        UserDTO userDTO= UserDTO.builder()
+                .id(student.getId())
+                .roleDTO(RoleDTO.STUDENT)
+                .login(student.getLogin())
+                .password(student.getPassword())
+                .name(student.getName())
+                .build();
+        for(Semester semester : student.getWriteBook().getSemesters()){
             semesterDTOS.add(SemesterDTO.builder()
                 .id(semester.getId())
-                .sem(semester.getSem())
-                .mark(semester.getMark()))
+                .mark(semester.getMark())
+                .subject(semester.getSubject().getName())
+                .build());
         }
-        StudentDTO studentDTO=new StudentDTO();
-        studentDTO.setId(student.getId());
-        studentDTO.setStudentId(student.getStudentId());
-        studentDTO.setGroupId(student.getGroupId());
-        studentDTO.setSpeciality(specialityConverter.convert(student.getSpeciality()));
-        studentDTO.setWriteBook(new WriteBookDTO(semesterDTOS));
-        return studentDTO;
+        return StudentDTO.builderStudent()
+                .userDTO(userDTO)
+                .groupId(student.getGroupId())
+                .speciality(specialityConverter.convert(student.getSpeciality()))
+                .writeBook(
+                        WriteBookDTO.builder()
+                        .semester(semesterDTOS)
+                        .build())
+                .build();
     }
 }

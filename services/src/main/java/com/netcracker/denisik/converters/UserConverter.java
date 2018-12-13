@@ -9,22 +9,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserConverter {
     public User convert(UserDTO userDTO) {
-        User user =new User();
-        user.setId(userDTO.getId());
-        user.setRole(Role.valueOf(userDTO.getRoleDTO().name()));
-        user.setLogin(userDTO.getLogin());
-        user.setPassword(userDTO.getPassword());
-        user.setName(userDTO.getName());
-        return user;
+        return User.builder()
+                .id(userDTO.getId())
+                .role(Role.valueOf(userDTO.getRoleDTO().name()))
+                .login(userDTO.getLogin())
+                .password(userDTO.getPassword())
+                .name(userDTO.getName())
+                .build();
     }
 
     public UserDTO convert(User user) {
-        UserDTO userDTO=new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setRoleDTO(RoleDTO.valueOf(user.getRole().name()));
-        userDTO.setLogin(user.getLogin());
-        userDTO.setPassword(user.getPassword());
-        userDTO.setName(user.getName());
-        return userDTO;
+        return UserDTO.builder()
+                .id(user.getId())
+                .roleDTO(RoleDTO.valueOf(user.getRole().name()))
+                .login(user.getLogin())
+                .password(user.getPassword())
+                .name(user.getName())
+                .build();
     }
 }

@@ -17,8 +17,8 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
     private SpecialityRepository specialityRepository;
 
     @Autowired
-    public SpecialityServiceImpl(SpecialityRepository specialityRepository) {
-        specialityConverter = new SpecialityConverter();
+    public SpecialityServiceImpl(SpecialityRepository specialityRepository, SpecialityConverter specialityConverter) {
+        this.specialityConverter = specialityConverter;
         this.specialityRepository = specialityRepository;
     }
 

@@ -19,10 +19,17 @@ public class FacultyConverter {
             Speciality speciality =new Speciality();
             speciality.setId(facultyDTO.getSpecialities().get(i).getId());
             speciality.setName(facultyDTO.getSpecialities().get(i).getName());
+            specialityEntities.add(
+                    Speciality.builder()
+                    .id(facultyDTO.getSpecialities().get(i).getId())
+                    .name(facultyDTO.getSpecialities().get(i).getName())
+                    .build());
         }
-        faculty.setId(facultyDTO.getId());
-        faculty.setName(facultyDTO.getName());
-        faculty.setSpecialities(specialityEntities);
+        Faculty faculty=Faculty.builder()
+                .id(facultyDTO.getId())
+                .name(facultyDTO.getName())
+                .specialities(specialityEntities)
+                .build();
         for (int i = 0; i < quantity; i++) {
             specialityEntities.get(i).setFaculty(faculty);
         }
@@ -30,20 +37,25 @@ public class FacultyConverter {
     }
 
     public FacultyDTO convert(Faculty faculty) {
-        List<SpecialityDTO> specilities = new ArrayList<>();
+        List<SpecialityDTO> specialityDTOS = new ArrayList<>();
         int quantity= faculty.getSpecialities().size();
         for (int i = 0; i < quantity; i++) {
             SpecialityDTO specialityDTO=new SpecialityDTO();
             specialityDTO.setId(faculty.getSpecialities().get(i).getId());
             specialityDTO.setName(faculty.getSpecialities().get(i).getName());
-            specilities.add(specialityDTO);
+            specialityDTOS.add(
+                    SpecialityDTO.builder()
+                    .id(faculty.getSpecialities().get(i).getId())
+                    .name(faculty.getSpecialities().get(i).getName())
+                    .build());
         }
-        FacultyDTO facultyDTO=new FacultyDTO();
-        facultyDTO.setId(faculty.getId());
-        facultyDTO.setName(faculty.getName());
-        facultyDTO.setSpecialities(specilities);
+        FacultyDTO facultyDTO=FacultyDTO.builder()
+                .id(faculty.getId())
+                .name(faculty.getName())
+                .specialities(specialityDTOS)
+                .build();
         for(int i=0;i<quantity;i++){
-            specilities.get(i).setFaculty(facultyDTO);
+            specialityDTOS.get(i).setFaculty(facultyDTO);
         }
         return facultyDTO;
     }

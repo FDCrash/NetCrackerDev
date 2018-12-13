@@ -1,16 +1,18 @@
 package com.netcracker.denisik.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class SpecialityDTO {
-    private long id;
+public class SpecialityDTO extends BaseDTO{
     private String name;
     private FacultyDTO faculty;
+
+    @Builder
+    public SpecialityDTO(long id, String name, FacultyDTO faculty) {
+        super(id);
+        this.name = name;
+        this.faculty = faculty;
+    }
 }

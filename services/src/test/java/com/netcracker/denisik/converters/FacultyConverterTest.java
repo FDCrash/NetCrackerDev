@@ -13,15 +13,15 @@ public class FacultyConverterTest {
 
     @Before
     public void setUp(){
-        faculty =new Faculty(0, "TEST");
-        facultyDTO = new FacultyDTO(0,"TEST");
-        converter=new FacultyConverter();
+//        faculty =new Faculty(0, "TEST");
+//        facultyDTO = new FacultyDTO(0,"TEST");
+//        converter=new FacultyConverter();
     }
 
     @After
     public void tearDown(){
-        facultyDTO =null;
-        faculty =null;
+//        facultyDTO =null;
+//        faculty =null;
     }
 
     @Test

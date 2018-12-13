@@ -1,29 +1,27 @@
 package com.netcracker.denisik.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "faculties")
-public class Faculty {
-
-    @Id
-    @Column(name = "id",unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Faculty extends BaseEntity{
 
     @Column(name = "name", unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "facultyEntity",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "faculty",cascade = CascadeType.ALL)
     private List<Speciality> specialities;
+
+    @Builder
+    public Faculty(long id, String name, List<Speciality> specialities) {
+        super(id);
+        this.name = name;
+        this.specialities = specialities;
+    }
 }

@@ -1,17 +1,18 @@
 package com.netcracker.denisik.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class SemesterDTO {
-    private long id;
-    private int sem;
+public class SemesterDTO extends BaseDTO {
     private int mark;
-    private String subjtec;
+    private String subject;
+
+    @Builder
+    public SemesterDTO(long id, int mark, String subject) {
+        super(id);
+        this.mark = mark;
+        this.subject = subject;
+    }
 }

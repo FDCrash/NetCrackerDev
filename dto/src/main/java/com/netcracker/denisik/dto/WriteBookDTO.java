@@ -1,18 +1,21 @@
 package com.netcracker.denisik.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class WriteBookDTO {
-    private long id;
-    private List<SemesterDTO> semesterEntity;
+public class WriteBookDTO extends  BaseDTO{
+    private List<SemesterDTO> semester;
+    private boolean budjet;
+
+    @Builder
+    public WriteBookDTO(long id, List<SemesterDTO> semester, boolean budjet) {
+        super(id);
+        this.semester = semester;
+        this.budjet = budjet;
+    }
 }

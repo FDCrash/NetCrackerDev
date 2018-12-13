@@ -17,8 +17,8 @@ public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
     private FacultyRepository facultyRepository;
 
     @Autowired
-    public FacultyServiceImpl(FacultyRepository facultyRepository) {
-        facultyConverter = new FacultyConverter();
+    public FacultyServiceImpl(FacultyRepository facultyRepository, FacultyConverter facultyConverter) {
+        this.facultyConverter = facultyConverter;
         this.facultyRepository = facultyRepository;
     }
 
