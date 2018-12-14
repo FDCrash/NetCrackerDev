@@ -1,37 +1,57 @@
 package com.netcracker.denisik.converters;
 
-import com.netcracker.denisik.dao.daoImpl.SpecialityDAOImpl;
-import com.netcracker.denisik.dto.RoleDTO;
+import com.netcracker.denisik.dto.SemesterDTO;
 import com.netcracker.denisik.dto.StudentDTO;
-import com.netcracker.denisik.dto.UserDTO;
 import com.netcracker.denisik.dto.WriteBookDTO;
 import com.netcracker.denisik.entities.*;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class StudentConverter {
-    public StudentEntity convert(StudentDTO studentDTO) {
-        List<WriteBook> writeBooks=new ArrayList<>();
-        studentDTO.getWriteBook().
-                forEach(writeBookDTO -> writeBooks.
-                        add(new WriteBook(writeBookDTO.getSem(),writeBookDTO.getSubjects(),writeBookDTO.getMarks())));
-        return new StudentEntity(new UserEntity(studentDTO.getId(),
-                Role.valueOf(studentDTO.getRoleDTO().name()), studentDTO.getLogin(),
-                studentDTO.getPassword()), studentDTO.getName(), studentDTO.getStudentId(),
-                studentDTO.getGroupId(),SpecialityDAOImpl.getInstance().getAll().stream()
-                .filter(specialityEntity -> specialityEntity.getName().equals(studentDTO.getSpeciality()))
-                .findFirst().get(), writeBooks);
+    private SpecialityConverter specialityConverter;
+
+    public StudentConverter(){
+        specialityConverter=new SpecialityConverter();
     }
 
-    public StudentDTO convert(StudentEntity studentEntity) {
-        List<WriteBookDTO> writeBookDTO=new ArrayList<>();
-        studentEntity.getWriteBook().
-                forEach(writeBook -> writeBookDTO.
-                        add(new WriteBookDTO(writeBook.getSem(),writeBook.getSubjects(),writeBook.getMarks())));
-        return new StudentDTO(new UserDTO(studentEntity.getId(), RoleDTO.valueOf(studentEntity.getRole().name()),
-                studentEntity.getLogin(), studentEntity.getPassword()), studentEntity.getName(),
-                studentEntity.getStudentId(), studentEntity.getGroupId(),
-                studentEntity.getSpecialityEntity().getName(), writeBookDTO);
+    public Student convert(StudentDTO studentDTO) {
+        List<Semester> semesterEntities =new ArrayList<>();
+        for(SemesterDTO semesterDTO:studentDTO.getWriteBook().getSemesterEntity()){
+            Semester semester =new Semester();
+            semester.setId(semesterDTO.getId());
+            semester.setSem(semesterDTO.getSem());
+            semester.setMark(semesterDTO.getMark());
+            semester.setSubject(new Subject(semesterDTO.getSubject()));
+            semesterEntities.add(semester);
+        }
+        Student student =new Student();
+        student.setId(studentDTO.getId());
+        student.setStudentId(studentDTO.getStudentId());
+        student.setGroupId(studentDTO.getGroupId());
+        student.setWriteBook(new WriteBook(semesterEntities));
+        student.setSpeciality(specialityConverter.convert(studentDTO.getSpeciality()));
+        return student;
+    }
+
+    public StudentDTO convert(Student student) {
+        List<SemesterDTO> semesterDTOS=new ArrayList<>();
+        for(Semester semester : student.getWriteBook().getSemester()){
+            SemesterDTO semesterDTO=new SemesterDTO();
+            semesterDTO.setId(semester.getId());
+            semesterDTO.setSem(semester.getSem());
+            semesterDTO.setMark(semester.getMark());
+            semesterDTO.setSubject(semester.getSubject().getSubject());
+            semesterDTOS.add(semesterDTO);
+        }
+        StudentDTO studentDTO=new StudentDTO();
+        studentDTO.setId(student.getId());
+        studentDTO.setStudentId(student.getStudentId());
+        studentDTO.setGroupId(student.getGroupId());
+        studentDTO.setSpeciality(specialityConverter.convert(student.getSpeciality()));
+        studentDTO.setWriteBook(new WriteBookDTO(semesterDTOS));
+        return studentDTO;
     }
 }

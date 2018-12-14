@@ -1,64 +1,55 @@
 package com.netcracker.denisik.services.servicesimpl;
 
 import com.netcracker.denisik.converters.SpecialityConverter;
-import com.netcracker.denisik.dao.daoImpl.SpecialityDAOImpl;
+import com.netcracker.denisik.dao.SpecialityRepository;
 import com.netcracker.denisik.dto.SpecialityDTO;
 import com.netcracker.denisik.services.CRUDService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.SplittableRandom;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+@Service
 public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
     private SpecialityConverter specialityConverter;
-    private static SpecialityServiceImpl instance;
+    private SpecialityRepository specialityRepository;
 
-    private SpecialityServiceImpl(){
+    @Autowired
+    public SpecialityServiceImpl(SpecialityRepository specialityRepository) {
         specialityConverter = new SpecialityConverter();
-    }
-
-    public static SpecialityServiceImpl getInstance(){
-        if(instance == null){
-            instance = new SpecialityServiceImpl();
-        }
-        return instance;
+        this.specialityRepository = specialityRepository;
     }
 
     @Override
-    public void addNew(SpecialityDTO specialityDTO) {
-        SpecialityDAOImpl.getInstance().add(specialityConverter.convert(specialityDTO));
-
+    public void add(SpecialityDTO specialityDTO) {
+        specialityRepository.save(specialityConverter.convert(specialityDTO));
     }
 
     @Override
-    public void deleteInfo(int id) {
-        SpecialityDAOImpl.getInstance().delete(id);
+    public void delete(long id) {
+        specialityRepository.delete(id);
     }
 
     @Override
-    public void updateInfo(SpecialityDTO specialityDTO) {
-        SpecialityDAOImpl.getInstance().update(specialityConverter.convert(specialityDTO));
+    public void update(SpecialityDTO specialityDTO) {
+        specialityRepository.save(specialityConverter.convert(specialityDTO));
     }
 
     @Override
     public List<SpecialityDTO> getAll() {
-        return SpecialityDAOImpl.getInstance().getAll().stream()
+        return StreamSupport.stream(specialityRepository.findAll().spliterator(), false)
                 .map(speciality -> specialityConverter.convert(speciality))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public SpecialityDTO get(int id) {
-        return specialityConverter.convert(SpecialityDAOImpl.getInstance().get(id));
+    public SpecialityDTO get(long id) {
+        return specialityConverter.convert(specialityRepository.findOne(id));
     }
 
-    public int generateId(int bound) {
-        SplittableRandom splittableRandom = new SplittableRandom();
-        int k;
-        do {
-            k = splittableRandom.nextInt(1, bound);
-
-        } while (SpecialityDAOImpl.getInstance().get(k) != null);
-        return k;
+    public SpecialityDTO getByName(String name){
+        return specialityConverter.convert(specialityRepository.getByName(name));
     }
 }

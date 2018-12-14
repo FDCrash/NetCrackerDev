@@ -1,36 +1,51 @@
 package com.netcracker.denisik.converters;
 
 import com.netcracker.denisik.dto.FacultyDTO;
-import com.netcracker.denisik.entities.FacultyEntity;
-import com.netcracker.denisik.entities.SpecialityEntity;
+import com.netcracker.denisik.dto.SpecialityDTO;
+import com.netcracker.denisik.entities.Faculty;
+import com.netcracker.denisik.entities.Speciality;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class FacultyConverter {
-    public FacultyEntity convert(FacultyDTO facultyDTO) {
-        List<SpecialityEntity> specialityEntities = new ArrayList<>();
-        int n;
-        n = facultyDTO.getSpecialities().size();
-        for (int i = 0; i < n; i++) {
-            specialityEntities.add(new SpecialityEntity(facultyDTO.getSpecialitiesId().get(i),
-                    facultyDTO.getSpecialities().get(i), facultyDTO.getId()));
+    public Faculty convert(FacultyDTO facultyDTO) {
+        List<Speciality> specialityEntities = new ArrayList<>();
+        int quantity;
+        quantity = facultyDTO.getSpecialities().size();
+        for (int i = 0; i < quantity; i++) {
+            Speciality speciality =new Speciality();
+            speciality.setId(facultyDTO.getSpecialities().get(i).getId());
+            speciality.setName(facultyDTO.getSpecialities().get(i).getName());
         }
-        FacultyEntity facultyEntity = new FacultyEntity(facultyDTO.getId(),
-                facultyDTO.getName(), specialityEntities);
-        for (int i = 0; i < n; i++) {
-            specialityEntities.get(i).setFaculty(facultyEntity);
+        Faculty faculty = new Faculty();
+        faculty.setId(facultyDTO.getId());
+        faculty.setName(facultyDTO.getName());
+        faculty.setSpecialities(specialityEntities);
+        for (int i = 0; i < quantity; i++) {
+            specialityEntities.get(i).setFaculty(faculty);
         }
-        return facultyEntity;
+        return faculty;
     }
 
-    public FacultyDTO convert(FacultyEntity facultyEntity) {
-        List<String> specilities = new ArrayList<>();
-        List<Integer> specialitiesId = new ArrayList<>();
-        for (int i = 0; i < facultyEntity.getSpecialities().size(); i++) {
-            specilities.add(facultyEntity.getSpecialities().get(i).getName());
-            specialitiesId.add(facultyEntity.getSpecialities().get(i).getId());
+    public FacultyDTO convert(Faculty faculty) {
+        List<SpecialityDTO> specilities = new ArrayList<>();
+        int quantity= faculty.getSpecialities().size();
+        for (int i = 0; i < quantity; i++) {
+            SpecialityDTO specialityDTO=new SpecialityDTO();
+            specialityDTO.setId(faculty.getSpecialities().get(i).getId());
+            specialityDTO.setName(faculty.getSpecialities().get(i).getName());
+            specilities.add(specialityDTO);
         }
-        return new FacultyDTO(facultyEntity.getId(), facultyEntity.getName(), specilities, specialitiesId);
+        FacultyDTO facultyDTO=new FacultyDTO();
+        facultyDTO.setId(faculty.getId());
+        facultyDTO.setName(faculty.getName());
+        facultyDTO.setSpecialities(specilities);
+        for(int i=0;i<quantity;i++){
+            specilities.get(i).setFaculty(facultyDTO);
+        }
+        return facultyDTO;
     }
 }

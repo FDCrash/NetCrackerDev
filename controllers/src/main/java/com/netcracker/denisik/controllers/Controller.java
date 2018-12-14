@@ -1,8 +1,11 @@
 package com.netcracker.denisik.controllers;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 public interface Controller {
-    default void switchChange(int k) {
-        switch (k) {
+    default void switchChange(int point) {
+        switch (point) {
             case 1:
                 getAll();
                 break;
@@ -16,17 +19,17 @@ public interface Controller {
                 delete();
                 break;
             case 0:
-                switch (Menu.getInstance().getRole()) {
-                    case ADMIN:
-                        Menu.getInstance().adminMenu();
-                        break;
-                    case EMPLOYEE:
-                        Menu.getInstance().employeeMenu();
-                        break;
-                    case STUDENT:
-                        Menu.getInstance().studentMenu();
-                        break;
-                }
+//                switch (new Menu().getRole()) {
+//                    case ADMIN:
+//                        new Menu().adminMenu();
+//                        break;
+//                    case EMPLOYEE:
+//                        new Menu().employeeMenu();
+//                        break;
+//                    case STUDENT:
+//                        new Menu().studentMenu();
+//                        break;
+//                }
                 break;
             default:
                 System.out.println("Выберите позицию из списка");

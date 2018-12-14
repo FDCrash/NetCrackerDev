@@ -4,47 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WriteBookDTO {
-    private int sem;
-    private List<String> subjects;
-    private List<Integer> marks;
+    private List<SemesterDTO> semesterEntity;
 
-    public WriteBookDTO(){}
-
-    public WriteBookDTO(int sem, List<String> subjects, List<Integer> marks) {
-        this.sem = sem;
-        this.subjects = new ArrayList<>(subjects);
-        this.marks = new ArrayList<>(marks);
+    public WriteBookDTO() {
     }
 
-    public List<String> getSubjects() {
-        return subjects;
+    public WriteBookDTO(List<SemesterDTO> semesterEntity) {
+        this.semesterEntity = semesterEntity;
     }
 
-    public void setSubjects(List<String> subjects) {
-        this.subjects = subjects;
+    public List<SemesterDTO> getSemesterEntity() {
+        return semesterEntity;
     }
 
-    public List<Integer> getMarks() {
-        return marks;
+    public void setSemesterEntity(List<SemesterDTO> semesterEntity) {
+        this.semesterEntity = semesterEntity;
     }
 
-    public void setMarks(List<Integer> marks) {
-        this.marks = marks;
-    }
-
-    public int getSem() {
-
-        return sem;
-    }
-
-    public void setSem(int sem) {
-        this.sem = sem;
-    }
-
-    public String toString(){
-        StringBuilder s= new StringBuilder("Семестр: " + getSem() + "\n");
-        for(int i=0 ; i< getSubjects().size();i++){
-            s.append("Предмет: ").append(getSubjects().get(i)).append(";  Оценка: ").append(getMarks().get(i)).append("\n");
+    public String toString() {
+        int sem = semesterEntity.get(0).getSem();
+        StringBuilder s = new StringBuilder("Оценки за семестр " + sem + " :\n");
+        for (int i = 0; i < semesterEntity.size(); i++) {
+            if (sem == semesterEntity.get(i).getSem()) {
+                s.append("Предмет: ").append(semesterEntity.get(i).getSubject())
+                        .append(";  Оценка: ")
+                        .append(semesterEntity.get(i).getMark()).append("\n");
+            } else {
+                sem = semesterEntity.get(i).getSem();
+                s.append("Оценки за семестр ").append(sem).append(" :\n")
+                        .append("Предмет: ").append(semesterEntity.get(i).getSubject())
+                        .append(";  Оценка: ")
+                        .append(semesterEntity.get(i).getMark()).append("\n");
+            }
         }
         return s.toString();
     }

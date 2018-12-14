@@ -3,16 +3,28 @@ package com.netcracker.denisik.converters;
 import com.netcracker.denisik.dto.RoleDTO;
 import com.netcracker.denisik.dto.UserDTO;
 import com.netcracker.denisik.entities.Role;
-import com.netcracker.denisik.entities.UserEntity;
+import com.netcracker.denisik.entities.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserConverter {
-    public UserEntity convert(UserDTO userDTO) {
-        return new UserEntity(userDTO.getId(), Role.valueOf(userDTO.getRoleDTO().name()), userDTO.getLogin(),
-                userDTO.getPassword());
+    public User convert(UserDTO userDTO) {
+        User user =new User();
+        user.setId(userDTO.getId());
+        user.setRole(Role.valueOf(userDTO.getRoleDTO().name()));
+        user.setLogin(userDTO.getLogin());
+        user.setPassword(userDTO.getPassword());
+        user.setName(userDTO.getName());
+        return user;
     }
 
-    public UserDTO convert(UserEntity userEntity) {
-        return new UserDTO(userEntity.getId(), RoleDTO.valueOf(userEntity.getRole().name()), userEntity.getLogin(),
-                userEntity.getPassword());
+    public UserDTO convert(User user) {
+        UserDTO userDTO=new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setRoleDTO(RoleDTO.valueOf(user.getRole().name()));
+        userDTO.setLogin(user.getLogin());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setName(user.getName());
+        return userDTO;
     }
 }

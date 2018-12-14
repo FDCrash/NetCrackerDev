@@ -1,41 +1,36 @@
 package com.netcracker.denisik.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class StudentDTO extends UserDTO {
-    private String name;
+public class StudentDTO {
+    private long id;
     private int studentId;
     private int groupId;
-    private String speciality;
-    private List<WriteBookDTO> writeBook;
+    private SpecialityDTO speciality;
+    private WriteBookDTO writeBook;
 
     public StudentDTO() {
     }
 
-    public StudentDTO(UserDTO userDTO, String name,
-                      int studentId, int groupId, String speciality, List<WriteBookDTO> writeBook) {
-        super(userDTO);
-        this.name = name;
+    public StudentDTO(long id, int studentId, int groupId, SpecialityDTO speciality, WriteBookDTO writeBook) {
+        this.id = id;
         this.studentId = studentId;
         this.groupId = groupId;
         this.speciality = speciality;
-        this.writeBook = new ArrayList<>(writeBook);
+        this.writeBook = writeBook;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSpeciality(String speciality) {
+    public void setSpeciality(SpecialityDTO speciality) {
         this.speciality = speciality;
     }
 
@@ -47,15 +42,15 @@ public class StudentDTO extends UserDTO {
         return studentId;
     }
 
-    public List<WriteBookDTO> getWriteBook() {
+    public WriteBookDTO getWriteBook() {
         return writeBook;
     }
 
-    public void setWriteBook(List<WriteBookDTO> writeBook) {
+    public void setWriteBook(WriteBookDTO writeBook) {
         this.writeBook = writeBook;
     }
 
-    public String getSpeciality() {
+    public SpecialityDTO getSpeciality() {
         return speciality;
     }
 
@@ -65,12 +60,8 @@ public class StudentDTO extends UserDTO {
 
     public String toString() {
         StringBuilder s = new StringBuilder("\n");
-        for (int i = 0; i < getWriteBook().size(); i++) {
-            s.append(writeBook.get(i).toString()).append("\n");
-        }
-        return "Имя: " + getName() + "\nРоль: " + getRoleDTO().name()
-                + "\nЛогин: " + getLogin() + "\nСпециальность: " + getSpeciality() +
+        return   "Специальность: " + getSpeciality().getName() +
                 "\nНомер студенченского билета: " + getStudentId() +
-                "\nНомер группы:" + getGroupId() + "\nЗачетная книжка: " + s;
+                "\nНомер группы:" + getGroupId() + "\nЗачетная книжка: " + writeBook.toString();
     }
 }

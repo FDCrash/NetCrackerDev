@@ -2,22 +2,22 @@ package com.netcracker.denisik.dto;
 
 public class SpecialityDTO extends BaseDTO {
     private String name;
-    private String faculty;
+    private FacultyDTO faculty;
 
     public SpecialityDTO() {
     }
 
-    public SpecialityDTO(int id, String name, String faculty) {
+    public SpecialityDTO(long id, String name, FacultyDTO faculty) {
         super(id);
         this.name = name;
         this.faculty = faculty;
     }
 
-    public String getFaculty() {
+    public FacultyDTO getFaculty() {
         return faculty;
     }
 
-    public void setFaculty(String faculty) {
+    public void setFaculty(FacultyDTO faculty) {
         this.faculty = faculty;
     }
 
@@ -31,6 +31,6 @@ public class SpecialityDTO extends BaseDTO {
 
     public String toString() {
         return "Название специальности: " + getName()
-                + "\nФакультет: " + getFaculty() + "\n";
+                + "\nФакультет: " + getFaculty().getName() + "\n";
     }
 }

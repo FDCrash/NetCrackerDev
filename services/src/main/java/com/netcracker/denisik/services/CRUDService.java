@@ -3,13 +3,13 @@ package com.netcracker.denisik.services;
 import java.util.List;
 
 public interface CRUDService<T> {
-    void addNew(T t);
+    void add(T t);
 
-    void deleteInfo(int id);
+    void delete(long id);
 
-    void updateInfo(T t);
+    void update(T t);
 
     List<T> getAll();
 
-    T get(int id);
+    T get(long id);
 }

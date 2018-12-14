@@ -1,43 +1,39 @@
 package com.netcracker.denisik.entities;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "writebook")
 public class WriteBook {
-    private int sem;
-    private List<String> subjects;
-    private List<Integer> marks;
+    private long id;
+    private List<Semester> semester;
 
-    public WriteBook(){}
-
-    public WriteBook(int sem, List<String> subjects, List<Integer> marks) {
-        this.sem = sem;
-        this.subjects = new ArrayList<>(subjects);
-        this.marks = new ArrayList<>(marks);
+    public WriteBook(){
+        semester =new ArrayList<>();
     }
 
-    public List<String> getSubjects() {
-        return subjects;
+    public WriteBook(List<Semester> semester) {
+        this.semester = semester;
     }
 
-    public void setSubjects(List<String> subjects) {
-        this.subjects = subjects;
+    @Id
+    @OneToOne(mappedBy = "writeBook")
+    public long getId() {
+        return id;
     }
 
-    public List<Integer> getMarks() {
-        return marks;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setMarks(List<Integer> marks) {
-        this.marks = marks;
+    @OneToMany(mappedBy = "id",cascade =CascadeType.ALL)
+    public List<Semester> getSemester() {
+        return semester;
     }
 
-    public int getSem() {
-
-        return sem;
-    }
-
-    public void setSem(int sem) {
-        this.sem = sem;
+    public void setSemester(List<Semester> semester) {
+        this.semester = semester;
     }
 }

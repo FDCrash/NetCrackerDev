@@ -1,20 +1,20 @@
 package com.netcracker.denisik.dto;
 
 public abstract class BaseDTO {
-    private int id;
+    private long id;
 
     public BaseDTO() {
     }
 
-    public BaseDTO(int id) {
+    public BaseDTO(long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 }
