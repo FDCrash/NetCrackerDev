@@ -19,6 +19,9 @@ public class UserConverter {
     }
 
     public UserDTO convert(User user) {
+        if(user==null){
+            return null;
+        }
         return UserDTO.builder()
                 .id(user.getId())
                 .roleDTO(RoleDTO.valueOf(user.getRole().name()))

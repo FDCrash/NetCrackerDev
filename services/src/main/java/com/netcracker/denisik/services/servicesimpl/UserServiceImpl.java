@@ -30,18 +30,13 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
 
 
     @Override
-    public void add(UserDTO userDTO) {
-        userRepository.save(userConverter.convert(userDTO));
+    public long add(UserDTO userDTO) {
+        return userRepository.save(userConverter.convert(userDTO)).getId();
     }
 
     @Override
     public void delete(long id) {
         userRepository.delete(id);
-    }
-
-    @Override
-    public void update(UserDTO userDTO) {
-        userRepository.save(userConverter.convert(userDTO));
     }
 
     @Override
@@ -69,7 +64,7 @@ public class UserServiceImpl implements CRUDService<UserDTO> {
         return userConverter.convert(userRepository.findOne(id));
     }
 
-    public boolean registration(int id, String login, String pass) {
+    public boolean registration(long id, String login, String pass) {
         Student student = studentRepository.getByWriteBookId(id);
         User user = userRepository.findOne(student.getId());
         if (isNull(student)) {

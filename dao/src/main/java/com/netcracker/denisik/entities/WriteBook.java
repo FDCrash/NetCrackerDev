@@ -1,9 +1,11 @@
 package com.netcracker.denisik.entities;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = false)
@@ -11,12 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "writebook")
-public class WriteBook extends BaseEntity{
+public class WriteBook extends BaseEntity {
 
     @OneToMany(mappedBy = "writeBook",cascade =CascadeType.ALL)
     private List<Semester> semesters;
 
-    @Column(name = "budjet")
+    @Column(name = "budget")
     private boolean budget;
 
     @OneToOne(mappedBy = "writeBook")

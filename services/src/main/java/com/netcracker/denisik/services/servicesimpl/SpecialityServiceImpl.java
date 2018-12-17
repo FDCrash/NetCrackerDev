@@ -23,18 +23,13 @@ public class SpecialityServiceImpl implements CRUDService<SpecialityDTO> {
     }
 
     @Override
-    public void add(SpecialityDTO specialityDTO) {
-        specialityRepository.save(specialityConverter.convert(specialityDTO));
+    public long add(SpecialityDTO specialityDTO) {
+        return specialityRepository.save(specialityConverter.convert(specialityDTO)).getId();
     }
 
     @Override
     public void delete(long id) {
         specialityRepository.delete(id);
-    }
-
-    @Override
-    public void update(SpecialityDTO specialityDTO) {
-        specialityRepository.save(specialityConverter.convert(specialityDTO));
     }
 
     @Override

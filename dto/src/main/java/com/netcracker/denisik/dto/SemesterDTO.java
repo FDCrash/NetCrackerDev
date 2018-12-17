@@ -5,13 +5,12 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
-public class SemesterDTO extends BaseDTO {
+public class SemesterDTO {
     private int mark;
-    private String subject;
+    private SubjectDTO subject;
 
     @Builder
-    public SemesterDTO(long id, int mark, String subject) {
-        super(id);
+    public SemesterDTO( int mark, SubjectDTO subject) {
         this.mark = mark;
         this.subject = subject;
     }

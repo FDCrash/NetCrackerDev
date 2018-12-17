@@ -1,9 +1,7 @@
 package com.netcracker.denisik.services.servicesimpl;
 
 import com.netcracker.denisik.converters.StudentConverter;
-import com.netcracker.denisik.converters.UserConverter;
 import com.netcracker.denisik.dao.StudentRepository;
-import com.netcracker.denisik.dao.UserRepository;
 import com.netcracker.denisik.dto.StudentDTO;
 import com.netcracker.denisik.services.CRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,20 +15,16 @@ import java.util.stream.StreamSupport;
 public class StudentServiceImpl implements CRUDService<StudentDTO> {
     private StudentConverter studentConverter;
     private StudentRepository studentRepository;
-    private UserRepository userRepository;
-    private UserConverter userConverter;
 
     @Autowired
-    private StudentServiceImpl(StudentRepository studentRepository,UserRepository userRepository,StudentConverter studentConverter,UserConverter userConverter) {
+    private StudentServiceImpl(StudentRepository studentRepository,StudentConverter studentConverter) {
         this.studentConverter = studentConverter;
-        this.userConverter=userConverter;
         this.studentRepository = studentRepository;
-        this.userRepository=userRepository;
     }
 
     @Override
-    public void add(StudentDTO studentDTO) {
-        studentRepository.save(studentConverter.convert(studentDTO));
+    public long add(StudentDTO studentDTO) {
+        return studentRepository.save(studentConverter.convert(studentDTO)).getId();
     }
 
     @Override
@@ -38,7 +32,7 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
         studentRepository.delete(id);
     }
 
-    public List<StudentDTO> getAllByGroup(int number) {
+    public List<StudentDTO> getAllByGroup(long number) {
         return studentRepository.getAllByGroupId(number).stream()
                 .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
@@ -48,11 +42,6 @@ public class StudentServiceImpl implements CRUDService<StudentDTO> {
         return studentRepository.getAllBySpecialityName(speciality).stream()
                 .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public void update(StudentDTO studentDTO) {
-        studentRepository.save(studentConverter.convert(studentDTO));
     }
 
 

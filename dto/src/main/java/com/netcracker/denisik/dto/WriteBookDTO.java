@@ -10,12 +10,12 @@ import java.util.List;
 @NoArgsConstructor
 public class WriteBookDTO extends  BaseDTO{
     private List<SemesterDTO> semester;
-    private boolean budjet;
+    private boolean budget;
 
     @Builder
-    public WriteBookDTO(long id, List<SemesterDTO> semester, boolean budjet) {
+    public WriteBookDTO(long id, List<SemesterDTO> semester, boolean budget) {
         super(id);
         this.semester = semester;
-        this.budjet = budjet;
+        this.budget = budget;
     }
 }

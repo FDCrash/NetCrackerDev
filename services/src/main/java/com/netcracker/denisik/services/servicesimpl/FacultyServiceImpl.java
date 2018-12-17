@@ -23,18 +23,13 @@ public class FacultyServiceImpl implements CRUDService<FacultyDTO> {
     }
 
     @Override
-    public void add(FacultyDTO facultyDTO) {
-        facultyRepository.save(facultyConverter.convert(facultyDTO));
+    public long add(FacultyDTO facultyDTO) {
+        return facultyRepository.save(facultyConverter.convert(facultyDTO)).getId();
     }
 
     @Override
     public void delete(long id) {
         facultyRepository.delete(id);
-    }
-
-    @Override
-    public void update(FacultyDTO facultyDTO) {
-        facultyRepository.save(facultyConverter.convert(facultyDTO));
     }
 
     @Override

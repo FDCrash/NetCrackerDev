@@ -9,10 +9,10 @@ import java.util.List;
 @NoArgsConstructor
 public class FacultyDTO extends BaseDTO{
     private String name;
-    private List<SpecialityDTO> specialities;
+    private List<String> specialities;
 
     @Builder
-    public FacultyDTO(long id, String name, List<SpecialityDTO> specialities) {
+    public FacultyDTO(long id, String name, List<String> specialities) {
         super(id);
         this.name = name;
         this.specialities = specialities;

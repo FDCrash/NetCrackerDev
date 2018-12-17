@@ -1,6 +1,5 @@
 package com.netcracker.denisik.converters;
 
-import com.netcracker.denisik.dto.FacultyDTO;
 import com.netcracker.denisik.dto.SpecialityDTO;
 import com.netcracker.denisik.entities.Faculty;
 import com.netcracker.denisik.entities.Speciality;
@@ -12,30 +11,24 @@ import java.util.Collections;
 public class SpecialityConverter {
     public Speciality convert(SpecialityDTO specialityDTO) {
         Faculty faculty = Faculty.builder()
-                .id(specialityDTO.getFaculty().getId())
-                .name(specialityDTO.getFaculty().getName())
+                .id(specialityDTO.getFacultyId())
                 .build();
-        Speciality speciality = Speciality.builder()
-                .id(specialityDTO.getId())
+        return Speciality.builder()
                 .name(specialityDTO.getName())
                 .faculty(faculty)
                 .build();
-        faculty.setSpecialities(Collections.singletonList(speciality));
-        return speciality;
 
     }
 
     public SpecialityDTO convert(Speciality speciality) {
-        FacultyDTO facultyDTO = FacultyDTO.builder()
-                .id(speciality.getFaculty().getId())
-                .name(speciality.getFaculty().getName())
-                .build();
-        SpecialityDTO specialityDTO = SpecialityDTO.builder()
+        if(speciality==null){
+            return null;
+        }
+        return SpecialityDTO.builder()
                 .id(speciality.getId())
                 .name(speciality.getName())
-                .faculty(facultyDTO)
+                .faculty(speciality.getFaculty().getName())
+                .facultyId(speciality.getFaculty().getId())
                 .build();
-        facultyDTO.setSpecialities(Collections.singletonList(specialityDTO));
-        return specialityDTO;
     }
 }

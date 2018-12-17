@@ -1,6 +1,7 @@
 package com.netcracker.denisik.entities;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -18,9 +19,11 @@ public class User extends BaseEntity{
     private Role role;
 
     @Column(name = "password")
+    @ColumnDefault("")
     private String password;
 
     @Column(name = "login",unique = true)
+    @ColumnDefault("")
     private String login;
 
     @Column(name = "name")

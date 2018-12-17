@@ -7,12 +7,14 @@ import lombok.*;
 @NoArgsConstructor
 public class SpecialityDTO extends BaseDTO{
     private String name;
-    private FacultyDTO faculty;
+    private String faculty;
+    private long facultyId;
 
     @Builder
-    public SpecialityDTO(long id, String name, FacultyDTO faculty) {
+    public SpecialityDTO(long id, String name, String faculty,long facultyId) {
         super(id);
         this.name = name;
         this.faculty = faculty;
+        this.facultyId=facultyId;
     }
 }
