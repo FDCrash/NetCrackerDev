@@ -2,7 +2,7 @@ package com.netcracker.denisik.dto;
 
 import lombok.*;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class SpecialityDTO extends BaseDTO{

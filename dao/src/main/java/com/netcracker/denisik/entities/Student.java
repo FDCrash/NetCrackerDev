@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @NoArgsConstructor
@@ -28,11 +28,13 @@ public class Student extends User{
     private WriteBook writeBook;
 
     @Builder(builderMethodName = "builderStudent")
-    public Student(User user, long id, long groupId, Speciality speciality, WriteBook writeBook) {
-        super(id, user.getRole(), user.getPassword(), user.getLogin(), user.getName());
-        this.id = id;
+    public Student(User user, long groupId, Speciality speciality, WriteBook writeBook) {
+        super(user.getId(), user.getRole(), user.getPassword(), user.getLogin(), user.getName());
+        this.id = user.getId();
         this.groupId = groupId;
         this.speciality = speciality;
         this.writeBook = writeBook;
     }
+
+
 }

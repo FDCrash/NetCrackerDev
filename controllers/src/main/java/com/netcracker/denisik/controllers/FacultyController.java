@@ -1,7 +1,7 @@
 package com.netcracker.denisik.controllers;
 
 import com.netcracker.denisik.dto.FacultyDTO;
-import com.netcracker.denisik.services.servicesimpl.FacultyServiceImpl;
+import com.netcracker.denisik.services.implementations.FacultyServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -32,7 +32,7 @@ public class FacultyController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FacultyDTO>> getAllFaculties() {
         List<FacultyDTO> faculty = facultyService.getAll();
-        if(CollectionUtils.isEmpty(faculty)){
+        if (CollectionUtils.isEmpty(faculty)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(faculty, HttpStatus.OK);
@@ -43,7 +43,7 @@ public class FacultyController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FacultyDTO> getFaculty(@PathVariable("id") long id) {
         FacultyDTO faculty = facultyService.get(id);
-        if(faculty == null){
+        if (faculty == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(faculty, HttpStatus.OK);
@@ -52,24 +52,27 @@ public class FacultyController {
     @ApiOperation(value = "Add faculty", nickname = "FacultyController.addFaculty")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Faculty is adding")})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createFaculty(@RequestBody FacultyDTO faculty) {
-        try {
+    public ResponseEntity<Long> addFaculty(@RequestBody FacultyDTO faculty) {
             long id = facultyService.add(faculty);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error in creation faculty", HttpStatus.BAD_REQUEST);
-        }
+    }
+
+    @ApiOperation(value = "Update faculty", nickname = "FacultyController.updateFaculty")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Faculty update")})
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> updateFaculty(@RequestBody FacultyDTO faculty) {
+            if (facultyService.get(faculty.getId()) == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            long id = facultyService.add(faculty);
+            return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete faculty", nickname = "FacultyController.deleteFaculty")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Faculty is deleted")})
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteFaculty(@PathVariable("id") long id) {
-        try {
             facultyService.delete(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
     }
 }

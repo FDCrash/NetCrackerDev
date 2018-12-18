@@ -1,7 +1,7 @@
 package com.netcracker.denisik.controllers;
 
 import com.netcracker.denisik.dto.SubjectDTO;
-import com.netcracker.denisik.services.servicesimpl.SubjectServiceImpl;
+import com.netcracker.denisik.services.implementations.SubjectServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -52,24 +52,27 @@ public class SubjectController {
     @ApiOperation(value = "Add subject", nickname = "SubjectController.addSubject")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Subject is adding")})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createSubject(@RequestBody SubjectDTO subject) {
-        try {
+    public ResponseEntity<Object> addSubject(@RequestBody SubjectDTO subject) {
             long id = subjectService.add(subject);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error in creation subject", HttpStatus.BAD_REQUEST);
-        }
+    }
+
+    @ApiOperation(value = "Update subject", nickname = "SubjectController.updateSubject")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Subject update")})
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> updateStudent(@RequestBody SubjectDTO subject) {
+            if (subjectService.get(subject.getId()) == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            long id = subjectService.add(subject);
+            return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete subject", nickname = "SubjectController.deleteSubject")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Subject is deleted")})
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteSubject(@PathVariable("id") long id) {
-        try {
             subjectService.delete(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
     }
 }

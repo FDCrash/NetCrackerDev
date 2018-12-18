@@ -6,7 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @Entity

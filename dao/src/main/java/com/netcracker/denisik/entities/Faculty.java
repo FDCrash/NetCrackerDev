@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @Entity
@@ -23,5 +22,14 @@ public class Faculty extends BaseEntity{
         super(id);
         this.name = name;
         this.specialities = specialities;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (int)getId();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + (getSpecialities() != null ? getSpecialities().size() : 0);
+        return result;
     }
 }

@@ -1,19 +1,85 @@
 package com.netcracker.denisik.converters;
 
-import com.netcracker.denisik.dto.StudentDTO;
-import com.netcracker.denisik.entities.Student;
+import com.netcracker.denisik.configuration.TestConfiguration;
+import com.netcracker.denisik.dto.*;
+import com.netcracker.denisik.entities.*;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Collections;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfiguration.class)
 public class StudentConverterTest {
+    @Autowired
+    private StudentConverter studentConverter;
+
     private Student student;
     private StudentDTO studentDTO;
-    private StudentConverter converter;
 
     @Before
     public void setUp() {
+        User user = User.builder()
+                .id(13)
+                .name("test")
+                .role(Role.STUDENT)
+                .password("test")
+                .login("test")
+                .build();
+        Speciality speciality = Speciality.builder()
+                .id(13)
+                .build();
+        Subject subject = Subject.builder()
+                .id(3)
+                .name("test")
+                .build();
+        Semester semester = Semester.builder()
+                .mark(10)
+                .subject(subject)
+                .build();
+        WriteBook writeBook = WriteBook.builder()
+                .budget(true)
+                .semesters(Collections.singletonList(semester))
+                .build();
+        semester.setWriteBook(writeBook);
+        student = Student.builderStudent()
+                .user(user)
+                .groupId(13)
+                .speciality(speciality)
+                .writeBook(writeBook)
+                .build();
 
+        UserDTO userDTO = UserDTO.builder()
+                .id(13)
+                .roleDTO(RoleDTO.STUDENT)
+                .name("test")
+                .password("test")
+                .login("test")
+                .build();
+        SubjectDTO subjectDTO = SubjectDTO.builder()
+                .id(3)
+                .name("test")
+                .build();
+        SemesterDTO semesterDTO = SemesterDTO.builder()
+                .mark(10)
+                .subject(subjectDTO)
+                .build();
+        WriteBookDTO writeBookDTO = WriteBookDTO.builder()
+                .budget(true)
+                .semester(Collections.singletonList(semesterDTO))
+                .build();
+        studentDTO = StudentDTO.builderStudent()
+                .userDTO(userDTO)
+                .specialityId(13)
+                .groupId(13)
+                .writeBook(writeBookDTO)
+                .build();
     }
 
     @After
@@ -23,10 +89,14 @@ public class StudentConverterTest {
     }
 
     @Test
-    public void convertTo() {
+    public void toDTO() {
+        StudentDTO studentDTO = studentConverter.convert(student);
+        Assert.assertEquals(studentDTO.hashCode(), this.studentDTO.hashCode());
     }
 
     @Test
-    public void convertFrom() {
-           }
+    public void fromDTO() {
+        Student student = studentConverter.convert(studentDTO);
+        Assert.assertEquals(student.hashCode(), this.student.hashCode());
+    }
 }

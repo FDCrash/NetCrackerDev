@@ -14,6 +14,7 @@ public class SpecialityConverter {
                 .id(specialityDTO.getFacultyId())
                 .build();
         return Speciality.builder()
+                .id(specialityDTO.getId())
                 .name(specialityDTO.getName())
                 .faculty(faculty)
                 .build();

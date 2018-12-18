@@ -4,7 +4,7 @@ import lombok.*;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class FacultyDTO extends BaseDTO{

@@ -1,11 +1,12 @@
 package com.netcracker.denisik.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class WriteBookDTO extends  BaseDTO{
@@ -17,5 +18,11 @@ public class WriteBookDTO extends  BaseDTO{
         super(id);
         this.semester = semester;
         this.budget = budget;
+    }
+
+    @Override
+    @JsonIgnore
+    public void setId(long id) {
+        super.setId(id);
     }
 }

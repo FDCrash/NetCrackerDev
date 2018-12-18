@@ -1,8 +1,9 @@
 package com.netcracker.denisik.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class UserDTO extends UserFormDTO{
@@ -13,4 +14,11 @@ public class UserDTO extends UserFormDTO{
         super(id, password, login, name);
         this.roleDTO = roleDTO;
     }
+
+    @Override
+    @JsonIgnore
+    public String getPassword() {
+        return super.getPassword();
+    }
+
 }

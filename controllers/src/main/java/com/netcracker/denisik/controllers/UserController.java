@@ -3,7 +3,7 @@ package com.netcracker.denisik.controllers;
 import com.netcracker.denisik.dto.RoleDTO;
 import com.netcracker.denisik.dto.UserDTO;
 import com.netcracker.denisik.dto.UserFormDTO;
-import com.netcracker.denisik.services.servicesimpl.UserServiceImpl;
+import com.netcracker.denisik.services.implementations.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -57,7 +57,6 @@ public class UserController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Admin is adding")})
     @PostMapping(value = "admins",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addAdmin(@RequestBody UserFormDTO userFormDTO) {
-        try {
             UserDTO userDTO= UserDTO.builder()
                     .id(userFormDTO.getId())
                     .login(userFormDTO.getLogin())
@@ -67,16 +66,12 @@ public class UserController {
                     .build();
             long id = userService.add(userDTO);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error in creation user", HttpStatus.BAD_REQUEST);
-        }
     }
 
     @ApiOperation(value = "Add employee", nickname = "UserController.addUserEmployee")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Employee is adding")})
     @PostMapping(value = "employees",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addEmployee(@RequestBody UserFormDTO userFormDTO) {
-        try {
             UserDTO userDTO= UserDTO.builder()
                     .id(userFormDTO.getId())
                     .login(userFormDTO.getLogin())
@@ -86,21 +81,33 @@ public class UserController {
                     .build();
             long id = userService.add(userDTO);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error in creation user", HttpStatus.BAD_REQUEST);
-        }
+    }
+
+    @ApiOperation(value = "Update user", nickname = "UserController.updateUser")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "User update")})
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> updateUser(@RequestBody UserFormDTO userFormDTO) {
+            UserDTO user = userService.get(userFormDTO.getId());
+            if ( user== null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            UserDTO userDTO= UserDTO.builder()
+                    .id(userFormDTO.getId())
+                    .login(userFormDTO.getLogin())
+                    .password(passwordEncoder.encode(userFormDTO.getPassword()))
+                    .name(userFormDTO.getName())
+                    .roleDTO(user.getRoleDTO())
+                    .build();
+            long id = userService.add(userDTO);
+            return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete user", nickname = "UserController.deleteUser")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "User is deleted")})
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) {
-        try {
             userService.delete(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
     }
 
     @ApiOperation(value = "Gets all admins", nickname = "UserController.getAllAdmins")

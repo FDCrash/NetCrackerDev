@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @Entity
@@ -28,5 +27,15 @@ public class Semester extends BaseEntity{
         this.mark = mark;
         this.subject = subject;
         this.writeBook = writeBook;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (int)getId();
+        result = 31 * result + getMark();
+        result = 31 * result + getSubject().hashCode();
+        result = 31 * result + (getWriteBook() != null ? (int)getWriteBook().getId() : 0);
+        return result;
     }
 }

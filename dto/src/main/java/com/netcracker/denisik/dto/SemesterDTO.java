@@ -2,7 +2,6 @@ package com.netcracker.denisik.dto;
 
 import lombok.*;
 
-@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 public class SemesterDTO {

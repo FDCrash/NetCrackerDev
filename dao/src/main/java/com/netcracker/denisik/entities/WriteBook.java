@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @Entity
@@ -30,5 +29,15 @@ public class WriteBook extends BaseEntity {
         this.semesters = semesters;
         this.budget = budget;
         this.student = student;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (int)getId();
+        result = 31 * result + getSemesters().hashCode();
+        result = 31 * result + (isBudget() ? 1 : 0);
+        result = 31 * result + (getStudent() != null ? (int)getStudent().getGroupId() : 0);
+        return result;
     }
 }

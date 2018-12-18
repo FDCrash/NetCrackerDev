@@ -1,7 +1,7 @@
 package com.netcracker.denisik.controllers;
 
 import com.netcracker.denisik.dto.SpecialityDTO;
-import com.netcracker.denisik.services.servicesimpl.SpecialityServiceImpl;
+import com.netcracker.denisik.services.implementations.SpecialityServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -51,24 +51,27 @@ public class SpecialityController {
     @ApiOperation(value = "Add speciality", nickname = "SpecialityController.addSpeciality")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Speciality is adding")})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createSpeciality(@RequestBody SpecialityDTO speciality) {
-        try {
+    public ResponseEntity<Long> addSpeciality(@RequestBody SpecialityDTO speciality) {
             long id = specialityService.add(speciality);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error in creation speciality", HttpStatus.BAD_REQUEST);
-        }
+    }
+
+    @ApiOperation(value = "Update speciality", nickname = "SpecialityController.updateSpeciality")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Speciality update")})
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> updateSpeciality(@RequestBody SpecialityDTO speciality) {
+            if (specialityService.get(speciality.getId()) == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            long id = specialityService.add(speciality);
+            return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete speciality", nickname = "SpecialityController.deleteSpeciality")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Speciality is deleted")})
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteSpeciality(@PathVariable("id") long id) {
-        try {
             specialityService.delete(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
     }
 }
