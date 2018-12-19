@@ -58,7 +58,7 @@ public class ExceptionHandlerControllerAdvice {
     ExceptionResponse nullPointer(
             final NullPointerException exception, final HttpServletRequest request) {
         ExceptionResponse error = new ExceptionResponse();
-        error.setErrorMessage(exception.getMessage());
+        error.setErrorMessage("NullPointerException: you miss write some relation in json: " + exception );
         error.callerURL(request.getRequestURI());
         return error;
     }
