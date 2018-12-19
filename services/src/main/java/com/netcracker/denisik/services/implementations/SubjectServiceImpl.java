@@ -32,10 +32,9 @@ public class SubjectServiceImpl implements CrudService<SubjectDTO> {
 
     @Override
     public long add(SubjectDTO subjectDTO) {
-        Subject subject = subjectRepository.getByName(subjectDTO.getName());
         log.debug("Check free name for subject");
-        if (subject != null) {
-            log.error("Subject already exist with name: " + subject.getName());
+        if (subjectRepository.existsByName(subjectDTO.getName())) {
+            log.error("Subject already exist with name: " + subjectDTO.getName());
             throw new ResourceAlreadyExistException("Subject exist with name : " + subjectDTO.getName());
         }
         log.debug("Add/update subject :" + subjectDTO.getName());
@@ -45,7 +44,7 @@ public class SubjectServiceImpl implements CrudService<SubjectDTO> {
     @Override
     public void delete(long id) {
         log.debug("Deleting subject");
-        if (subjectRepository.findOne(id) == null) {
+        if (!subjectRepository.existsById(id)) {
             log.error("Not found subject for delete by id: " + id);
             throw new ResourceNotFoundException("Deleting subject by id: " + id);
         }

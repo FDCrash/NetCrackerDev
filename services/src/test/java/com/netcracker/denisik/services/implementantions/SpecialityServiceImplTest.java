@@ -71,7 +71,7 @@ public class SpecialityServiceImplTest {
 
     @Test
     public void testDelete() {
-        when(specialityRepository.findOne(13L)).thenReturn(speciality);
+        when(specialityRepository.existsById(13L)).thenReturn(true);
         specialityService.delete(13L);
         verify(specialityRepository, times(1)).delete(13L);
     }
@@ -79,7 +79,7 @@ public class SpecialityServiceImplTest {
     @Test
     public void testAdd() {
         when(specialityRepository.save(speciality)).thenReturn(speciality);
-        when(facultyRepository.findOne(speciality.getFaculty().getId())).thenReturn(speciality.getFaculty());
+        when(facultyRepository.existsById(13)).thenReturn(true);
         long id = specialityService.add(specialityDTO);
         assertEquals(id, speciality.getId());
     }

@@ -38,20 +38,19 @@ public class UserServiceImpl implements CrudService<UserDTO> {
 
     @Override
     public long add(UserDTO userDTO) {
-        User user = userRepository.save(userConverter.convert(userDTO));
         log.debug("Check free login for user");
         if (userRepository.existsByLogin(userDTO.getLogin())) {
             log.error("User already exist with login: " + userDTO.getLogin());
             throw new ResourceAlreadyExistException("User exist by login: " + userDTO.getLogin());
         }
+        User user = userRepository.save(userConverter.convert(userDTO));
         return user.getId();
     }
 
     @Override
     public void delete(long id) {
         log.debug("Deleting user");
-        User user = userRepository.findOne(id);
-        if (user == null) {
+        if (!userRepository.existsById(id)) {
             log.error("Not found admin for delete by id: " + id);
             throw new ResourceNotFoundException("User not by id: " + id);
         } else if (getAllAdmins().size() < 1) {

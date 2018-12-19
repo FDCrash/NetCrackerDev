@@ -37,12 +37,8 @@ public class FacultyServiceImpl implements CrudService<FacultyDTO> {
 
     @Override
     public long add(FacultyDTO facultyDTO) {
-        Faculty faculty = facultyRepository.getByName(facultyDTO.getName());
-        List<Speciality> specialities = new ArrayList<>();
-        facultyDTO.getSpecialities()
-                .forEach(string -> specialities.add(specialityRepository.getByName(string)));
         log.debug("Check free name for new faculty");
-        if (faculty != null) {
+        if (facultyRepository.existsByName(facultyDTO.getName())) {
             log.error("Faculty exist with name : " + facultyDTO.getName());
             throw new ResourceAlreadyExistException("Faculty exist with name : " + facultyDTO.getName());
         }
@@ -54,8 +50,7 @@ public class FacultyServiceImpl implements CrudService<FacultyDTO> {
 
     public void checkSpecialities(List<String> specialities) {
         for (String name : specialities) {
-            Speciality speciality = specialityRepository.getByName(name);
-            if (speciality != null) {
+            if (specialityRepository.existsByName(name)) {
                 log.error("Speciality exist with name : " + name);
                 throw new ResourceAlreadyExistException("Speciality exist with name : " + name);
             }
@@ -65,8 +60,7 @@ public class FacultyServiceImpl implements CrudService<FacultyDTO> {
     @Override
     public void delete(long id) {
         log.debug("Deleting faculty");
-        Faculty faculty = facultyRepository.findOne(id);
-        if (faculty == null) {
+        if (!facultyRepository.existsById(id)) {
             log.error("Not found faculty for delete by id:" + id);
             throw new ResourceNotFoundException("Deleting faculty by id: " + id);
         }

@@ -89,7 +89,7 @@ public class UserServiceImplTest {
 
     @Test
     public void testDelete() {
-        when(userRepository.findOne(13L)).thenReturn(user);
+        when(userRepository.existsById(13L)).thenReturn(true);
         when(userRepository.findAll()).thenReturn(Collections.singleton(user));
         userService.delete(13L);
         verify(userRepository, times(1)).delete(13L);

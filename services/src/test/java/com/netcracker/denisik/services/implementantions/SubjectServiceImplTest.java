@@ -59,14 +59,13 @@ public class SubjectServiceImplTest {
 
     @Test
     public void testDelete() {
-        when(subjectRepository.findOne(13L)).thenReturn(subject);
+        when(subjectRepository.existsById(13L)).thenReturn(true);
         subjectService.delete(13L);
         verify(subjectRepository, times(1)).delete(13L);
     }
 
     @Test
     public void testAdd() {
-        when(subjectRepository.getByName("test")).thenReturn(null);
         when(subjectRepository.save(subject)).thenReturn(subject);
         long id = subjectService.add(subjectDTO);
         assertEquals(id, subject.getId());

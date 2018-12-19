@@ -36,15 +36,13 @@ public class SpecialityServiceImpl implements CrudService<SpecialityDTO> {
 
     @Override
     public long add(SpecialityDTO specialityDTO) {
-        Speciality speciality = specialityRepository.getByName(specialityDTO.getName());
-        Faculty faculty = facultyRepository.findOne(specialityDTO.getFacultyId());
         log.debug("Check free name for speciality");
-        if (speciality != null) {
+        if (specialityRepository.existsByName(specialityDTO.getName())) {
             log.error("Speciality exist with name: " + specialityDTO.getName());
             throw new ResourceAlreadyExistException("Speciality exist with name : " + specialityDTO.getName());
         }
         log.debug("Check binding faculty with speciality");
-        if (faculty == null) {
+        if (!facultyRepository.existsById(specialityDTO.getId())) {
             log.error("Faculty not binding with speciality");
             throw new ResourceNotFoundException("Faculty not found");
         }
@@ -55,8 +53,7 @@ public class SpecialityServiceImpl implements CrudService<SpecialityDTO> {
     @Override
     public void delete(long id) {
         log.debug("Deleting speciality");
-        Speciality speciality = specialityRepository.findOne(id);
-        if (speciality == null) {
+        if (!specialityRepository.existsById(id)) {
             log.error("Not found speciality for delete by id:" + id);
             throw new ResourceNotFoundException("Deleting speciality by id: " + id);
         }

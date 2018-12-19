@@ -14,4 +14,6 @@ public interface StudentRepository extends CrudRepository<Student, Long> {
     List<Student> getAllBySpecialityName(String speciality);
 
     List<Student> getAllByGroupId(long groupId);
+
+    boolean existsById(long id);
 }

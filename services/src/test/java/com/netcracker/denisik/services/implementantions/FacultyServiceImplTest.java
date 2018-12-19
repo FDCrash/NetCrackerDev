@@ -71,7 +71,7 @@ public class FacultyServiceImplTest {
 
     @Test
     public void testDelete() {
-        when(facultyRepository.findOne(13L)).thenReturn(faculty);
+        when(facultyRepository.existsById(13L)).thenReturn(true);
         facultyService.delete(13L);
         verify(facultyRepository, times(1)).delete(13L);
     }
@@ -91,8 +91,8 @@ public class FacultyServiceImplTest {
 
     @Test
     public void testCheckSpecialities() {
-        when(specialityRepository.getByName("test")).thenReturn(null);
+        when(specialityRepository.existsByName("test")).thenReturn(false);
         facultyService.checkSpecialities(facultyDTO.getSpecialities());
-        verify(specialityRepository, times(1)).getByName("test");
+        verify(specialityRepository, times(0)).getByName("test");
     }
 }

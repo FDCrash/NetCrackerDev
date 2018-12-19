@@ -43,9 +43,8 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
     public long add(StudentDTO studentDTO) {
         boolean checkRange = studentDTO.getWriteBook().getSemester().stream()
                 .anyMatch(semesterDTO -> semesterDTO.getMark() > 10 || semesterDTO.getMark() < 0);
-        Speciality speciality = specialityRepository.findOne(studentDTO.getSpecialityId());
         log.debug("Check speciality for student");
-        if (speciality == null) {
+        if (!specialityRepository.existsById(studentDTO.getSpecialityId())) {
             log.error("Not found speciality for student");
             throw new ResourceNotFoundException("Speciality not found");
         }
@@ -63,8 +62,7 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
     @Override
     public void delete(long id) {
         log.debug("Deleting student");
-        Student student = studentRepository.findOne(id);
-        if (student == null) {
+        if (!studentRepository.existsById(id)) {
             log.error("Not found student for delete by id: " + id);
             throw new ResourceNotFoundException("Deleting student by id: " + id);
         }
@@ -89,8 +87,7 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
 
     public void checkSubjects(List<SemesterDTO> semesterDTOS) {
         for (SemesterDTO semesterDTO : semesterDTOS) {
-            Subject subject = subjectRepository.findOne(semesterDTO.getSubject().getId());
-            if (subject == null) {
+            if (!subjectRepository.existsById(semesterDTO.getSubject().getId())) {
                 log.error("Subject not found for student");
                 throw new ResourceNotFoundException("Subject not found");
             }

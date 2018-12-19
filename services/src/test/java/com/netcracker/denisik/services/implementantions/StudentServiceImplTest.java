@@ -131,7 +131,7 @@ public class StudentServiceImplTest {
 
     @Test
     public void testDelete() {
-        when(studentRepository.findOne(13L)).thenReturn(student);
+        when(studentRepository.existsById(13L)).thenReturn(true);
         studentService.delete(13L);
         verify(studentRepository, times(1)).delete(13L);
     }
@@ -139,8 +139,8 @@ public class StudentServiceImplTest {
     @Test
     public void testAdd() {
         when(studentRepository.save(student)).thenReturn(student);
-        when(specialityRepository.findOne(student.getSpeciality().getId())).thenReturn(student.getSpeciality());
-        when(subjectRepository.findOne(3L)).thenReturn(student.getWriteBook().getSemesters().get(0).getSubject());
+        when(specialityRepository.existsById(13L)).thenReturn(true);
+        when(subjectRepository.existsById(3L)).thenReturn(true);
         long id = studentService.add(studentDTO);
         assertEquals(id, student.getId());
     }
@@ -153,8 +153,8 @@ public class StudentServiceImplTest {
 
     @Test
     public void checkSubjectTest() {
-        when(subjectRepository.findOne(3L)).thenReturn(student.getWriteBook().getSemesters().get(0).getSubject());
+        when(subjectRepository.existsById(3L)).thenReturn(true);
         studentService.checkSubjects(studentDTO.getWriteBook().getSemester());
-        verify(subjectRepository, times(1)).findOne(3L);
+        verify(subjectRepository, times(0)).findOne(3L);
     }
 }

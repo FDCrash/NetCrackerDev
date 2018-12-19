@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FacultyRepository extends CrudRepository<Faculty, Long> {
-    Faculty getByName(String name);
+    boolean existsById(long id);
+
+    boolean existsByName(String name);
 }
