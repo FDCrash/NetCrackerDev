@@ -12,13 +12,15 @@ import com.netcracker.denisik.services.CrudService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Service
 @Slf4j
+@Transactional(rollbackFor = Exception.class)
+@Service
 public class SpecialityServiceImpl implements CrudService<SpecialityDTO> {
     private SpecialityConverter specialityConverter;
     private SpecialityRepository specialityRepository;
