@@ -53,32 +53,32 @@ public class StudentController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Student is adding")})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addStudent(@RequestBody StudentDTO student) {
-            student.setRoleDTO(RoleDTO.STUDENT);
-            long id = studentService.add(student);
-            return new ResponseEntity<>(id, HttpStatus.CREATED);
+        student.setRoleDTO(RoleDTO.STUDENT);
+        long id = studentService.add(student);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update student", nickname = "StudentController.updateStudent")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Student update")})
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateStudent(@RequestBody StudentDTO student) {
-            if (studentService.get(student.getId()) == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            if(student.getWriteBook().getSemester().stream()
-                .anyMatch(semesterDTO -> semesterDTO.getMark()>=10 || semesterDTO.getMark()<=0)){
+        if (studentService.get(student.getId()) == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (student.getWriteBook().getSemester().stream()
+                .anyMatch(semesterDTO -> semesterDTO.getMark() >= 10 || semesterDTO.getMark() <= 0)) {
             return new ResponseEntity<>("Error in creation student", HttpStatus.BAD_REQUEST);
         }
-            long id = studentService.add(student);
-            return new ResponseEntity<>(id, HttpStatus.OK);
+        long id = studentService.add(student);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete student", nickname = "StudentController.deleteStudent")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Student is deleted")})
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteStudent(@PathVariable("id") Long id) {
-            studentService.delete(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+        studentService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "Gets all students by speciality", nickname = "StudentController.getAllStudentsBySpeciality")

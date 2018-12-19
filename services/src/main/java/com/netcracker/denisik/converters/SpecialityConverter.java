@@ -5,8 +5,6 @@ import com.netcracker.denisik.entities.Faculty;
 import com.netcracker.denisik.entities.Speciality;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-
 @Component
 public class SpecialityConverter {
     public Speciality convert(SpecialityDTO specialityDTO) {
@@ -22,7 +20,7 @@ public class SpecialityConverter {
     }
 
     public SpecialityDTO convert(Speciality speciality) {
-        if(speciality==null){
+        if (speciality == null) {
             return null;
         }
         return SpecialityDTO.builder()

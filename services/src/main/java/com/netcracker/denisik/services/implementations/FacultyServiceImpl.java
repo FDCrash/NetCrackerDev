@@ -40,13 +40,13 @@ public class FacultyServiceImpl implements CrudService<FacultyDTO> {
         facultyDTO.getSpecialities()
                 .forEach(string -> specialities.add(specialityRepository.getByName(string)));
         log.debug("Check free name for new faculty");
-        log.debug("Check specialities for new faculty");
         if (faculty != null) {
             log.error("Faculty exist with name : " + facultyDTO.getName());
             throw new ResourceAlreadyExistException("Faculty exist with name : " + facultyDTO.getName());
         }
+        log.debug("Check specialities for new faculty");
         checkSpecialities(facultyDTO.getSpecialities());
-        log.info("Add/update faculty" + facultyDTO.toString());
+        log.info("Add/update faculty : " + facultyDTO.getName());
         return facultyRepository.save(facultyConverter.convert(facultyDTO)).getId();
     }
 
@@ -62,8 +62,10 @@ public class FacultyServiceImpl implements CrudService<FacultyDTO> {
 
     @Override
     public void delete(long id) {
+        log.debug("Deleting faculty");
         Faculty faculty = facultyRepository.findOne(id);
         if (faculty == null) {
+            log.error("Not found faculty for delete by id:" + id);
             throw new ResourceNotFoundException("Deleting faculty by id: " + id);
         }
         facultyRepository.delete(id);
@@ -74,12 +76,13 @@ public class FacultyServiceImpl implements CrudService<FacultyDTO> {
         List<FacultyDTO> facultyDTOS = StreamSupport.stream(facultyRepository.findAll().spliterator(), false)
                 .map(faculty -> facultyConverter.convert(faculty))
                 .collect(Collectors.toList());
-        log.debug("Start getting all faculties from DB");
+        log.debug("Getting all faculties from DB");
         return facultyDTOS;
     }
 
     @Override
     public FacultyDTO get(long id) {
+        log.debug("Start getting faculty by id");
         Faculty faculty = facultyRepository.findOne(id);
         return facultyConverter.convert(faculty);
     }

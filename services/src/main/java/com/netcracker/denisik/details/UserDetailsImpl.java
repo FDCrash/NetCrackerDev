@@ -32,13 +32,13 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        if(user==null){
+        if (user == null) {
             return "";
         }
         return user.getPassword();
     }
 
-    public Long getId(){
+    public Long getId() {
         return user.getId();
     }
 

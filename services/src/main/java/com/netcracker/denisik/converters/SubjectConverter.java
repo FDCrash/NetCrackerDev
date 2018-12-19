@@ -6,15 +6,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SubjectConverter {
-    public Subject convert(SubjectDTO subjectDTO){
+    public Subject convert(SubjectDTO subjectDTO) {
         return Subject.builder()
                 .id(subjectDTO.getId())
                 .name(subjectDTO.getName())
                 .build();
     }
 
-    public SubjectDTO convert(Subject subject){
-        if(subject==null){
+    public SubjectDTO convert(Subject subject) {
+        if (subject == null) {
             return null;
         }
         return SubjectDTO.builder()

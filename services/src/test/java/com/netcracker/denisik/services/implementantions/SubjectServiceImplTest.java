@@ -73,7 +73,7 @@ public class SubjectServiceImplTest {
     }
 
     @Test
-    public void get() {
+    public void testGet() {
         when(subjectRepository.findOne(13L)).thenReturn(subject);
         assertEquals(subjectDTO, subjectService.get(13L));
     }

@@ -31,7 +31,7 @@ public class SpecialityController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SpecialityDTO>> getAllSpecialities() {
         List<SpecialityDTO> speciality = specialityService.getAll();
-        if(CollectionUtils.isEmpty(speciality)){
+        if (CollectionUtils.isEmpty(speciality)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(speciality, HttpStatus.OK);
@@ -42,7 +42,7 @@ public class SpecialityController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SpecialityDTO> getSpeciality(@PathVariable("id") long id) {
         SpecialityDTO speciality = specialityService.get(id);
-        if(speciality == null){
+        if (speciality == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(speciality, HttpStatus.OK);
@@ -52,26 +52,26 @@ public class SpecialityController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Speciality is adding")})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> addSpeciality(@RequestBody SpecialityDTO speciality) {
-            long id = specialityService.add(speciality);
-            return new ResponseEntity<>(id, HttpStatus.CREATED);
+        long id = specialityService.add(speciality);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update speciality", nickname = "SpecialityController.updateSpeciality")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Speciality update")})
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> updateSpeciality(@RequestBody SpecialityDTO speciality) {
-            if (specialityService.get(speciality.getId()) == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            long id = specialityService.add(speciality);
-            return new ResponseEntity<>(id, HttpStatus.OK);
+        if (specialityService.get(speciality.getId()) == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        long id = specialityService.add(speciality);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete speciality", nickname = "SpecialityController.deleteSpeciality")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Speciality is deleted")})
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteSpeciality(@PathVariable("id") long id) {
-            specialityService.delete(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+        specialityService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

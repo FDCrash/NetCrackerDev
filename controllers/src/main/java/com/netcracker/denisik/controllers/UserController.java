@@ -36,8 +36,8 @@ public class UserController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> users = userService.getAll();
-        if(CollectionUtils.isEmpty(users)){
-            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        if (CollectionUtils.isEmpty(users)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
@@ -47,67 +47,67 @@ public class UserController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> getUser(@PathVariable("id") long id) {
         UserDTO user = userService.get(id);
-        if(user == null){
-            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Add admin", nickname = "UserController.addUserAdmin")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Admin is adding")})
-    @PostMapping(value = "admins",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "admins", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addAdmin(@RequestBody UserFormDTO userFormDTO) {
-            UserDTO userDTO= UserDTO.builder()
-                    .id(userFormDTO.getId())
-                    .login(userFormDTO.getLogin())
-                    .password(passwordEncoder.encode(userFormDTO.getPassword()))
-                    .name(userFormDTO.getName())
-                    .roleDTO(RoleDTO.ADMIN)
-                    .build();
-            long id = userService.add(userDTO);
-            return new ResponseEntity<>(id, HttpStatus.CREATED);
+        UserDTO userDTO = UserDTO.builder()
+                .id(userFormDTO.getId())
+                .login(userFormDTO.getLogin())
+                .password(passwordEncoder.encode(userFormDTO.getPassword()))
+                .name(userFormDTO.getName())
+                .roleDTO(RoleDTO.ADMIN)
+                .build();
+        long id = userService.add(userDTO);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Add employee", nickname = "UserController.addUserEmployee")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Employee is adding")})
-    @PostMapping(value = "employees",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "employees", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addEmployee(@RequestBody UserFormDTO userFormDTO) {
-            UserDTO userDTO= UserDTO.builder()
-                    .id(userFormDTO.getId())
-                    .login(userFormDTO.getLogin())
-                    .password(passwordEncoder.encode(userFormDTO.getPassword()))
-                    .name(userFormDTO.getName())
-                    .roleDTO(RoleDTO.EMPLOYEE)
-                    .build();
-            long id = userService.add(userDTO);
-            return new ResponseEntity<>(id, HttpStatus.CREATED);
+        UserDTO userDTO = UserDTO.builder()
+                .id(userFormDTO.getId())
+                .login(userFormDTO.getLogin())
+                .password(passwordEncoder.encode(userFormDTO.getPassword()))
+                .name(userFormDTO.getName())
+                .roleDTO(RoleDTO.EMPLOYEE)
+                .build();
+        long id = userService.add(userDTO);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update user", nickname = "UserController.updateUser")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "User update")})
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateUser(@RequestBody UserFormDTO userFormDTO) {
-            UserDTO user = userService.get(userFormDTO.getId());
-            if ( user== null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            UserDTO userDTO= UserDTO.builder()
-                    .id(userFormDTO.getId())
-                    .login(userFormDTO.getLogin())
-                    .password(passwordEncoder.encode(userFormDTO.getPassword()))
-                    .name(userFormDTO.getName())
-                    .roleDTO(user.getRoleDTO())
-                    .build();
-            long id = userService.add(userDTO);
-            return new ResponseEntity<>(id, HttpStatus.OK);
+        UserDTO user = userService.get(userFormDTO.getId());
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        UserDTO userDTO = UserDTO.builder()
+                .id(userFormDTO.getId())
+                .login(userFormDTO.getLogin())
+                .password(passwordEncoder.encode(userFormDTO.getPassword()))
+                .name(userFormDTO.getName())
+                .roleDTO(user.getRoleDTO())
+                .build();
+        long id = userService.add(userDTO);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete user", nickname = "UserController.deleteUser")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "User is deleted")})
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) {
-            userService.delete(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+        userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "Gets all admins", nickname = "UserController.getAllAdmins")
@@ -115,8 +115,8 @@ public class UserController {
     @GetMapping(value = "/admins", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getAllAdmins() {
         List<UserDTO> user = userService.getAllAdmins();
-        if(CollectionUtils.isEmpty(user)){
-            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        if (CollectionUtils.isEmpty(user)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -126,11 +126,11 @@ public class UserController {
     @GetMapping(value = "/employees", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getAllEmployees() {
         List<UserDTO> users = userService.getAllEmployees();
-        if(users == null){
-            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        if (users == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
- }
+    }
 }
 
 

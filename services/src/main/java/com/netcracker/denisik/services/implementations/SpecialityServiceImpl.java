@@ -36,18 +36,26 @@ public class SpecialityServiceImpl implements CrudService<SpecialityDTO> {
     public long add(SpecialityDTO specialityDTO) {
         Speciality speciality = specialityRepository.getByName(specialityDTO.getName());
         Faculty faculty = facultyRepository.findOne(specialityDTO.getFacultyId());
+        log.debug("Check free name for speciality");
         if (speciality != null) {
+            log.error("Speciality exist with name: " + specialityDTO.getName());
             throw new ResourceAlreadyExistException("Speciality exist with name : " + specialityDTO.getName());
-        } else if (faculty == null) {
+        }
+        log.debug("Check binding faculty with speciality");
+        if (faculty == null) {
+            log.error("Faculty not binding with speciality");
             throw new ResourceNotFoundException("Faculty not found");
         }
+        log.debug("Add/update speciality :" + specialityDTO.getName());
         return specialityRepository.save(specialityConverter.convert(specialityDTO)).getId();
     }
 
     @Override
     public void delete(long id) {
-        Speciality speciality=specialityRepository.findOne(id);
+        log.debug("Deleting speciality");
+        Speciality speciality = specialityRepository.findOne(id);
         if (speciality == null) {
+            log.error("Not found speciality for delete by id:" + id);
             throw new ResourceNotFoundException("Deleting speciality by id: " + id);
         }
         specialityRepository.delete(id);
@@ -58,12 +66,13 @@ public class SpecialityServiceImpl implements CrudService<SpecialityDTO> {
         List<SpecialityDTO> specialityDTOS = StreamSupport.stream(specialityRepository.findAll().spliterator(), false)
                 .map(speciality -> specialityConverter.convert(speciality))
                 .collect(Collectors.toList());
-        log.debug("");
+        log.debug("Getting all specialities from DB");
         return specialityDTOS;
     }
 
     @Override
     public SpecialityDTO get(long id) {
+        log.debug("Start getting speciality by id");
         Speciality speciality = specialityRepository.findOne(id);
         return specialityConverter.convert(speciality);
     }

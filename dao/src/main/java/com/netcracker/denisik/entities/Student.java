@@ -1,6 +1,9 @@
 package com.netcracker.denisik.entities;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -11,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "students")
 @PrimaryKeyJoinColumn(name = "id")
-public class Student extends User{
+public class Student extends User {
 
     @Column(name = "id")
     private long id;

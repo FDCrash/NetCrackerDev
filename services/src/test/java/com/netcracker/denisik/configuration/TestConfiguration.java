@@ -6,7 +6,6 @@ import com.netcracker.denisik.services.implementations.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
 import static org.mockito.Mockito.mock;
 
 @Configuration
@@ -63,26 +62,26 @@ public class TestConfiguration {
 
     @Bean
     public FacultyServiceImpl facultyService() {
-        return new FacultyServiceImpl(facultyRepository(),facultyConverter(),specialityRepository());
+        return new FacultyServiceImpl(facultyRepository(), facultyConverter(), specialityRepository());
     }
 
     @Bean
     public SpecialityServiceImpl specialityService() {
-        return new SpecialityServiceImpl(specialityRepository(),specialityConverter(),facultyRepository());
+        return new SpecialityServiceImpl(specialityRepository(), specialityConverter(), facultyRepository());
     }
 
     @Bean
     public StudentServiceImpl studentService() {
-        return new StudentServiceImpl(studentRepository(),studentConverter(),specialityRepository(),subjectRepository());
+        return new StudentServiceImpl(studentRepository(), studentConverter(), specialityRepository(), subjectRepository());
     }
 
     @Bean
     public SubjectServiceImpl subjectService() {
-        return new SubjectServiceImpl(subjectRepository(),subjectConverter());
+        return new SubjectServiceImpl(subjectRepository(), subjectConverter());
     }
 
     @Bean
     public UserServiceImpl userService() {
-        return new UserServiceImpl(userConverter(),studentRepository(),userRepository());
+        return new UserServiceImpl(userConverter(), studentRepository(), userRepository());
     }
 }

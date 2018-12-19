@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -34,11 +33,11 @@ public class StudentConverter {
                             .subject(subjectConverter.convert(semesterDTO.getSubject()))
                             .build());
         }
-        WriteBook writeBook=WriteBook.builder()
+        WriteBook writeBook = WriteBook.builder()
                 .budget(studentDTO.getWriteBook().isBudget())
                 .semesters(semesterEntities)
                 .build();
-        Speciality speciality=Speciality.builder()
+        Speciality speciality = Speciality.builder()
                 .id(studentDTO.getSpecialityId())
                 .build();
         Student student = Student.builderStudent()
@@ -47,7 +46,7 @@ public class StudentConverter {
                 .writeBook(writeBook)
                 .speciality(speciality)
                 .build();
-        for(Semester semester: student.getWriteBook().getSemesters()){
+        for (Semester semester : student.getWriteBook().getSemesters()) {
             semester.setWriteBook(student.getWriteBook());
         }
         return student;

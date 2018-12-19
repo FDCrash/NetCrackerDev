@@ -1,6 +1,8 @@
 package com.netcracker.denisik.entities;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -32,7 +34,7 @@ public class Speciality extends BaseEntity {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (int)getId();
+        result = 31 * result + (int) getId();
         result = 31 * result + (getStudent() != null ? getStudent().size() : 0);
         return result;
     }

@@ -19,7 +19,7 @@ public class UserConverter {
     }
 
     public UserDTO convert(User user) {
-        if(user==null){
+        if (user == null) {
             return null;
         }
         return UserDTO.builder()

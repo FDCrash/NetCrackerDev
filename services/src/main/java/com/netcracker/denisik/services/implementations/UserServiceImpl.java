@@ -36,18 +36,24 @@ public class UserServiceImpl implements CrudService<UserDTO> {
 
     @Override
     public long add(UserDTO userDTO) {
+        User user = userRepository.save(userConverter.convert(userDTO));
+        log.debug("Check free login for user");
         if (userRepository.existsByLogin(userDTO.getLogin())) {
+            log.error("User already exist with login: " + userDTO.getLogin());
             throw new ResourceAlreadyExistException("User exist by login: " + userDTO.getLogin());
         }
-        return userRepository.save(userConverter.convert(userDTO)).getId();
+        return user.getId();
     }
 
     @Override
     public void delete(long id) {
+        log.debug("Deleting user");
         User user = userRepository.findOne(id);
         if (user == null) {
+            log.error("Not found admin for delete by id: " + id);
             throw new ResourceNotFoundException("User not by id: " + id);
         } else if (getAllAdmins().size() < 1) {
+            log.error("Cant delete last admin by id:" + id);
             throw new ServiceException("Cant delete last admin" + id);
         }
         userRepository.delete(id);
@@ -58,7 +64,7 @@ public class UserServiceImpl implements CrudService<UserDTO> {
         List<UserDTO> userDTOS = StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .map(user -> userConverter.convert(user))
                 .collect(Collectors.toList());
-        log.debug("");
+        log.debug("Getting users from DB");
         return userDTOS;
     }
 
@@ -67,7 +73,7 @@ public class UserServiceImpl implements CrudService<UserDTO> {
                 .filter(user -> user.getRole().equals(Role.ADMIN))
                 .map(user -> userConverter.convert(user))
                 .collect(Collectors.toList());
-        log.debug("");
+        log.debug("Start getting admins");
         return userDTOS;
     }
 
@@ -76,28 +82,33 @@ public class UserServiceImpl implements CrudService<UserDTO> {
                 .filter(user -> user.getRole().equals(Role.EMPLOYEE))
                 .map(employee -> userConverter.convert(employee))
                 .collect(Collectors.toList());
-        log.debug("");
+        log.debug("Start getting employees");
         return userDTOS;
     }
 
     @Override
     public UserDTO get(long id) {
+        log.debug("Start getting user by id: " + id);
         User user = userRepository.findOne(id);
         return userConverter.convert(user);
     }
 
     public boolean registration(long id, String login, String pass) {
+        log.debug("Start registration student");
         Student student = studentRepository.getByWriteBookId(id);
         User user = userRepository.findOne(student.getId());
         if (user != null) {
-            if (userRepository.existsByLogin(login)) {
+            if (!userRepository.existsByLogin(login)) {
                 user.setLogin(login);
                 user.setPassword(pass);
                 userRepository.save(user);
+                log.debug("Registration was successful!");
                 return true;
             }
+            log.error("User already exist with login : " + login);
             throw new ResourceAlreadyExistException("User exist by login: " + login);
         }
+        log.error("Not found student with wtiteBookId: " + id);
         throw new ResourceNotFoundException("Student not found by writeBookId: " + id);
     }
 }

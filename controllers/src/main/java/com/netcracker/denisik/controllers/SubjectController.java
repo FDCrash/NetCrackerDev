@@ -33,17 +33,18 @@ public class SubjectController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SubjectDTO>> getAllSubjects() {
         List<SubjectDTO> subject = subjectService.getAll();
-        if(CollectionUtils.isEmpty(subject)){
+        if (CollectionUtils.isEmpty(subject)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(subject, HttpStatus.OK);    }
+        return new ResponseEntity<>(subject, HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Get specific subject", nickname = "SubjectController.getSubject")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Subject")})
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SubjectDTO> getSubject(@PathVariable("id") long id) {
         SubjectDTO subject = subjectService.get(id);
-        if(subject == null){
+        if (subject == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(subject, HttpStatus.OK);
@@ -53,26 +54,26 @@ public class SubjectController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Subject is adding")})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addSubject(@RequestBody SubjectDTO subject) {
-            long id = subjectService.add(subject);
-            return new ResponseEntity<>(id, HttpStatus.CREATED);
+        long id = subjectService.add(subject);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update subject", nickname = "SubjectController.updateSubject")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Subject update")})
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateStudent(@RequestBody SubjectDTO subject) {
-            if (subjectService.get(subject.getId()) == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            long id = subjectService.add(subject);
-            return new ResponseEntity<>(id, HttpStatus.OK);
+        if (subjectService.get(subject.getId()) == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        long id = subjectService.add(subject);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete subject", nickname = "SubjectController.deleteSubject")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Subject is deleted")})
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteSubject(@PathVariable("id") long id) {
-            subjectService.delete(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+        subjectService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

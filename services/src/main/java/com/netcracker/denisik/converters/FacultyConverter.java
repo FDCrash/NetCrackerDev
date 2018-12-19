@@ -1,7 +1,6 @@
 package com.netcracker.denisik.converters;
 
 import com.netcracker.denisik.dto.FacultyDTO;
-import com.netcracker.denisik.dto.SpecialityDTO;
 import com.netcracker.denisik.entities.Faculty;
 import com.netcracker.denisik.entities.Speciality;
 import org.springframework.stereotype.Component;
@@ -22,12 +21,12 @@ public class FacultyConverter {
                             .name(facultyDTO.getSpecialities().get(i))
                             .build());
         }
-        Faculty faculty =Faculty.builder()
+        Faculty faculty = Faculty.builder()
                 .id(facultyDTO.getId())
                 .name(facultyDTO.getName())
                 .specialities(specialityEntities)
                 .build();
-        for(int i=0;i<quantity;i++){
+        for (int i = 0; i < quantity; i++) {
             faculty.getSpecialities().get(i).setFaculty(faculty);
         }
         return faculty;

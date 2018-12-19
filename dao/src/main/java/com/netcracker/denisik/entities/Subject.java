@@ -1,8 +1,14 @@
 package com.netcracker.denisik.entities;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -10,9 +16,9 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "subjects")
-public class Subject extends BaseEntity{
+public class Subject extends BaseEntity {
 
-    @Column(name = "subject",unique = true)
+    @Column(name = "subject", unique = true)
     private String name;
 
     @OneToMany(mappedBy = "subject")

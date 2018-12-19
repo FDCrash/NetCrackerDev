@@ -12,7 +12,7 @@ import javax.persistence.*;
 @MappedSuperclass
 public abstract class BaseEntity {
     @Id
-    @Column(name = "id",unique = true)
+    @Column(name = "id", unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 }

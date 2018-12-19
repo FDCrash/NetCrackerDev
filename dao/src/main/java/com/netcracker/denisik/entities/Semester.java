@@ -1,6 +1,8 @@
 package com.netcracker.denisik.entities;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -8,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "semesters")
-public class Semester extends BaseEntity{
+public class Semester extends BaseEntity {
 
     @Column(name = "mark")
     private int mark;
@@ -32,10 +34,10 @@ public class Semester extends BaseEntity{
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (int)getId();
+        result = 31 * result + (int) getId();
         result = 31 * result + getMark();
         result = 31 * result + getSubject().hashCode();
-        result = 31 * result + (getWriteBook() != null ? (int)getWriteBook().getId() : 0);
+        result = 31 * result + (getWriteBook() != null ? (int) getWriteBook().getId() : 0);
         return result;
     }
 }

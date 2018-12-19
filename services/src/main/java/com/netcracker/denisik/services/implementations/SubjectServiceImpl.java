@@ -22,24 +22,29 @@ public class SubjectServiceImpl implements CrudService<SubjectDTO> {
     private SubjectConverter subjectConverter;
 
     @Autowired
-    public SubjectServiceImpl(SubjectRepository subjectRepository, SubjectConverter subjectConverter){
-        this.subjectRepository=subjectRepository;
-        this.subjectConverter=subjectConverter;
+    public SubjectServiceImpl(SubjectRepository subjectRepository, SubjectConverter subjectConverter) {
+        this.subjectRepository = subjectRepository;
+        this.subjectConverter = subjectConverter;
     }
 
 
     @Override
     public long add(SubjectDTO subjectDTO) {
-        Subject subject=subjectRepository.getByName(subjectDTO.getName());
-        if(subject!=null){
+        Subject subject = subjectRepository.getByName(subjectDTO.getName());
+        log.debug("Check free name for subject");
+        if (subject != null) {
+            log.error("Subject already exist with name: " + subject.getName());
             throw new ResourceAlreadyExistException("Subject exist with name : " + subjectDTO.getName());
         }
+        log.debug("Add/update subject :" + subjectDTO.getName());
         return subjectRepository.save(subjectConverter.convert(subjectDTO)).getId();
     }
 
     @Override
     public void delete(long id) {
+        log.debug("Deleting subject");
         if (subjectRepository.findOne(id) == null) {
+            log.error("Not found subject for delete by id: " + id);
             throw new ResourceNotFoundException("Deleting subject by id: " + id);
         }
         subjectRepository.delete(id);
@@ -50,13 +55,14 @@ public class SubjectServiceImpl implements CrudService<SubjectDTO> {
         List<SubjectDTO> subjectDTOS = StreamSupport.stream(subjectRepository.findAll().spliterator(), false)
                 .map(subject -> subjectConverter.convert(subject))
                 .collect(Collectors.toList());
-        log.debug("");
+        log.debug("Getting subjects from DB");
         return subjectDTOS;
     }
 
     @Override
     public SubjectDTO get(long id) {
-        Subject subject=subjectRepository.findOne(id);
+        log.debug("Start getting subject by id: " + id);
+        Subject subject = subjectRepository.findOne(id);
         return subjectConverter.convert(subject);
     }
 }

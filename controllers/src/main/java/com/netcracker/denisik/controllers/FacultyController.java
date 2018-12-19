@@ -53,26 +53,26 @@ public class FacultyController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Faculty is adding")})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> addFaculty(@RequestBody FacultyDTO faculty) {
-            long id = facultyService.add(faculty);
-            return new ResponseEntity<>(id, HttpStatus.CREATED);
+        long id = facultyService.add(faculty);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update faculty", nickname = "FacultyController.updateFaculty")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Faculty update")})
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> updateFaculty(@RequestBody FacultyDTO faculty) {
-            if (facultyService.get(faculty.getId()) == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            long id = facultyService.add(faculty);
-            return new ResponseEntity<>(id, HttpStatus.OK);
+        if (facultyService.get(faculty.getId()) == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        long id = facultyService.add(faculty);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete faculty", nickname = "FacultyController.deleteFaculty")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Faculty is deleted")})
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteFaculty(@PathVariable("id") long id) {
-            facultyService.delete(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+        facultyService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

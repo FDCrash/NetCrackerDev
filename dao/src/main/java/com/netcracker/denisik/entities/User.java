@@ -1,6 +1,9 @@
 package com.netcracker.denisik.entities;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -12,7 +15,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
@@ -22,7 +25,7 @@ public class User extends BaseEntity{
     @ColumnDefault("")
     private String password;
 
-    @Column(name = "login",unique = true)
+    @Column(name = "login", unique = true)
     @ColumnDefault("")
     private String login;
 

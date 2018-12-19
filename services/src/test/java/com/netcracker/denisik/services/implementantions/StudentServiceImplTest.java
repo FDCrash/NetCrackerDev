@@ -140,7 +140,7 @@ public class StudentServiceImplTest {
     public void testAdd() {
         when(studentRepository.save(student)).thenReturn(student);
         when(specialityRepository.findOne(student.getSpeciality().getId())).thenReturn(student.getSpeciality());
-        when(subjectRepository.getByName("test")).thenReturn(student.getWriteBook().getSemesters().get(0).getSubject());
+        when(subjectRepository.findOne(3L)).thenReturn(student.getWriteBook().getSemesters().get(0).getSubject());
         long id = studentService.add(studentDTO);
         assertEquals(id, student.getId());
     }
@@ -153,8 +153,8 @@ public class StudentServiceImplTest {
 
     @Test
     public void checkSubjectTest() {
-        when(subjectRepository.getByName("test")).thenReturn(student.getWriteBook().getSemesters().get(0).getSubject());
+        when(subjectRepository.findOne(3L)).thenReturn(student.getWriteBook().getSemesters().get(0).getSubject());
         studentService.checkSubjects(studentDTO.getWriteBook().getSemester());
-        verify(subjectRepository, times(1)).getByName("test");
+        verify(subjectRepository, times(1)).findOne(3L);
     }
 }
