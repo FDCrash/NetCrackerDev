@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Slf4j
-@Transactional(rollbackFor = Exception.class)
+@Transactional
 @Service
 public class SpecialityServiceImpl implements CrudService<SpecialityDTO> {
     private SpecialityConverter specialityConverter;

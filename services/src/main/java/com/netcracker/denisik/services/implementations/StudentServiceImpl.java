@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Slf4j
-@Transactional(rollbackFor = Exception.class)
+@Transactional
 @Service
 public class StudentServiceImpl implements CrudService<StudentDTO> {
     private StudentConverter studentConverter;

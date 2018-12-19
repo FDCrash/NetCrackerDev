@@ -1004,3 +1004,85 @@ java.lang.NullPointerException: null
 2018-12-19 11:48:37.729  INFO 12116 --- [main] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
 2018-12-19 11:48:38.020  INFO 12116 --- [main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: FacultyController.updateFaculty_1
 2018-12-19 11:48:38.462  INFO 12116 --- [main] com.netcracker.denisik.Application       : Started Application in 16.268 seconds (JVM running for 20.874)
+2018-12-19 12:20:16.741  INFO 14300 --- [main] com.netcracker.denisik.Application       : Starting Application on DESKTOP-OASRK73 with PID 14300 (D:\Java\NetProject\controllers\target\classes started by FD_Crash in D:\Java\NetProject)
+2018-12-19 12:20:16.762 DEBUG 14300 --- [main] com.netcracker.denisik.Application       : Running with Spring Boot v1.5.9.RELEASE, Spring v4.3.13.RELEASE
+2018-12-19 12:20:16.763  INFO 14300 --- [main] com.netcracker.denisik.Application       : No active profile set, falling back to default profiles: default
+2018-12-19 12:20:22.019  INFO 14300 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2018-12-19 12:20:22.022  INFO 14300 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.23
+2018-12-19 12:20:22.359  INFO 14300 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2018-12-19 12:20:23.994  INFO 14300 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-12-19 12:20:24.329  INFO 14300 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.0.12.Final}
+2018-12-19 12:20:24.331  INFO 14300 --- [main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-12-19 12:20:24.332  INFO 14300 --- [main] org.hibernate.cfg.Environment            : HHH000021: Bytecode provider name : javassist
+2018-12-19 12:20:24.480  INFO 14300 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2018-12-19 12:20:24.735  INFO 14300 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2018-12-19 12:20:25.947  INFO 14300 --- [main] org.hibernate.tool.hbm2ddl.SchemaUpdate  : HHH000228: Running hbm2ddl schema update
+2018-12-19 12:20:28.780  INFO 14300 --- [main] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2018-12-19 12:20:29.861  INFO 14300 --- [main] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2018-12-19 12:20:29.896  INFO 14300 --- [main] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2018-12-19 12:20:30.082  INFO 14300 --- [main] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2018-12-19 12:20:30.269  INFO 14300 --- [main] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: FacultyController.updateFaculty_1
+2018-12-19 12:20:30.817  INFO 14300 --- [main] com.netcracker.denisik.Application       : Started Application in 15.604 seconds (JVM running for 22.236)
+2018-12-19 12:33:30.088  INFO 10688 --- [main] com.netcracker.denisik.Application       : Starting Application v1.0-SNAPSHOT on DESKTOP-OASRK73 with PID 10688 (D:\Java\NetProject\controllers\target\controllers-1.0-SNAPSHOT.jar started by FD_Crash in D:\Java\NetProject)
+2018-12-19 12:33:30.098 DEBUG 10688 --- [main] com.netcracker.denisik.Application       : Running with Spring Boot v1.5.9.RELEASE, Spring v4.3.13.RELEASE
+2018-12-19 12:33:30.099  INFO 10688 --- [main] com.netcracker.denisik.Application       : No active profile set, falling back to default profiles: default
+2018-12-19 12:33:40.466  INFO 10688 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2018-12-19 12:33:40.470  INFO 10688 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.23
+2018-12-19 12:33:41.318  INFO 10688 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2018-12-19 12:33:44.641  INFO 10688 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-12-19 12:33:45.412  INFO 10688 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.0.12.Final}
+2018-12-19 12:33:45.418  INFO 10688 --- [main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-12-19 12:33:45.423  INFO 10688 --- [main] org.hibernate.cfg.Environment            : HHH000021: Bytecode provider name : javassist
+2018-12-19 12:33:45.603  INFO 10688 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2018-12-19 12:33:45.798 ERROR 10688 --- [main] o.s.boot.SpringApplication               : Application startup failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaAutoConfiguration.class]: Invocation of init method failed; nested exception is java.lang.NoClassDefFoundError: javax/xml/bind/JAXBException
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1628) ~[spring-beans-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:555) ~[spring-beans-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483) ~[spring-beans-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306) ~[spring-beans-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302) ~[spring-beans-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197) ~[spring-beans-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1080) ~[spring-context-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:857) ~[spring-context-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:543) ~[spring-context-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:122) ~[spring-boot-1.5.9.RELEASE.jar!/:1.5.9.RELEASE]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:693) [spring-boot-1.5.9.RELEASE.jar!/:1.5.9.RELEASE]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:360) [spring-boot-1.5.9.RELEASE.jar!/:1.5.9.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:303) [spring-boot-1.5.9.RELEASE.jar!/:1.5.9.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1118) [spring-boot-1.5.9.RELEASE.jar!/:1.5.9.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1107) [spring-boot-1.5.9.RELEASE.jar!/:1.5.9.RELEASE]
+	at com.netcracker.denisik.Application.main(Application.java:20) [classes!/:1.0-SNAPSHOT]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:48) [controllers-1.0-SNAPSHOT.jar:1.0-SNAPSHOT]
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:87) [controllers-1.0-SNAPSHOT.jar:1.0-SNAPSHOT]
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:50) [controllers-1.0-SNAPSHOT.jar:1.0-SNAPSHOT]
+	at org.springframework.boot.loader.JarLauncher.main(JarLauncher.java:51) [controllers-1.0-SNAPSHOT.jar:1.0-SNAPSHOT]
+Caused by: java.lang.NoClassDefFoundError: javax/xml/bind/JAXBException
+	at org.hibernate.boot.spi.XmlMappingBinderAccess.<init>(XmlMappingBinderAccess.java:43) ~[hibernate-core-5.0.12.Final.jar!/:5.0.12.Final]
+	at org.hibernate.boot.MetadataSources.<init>(MetadataSources.java:87) ~[hibernate-core-5.0.12.Final.jar!/:5.0.12.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.<init>(EntityManagerFactoryBuilderImpl.java:179) ~[hibernate-entitymanager-5.0.12.Final.jar!/:5.0.12.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.<init>(EntityManagerFactoryBuilderImpl.java:149) ~[hibernate-entitymanager-5.0.12.Final.jar!/:5.0.12.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:54) ~[spring-orm-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:360) ~[spring-orm-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:382) ~[spring-orm-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:371) ~[spring-orm-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:336) ~[spring-orm-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1687) ~[spring-beans-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1624) ~[spring-beans-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	... 24 common frames omitted
+Caused by: java.lang.ClassNotFoundException: javax.xml.bind.JAXBException
+	at java.base/java.net.URLClassLoader.findClass(Unknown Source) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(Unknown Source) ~[na:na]
+	at org.springframework.boot.loader.LaunchedURLClassLoader.loadClass(LaunchedURLClassLoader.java:94) ~[controllers-1.0-SNAPSHOT.jar:1.0-SNAPSHOT]
+	at java.base/java.lang.ClassLoader.loadClass(Unknown Source) ~[na:na]
+	... 35 common frames omitted
+

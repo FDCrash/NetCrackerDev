@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Slf4j
-@Transactional(rollbackFor = Exception.class)
+@Transactional
 @Service
 public class SubjectServiceImpl implements CrudService<SubjectDTO> {
     private SubjectRepository subjectRepository;
