@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="385.0" y="550.0">com.netcracker.denisik.controllers.StudentUserController</node>
+    <node x="409.0" y="319.0">com.netcracker.denisik.controllers.SubjectController</node>
+    <node x="0.0" y="0.0">com.netcracker.denisik.controllers.UserController</node>
+    <node x="0.0" y="550.0">com.netcracker.denisik.controllers.FacultyController</node>
+    <node x="845.6666666666666" y="251.0">com.netcracker.denisik.Application</node>
+    <node x="0.0" y="319.0">com.netcracker.denisik.controllers.SpecialityController</node>
+    <node x="0.0" y="781.0">com.netcracker.denisik.controllers.SignUpController</node>
+    <node x="403.0" y="0.0">com.netcracker.denisik.controllers.StudentController</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.6000000000000001" x="420.2777777777778" y="385.58333333333337" />
+  <SelectedNodes>
+    <node>com.netcracker.denisik.Application</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
