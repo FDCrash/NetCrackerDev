@@ -1,49 +1,62 @@
-//package com.netcracker.denisik.converters;
-//
-//import com.netcracker.denisik.dto.RoleDTO;
-//import com.netcracker.denisik.dto.UserDTO;
-//import com.netcracker.denisik.entities.Role;
-//import com.netcracker.denisik.entities.User;
-//import org.junit.After;
-//import org.junit.Assert;
-//import org.junit.Before;
-//import org.junit.Test;
-//
-//public class UserConverterTest {
-//    private User userEntity;
-//    private UserDTO userDTO;
-//    private UserConverter converter;
-//
-//    @Before
-//    public void setUp(){
-//        userEntity =new User(100,Role.ADMIN,"TEST","PASS");
-//        userDTO =new UserDTO(100,RoleDTO.ADMIN,"TEST","PASS");
-//        converter=new UserConverter();
-//    }
-//
-//    @After
-//    public void tearDown(){
-//        userDTO =null;
-//        userEntity =null;
-//    }
-//
-//    @Test
-//    public void convertTo(){
-//        UserDTO userTestDTO=converter.convert(userEntity);
-//
-//        Assert.assertEquals(userDTO.getId(),userTestDTO.getId());
-//        Assert.assertEquals(userDTO.getRoleDTO(),userTestDTO.getRoleDTO());
-//        Assert.assertEquals(userDTO.getLogin(),userTestDTO.getLogin());
-//        Assert.assertEquals(userDTO.getPassword(),userTestDTO.getPassword());
-//    }
-//
-//    @Test
-//    public void convertFrom(){
-//        User userTestEntity=converter.convert(userDTO);
-//
-//        Assert.assertEquals(userEntity.getId(),userTestEntity.getId());
-//        Assert.assertEquals(userEntity.getRole(),userTestEntity.getRole());
-//        Assert.assertEquals(userEntity.getLogin(),userTestEntity.getLogin());
-//        Assert.assertEquals(userEntity.getPassword(),userTestEntity.getPassword());
-//    }
-//}
+package com.netcracker.denisik.converters;
+
+import com.netcracker.denisik.configuration.TestConfiguration;
+import com.netcracker.denisik.dto.RoleDTO;
+import com.netcracker.denisik.dto.UserDTO;
+import com.netcracker.denisik.entities.Role;
+import com.netcracker.denisik.entities.User;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfiguration.class)
+public class UserConverterTest {
+
+    @Autowired
+    private UserConverter userConverter;
+
+    private User user;
+    private UserDTO userDTO;
+
+    @Before
+    public void setUp() {
+        user = User.builder()
+                .id(13)
+                .login("test")
+                .password("test")
+                .login("test")
+                .role(Role.ADMIN)
+                .build();
+        userDTO = UserDTO.builder()
+                .id(13)
+                .login("test")
+                .password("test")
+                .login("test")
+                .roleDTO(RoleDTO.ADMIN)
+                .build();
+    }
+
+    @After
+    public void tearDown() {
+        userDTO = null;
+        user = null;
+    }
+
+    @Test
+    public void toDTO() {
+        UserDTO userDTO = userConverter.convert(user);
+        Assert.assertEquals(userDTO.hashCode(), this.userDTO.hashCode());
+    }
+
+    @Test
+    public void fromDTO() {
+        User user = userConverter.convert(userDTO);
+        Assert.assertEquals(user.hashCode(), this.user.hashCode());
+    }
+}

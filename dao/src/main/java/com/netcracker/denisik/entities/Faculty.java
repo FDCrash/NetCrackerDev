@@ -1,62 +1,37 @@
 package com.netcracker.denisik.entities;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "faculties")
-public class Faculty {
-    private long id;
-    private String name;
-    private List<Speciality> specialities;
-
-    public Faculty() {
-    }
-
-    public Faculty(long id, String name) {
-        this.id=id;
-        this.name = name;
-        specialities = new ArrayList<>();
-    }
-
-    public Faculty(long id, String name, List<Speciality> specialities) {
-        this.id=id;
-        this.name = name;
-        this.specialities = new ArrayList<>(specialities);
-    }
-
-    @Id
-    @Column(name = "id",unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+public class Faculty extends BaseEntity {
 
     @Column(name = "name", unique = true)
-    public String getName() {
-        return name;
-    }
+    private String name;
 
-    public void setSpecialities(List<Speciality> specialities) {
+    @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL)
+    private List<Speciality> specialities;
+
+    @Builder
+    public Faculty(long id, String name, List<Speciality> specialities) {
+        super(id);
+        this.name = name;
         this.specialities = specialities;
     }
 
-
-    @OneToMany(mappedBy = "facultyEntity",cascade = CascadeType.ALL)
-    public List<Speciality> getSpecialities() {
-        return specialities;
-    }
-
-    public void setSpeciality(Speciality speciality){
-        this.specialities.add(speciality);
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (int) getId();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + (getSpecialities() != null ? getSpecialities().size() : 0);
+        return result;
     }
 }

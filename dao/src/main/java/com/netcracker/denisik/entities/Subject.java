@@ -1,39 +1,33 @@
 package com.netcracker.denisik.entities;
 
-import javax.persistence.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.List;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "subjects")
-public class Subject {
-    private long id;
-    private String subject;
+public class Subject extends BaseEntity {
 
-    public Subject(String subject) {
-        this.subject = subject;
-    }
+    @Column(name = "subject", unique = true)
+    private String name;
 
-    public Subject(Long id, String subject) {
-        this.id = id;
-        this.subject = subject;
-    }
+    @OneToMany(mappedBy = "subject")
+    private List<Semester> semesters;
 
-    @Id
-    @Column(name = "id",unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    @Column(name = "subject",unique = true)
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
+    @Builder
+    public Subject(long id, String name, List<Semester> semesters) {
+        super(id);
+        this.name = name;
+        this.semesters = semesters;
     }
 }

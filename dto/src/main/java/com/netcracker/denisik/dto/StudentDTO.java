@@ -1,67 +1,53 @@
 package com.netcracker.denisik.dto;
 
-public class StudentDTO {
-    private long id;
-    private int studentId;
-    private int groupId;
-    private SpecialityDTO speciality;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+@NoArgsConstructor
+public class StudentDTO extends UserDTO{
+    private long groupId;
+    private String speciality;
+    private long specialityId;
     private WriteBookDTO writeBook;
 
-    public StudentDTO() {
-    }
-
-    public StudentDTO(long id, int studentId, int groupId, SpecialityDTO speciality, WriteBookDTO writeBook) {
-        this.id = id;
-        this.studentId = studentId;
+    @Builder(builderMethodName = "builderStudent")
+    public StudentDTO(UserDTO userDTO, long groupId, String speciality,long specialityId, WriteBookDTO writeBook) {
+        super(userDTO.getId(),userDTO.getRoleDTO(),userDTO.getPassword(),userDTO.getLogin(),userDTO.getName());
         this.groupId = groupId;
         this.speciality = speciality;
         this.writeBook = writeBook;
+        this.specialityId=specialityId;
     }
 
-    public long getId() {
-        return id;
+    @Override
+    @JsonIgnore
+    public RoleDTO getRoleDTO() {
+        return super.getRoleDTO();
     }
 
-    public void setId(long id) {
-        this.id = id;
+    @Override
+    @JsonIgnore
+    public String getPassword() {
+        return super.getPassword();
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
+    @Override
+    @JsonIgnore
+    public void setRoleDTO(RoleDTO roleDTO) {
+        super.setRoleDTO(roleDTO);
     }
 
-    public void setSpeciality(SpecialityDTO speciality) {
-        this.speciality = speciality;
+    @Override
+    @JsonIgnore
+    public void setLogin(String login) {
+        super.setLogin(login);
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
-    }
-
-    public int getStudentId() {
-        return studentId;
-    }
-
-    public WriteBookDTO getWriteBook() {
-        return writeBook;
-    }
-
-    public void setWriteBook(WriteBookDTO writeBook) {
-        this.writeBook = writeBook;
-    }
-
-    public SpecialityDTO getSpeciality() {
-        return speciality;
-    }
-
-    public int getGroupId() {
-        return groupId;
-    }
-
-    public String toString() {
-        StringBuilder s = new StringBuilder("\n");
-        return   "Специальность: " + getSpeciality().getName() +
-                "\nНомер студенченского билета: " + getStudentId() +
-                "\nНомер группы:" + getGroupId() + "\nЗачетная книжка: " + writeBook.toString();
+    @Override
+    @JsonIgnore
+    public void setPassword(String password) {
+        super.setPassword(password);
     }
 }

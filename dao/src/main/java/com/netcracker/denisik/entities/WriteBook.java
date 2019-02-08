@@ -1,39 +1,42 @@
 package com.netcracker.denisik.entities;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "writebook")
-public class WriteBook {
-    private long id;
-    private List<Semester> semester;
+public class WriteBook extends BaseEntity {
 
-    public WriteBook(){
-        semester =new ArrayList<>();
-    }
+    @OneToMany(mappedBy = "writeBook", cascade = CascadeType.ALL)
+    private List<Semester> semesters;
 
-    public WriteBook(List<Semester> semester) {
-        this.semester = semester;
-    }
+    @Column(name = "budget")
+    private boolean budget;
 
-    @Id
     @OneToOne(mappedBy = "writeBook")
-    public long getId() {
-        return id;
+    private Student student;
+
+    @Builder
+    public WriteBook(long id, List<Semester> semesters, boolean budget, Student student) {
+        super(id);
+        this.semesters = semesters;
+        this.budget = budget;
+        this.student = student;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    @OneToMany(mappedBy = "id",cascade =CascadeType.ALL)
-    public List<Semester> getSemester() {
-        return semester;
-    }
-
-    public void setSemester(List<Semester> semester) {
-        this.semester = semester;
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (int) getId();
+        result = 31 * result + getSemesters().hashCode();
+        result = 31 * result + (isBudget() ? 1 : 0);
+        result = 31 * result + (getStudent() != null ? (int) getStudent().getGroupId() : 0);
+        return result;
     }
 }

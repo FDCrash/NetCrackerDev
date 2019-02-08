@@ -1,20 +1,12 @@
 package com.netcracker.denisik.dto;
 
-public abstract class BaseDTO {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class BaseDTO {
     private long id;
-
-    public BaseDTO() {
-    }
-
-    public BaseDTO(long id) {
-        this.id = id;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }

@@ -1,6 +1,5 @@
 package com.netcracker.denisik.converters;
 
-import com.netcracker.denisik.dto.FacultyDTO;
 import com.netcracker.denisik.dto.SpecialityDTO;
 import com.netcracker.denisik.entities.Faculty;
 import com.netcracker.denisik.entities.Speciality;
@@ -9,26 +8,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpecialityConverter {
     public Speciality convert(SpecialityDTO specialityDTO) {
-        Faculty faculty = new Faculty();
-        faculty.setId(specialityDTO.getFaculty().getId());
-        faculty.setName(specialityDTO.getFaculty().getName());
-        Speciality speciality = new Speciality();
-        speciality.setId(specialityDTO.getId());
-        speciality.setName(specialityDTO.getName());
-        speciality.setFaculty(faculty);
-        faculty.setSpeciality(speciality);
-        return speciality;
+        Faculty faculty = Faculty.builder()
+                .id(specialityDTO.getFacultyId())
+                .build();
+        return Speciality.builder()
+                .id(specialityDTO.getId())
+                .name(specialityDTO.getName())
+                .faculty(faculty)
+                .build();
+
     }
 
     public SpecialityDTO convert(Speciality speciality) {
-        FacultyDTO facultyDTO = new FacultyDTO();
-        facultyDTO.setId(speciality.getFaculty().getId());
-        facultyDTO.setName(speciality.getFaculty().getName());
-        SpecialityDTO specialityDTO = new SpecialityDTO();
-        specialityDTO.setId(speciality.getId());
-        specialityDTO.setName(speciality.getName());
-        specialityDTO.setFaculty(facultyDTO);
-        facultyDTO.setSpeciality(specialityDTO);
-        return specialityDTO;
+        if (speciality == null) {
+            return null;
+        }
+        return SpecialityDTO.builder()
+                .id(speciality.getId())
+                .name(speciality.getName())
+                .faculty(speciality.getFaculty().getName())
+                .facultyId(speciality.getFaculty().getId())
+                .build();
     }
 }

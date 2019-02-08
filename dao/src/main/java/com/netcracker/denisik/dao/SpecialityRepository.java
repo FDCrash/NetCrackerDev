@@ -5,6 +5,10 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SpecialityRepository extends CrudRepository<Speciality,Long> {
+public interface SpecialityRepository extends CrudRepository<Speciality, Long> {
     Speciality getByName(String name);
+
+    boolean existsByName(String name);
+
+    boolean existsById(long id);
 }

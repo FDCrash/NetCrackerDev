@@ -1,60 +1,43 @@
 package com.netcracker.denisik.entities;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "semesters")
-public class Semester {
-    private long id;
-    private int sem;
-    private int mark;
-    private Subject subject;
-
-    public Semester(){}
-
-    public Semester(long id, int sem, int mark, Subject subject) {
-        this.id = id;
-        this.sem = sem;
-        this.mark = mark;
-        this.subject = subject;
-    }
-
-    @Id
-    @Column(name = "id", unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    @Column(name = "sem")
-    public int getSem() {
-        return sem;
-    }
-
-    public void setSem(int sem) {
-        this.sem = sem;
-    }
+public class Semester extends BaseEntity {
 
     @Column(name = "mark")
-    public int getMark() {
-        return mark;
-    }
-
-    public void setMark(int mark) {
-        this.mark = mark;
-    }
+    private int mark;
 
     @ManyToOne
     @JoinColumn(name = "subjects_id")
-    public Subject getSubject() {
-        return subject;
+    private Subject subject;
+
+    @ManyToOne
+    @JoinColumn(name = "writebook_id")
+    private WriteBook writeBook;
+
+    @Builder
+    public Semester(long id, int mark, Subject subject, WriteBook writeBook) {
+        super(id);
+        this.mark = mark;
+        this.subject = subject;
+        this.writeBook = writeBook;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (int) getId();
+        result = 31 * result + getMark();
+        result = 31 * result + getSubject().hashCode();
+        result = 31 * result + (getWriteBook() != null ? (int) getWriteBook().getId() : 0);
+        return result;
     }
 }

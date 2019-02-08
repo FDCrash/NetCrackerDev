@@ -1,72 +1,43 @@
 package com.netcracker.denisik.entities;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
-    private Long id;
-    private Role role;
-    private String password;
-    private String login;
-    private String name;
-
-    public User() {
-    }
-
-    public User(Long id, Role role, String login, String password, String name) {
-        this.id=id;
-        this.role = role;
-        this.login = login;
-        this.password = password;
-        this.name=name;
-    }
-
-    @Id
-    @Column(name = "id",unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
+@Inheritance(strategy = InheritanceType.JOINED)
+public class User extends BaseEntity {
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    public Role getRole() {
-        return role;
-    }
-
-    @Column(name = "login",unique = true)
-    public String getLogin() {
-        return login;
-    }
+    private Role role;
 
     @Column(name = "password")
-    public String getPassword() {
-        return password;
-    }
+    @ColumnDefault("")
+    private String password;
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
+    @Column(name = "login", unique = true)
+    @ColumnDefault("")
+    private String login;
 
-    public void setPassword(String password) {
+    @Column(name = "name")
+    private String name;
+
+    @Builder
+    public User(long id, Role role, String password, String login, String name) {
+        super(id);
+        this.role = role;
         this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+        this.login = login;
         this.name = name;
     }
 }
-
