@@ -1,5 +1,6 @@
 package com.netcracker.denisik.services.implementations;
 
+import com.google.gson.Gson;
 import com.netcracker.denisik.converters.UserConverter;
 import com.netcracker.denisik.dao.StudentRepository;
 import com.netcracker.denisik.dao.UserRepository;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -65,6 +68,8 @@ public class UserServiceImpl implements CrudService<UserDTO> {
         List<UserDTO> userDTOS = StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .map(user -> userConverter.convert(user))
                 .collect(Collectors.toList());
+        log.debug("To Json operation users");
+        convertToJson(userDTOS);
         log.debug("Getting users from DB");
         return userDTOS;
     }
@@ -74,6 +79,8 @@ public class UserServiceImpl implements CrudService<UserDTO> {
                 .filter(user -> user.getRole().equals(Role.ADMIN))
                 .map(user -> userConverter.convert(user))
                 .collect(Collectors.toList());
+        log.debug("To Json operation admins");
+        convertToJson(userDTOS);
         log.debug("Start getting admins");
         return userDTOS;
     }
@@ -83,9 +90,20 @@ public class UserServiceImpl implements CrudService<UserDTO> {
                 .filter(user -> user.getRole().equals(Role.EMPLOYEE))
                 .map(employee -> userConverter.convert(employee))
                 .collect(Collectors.toList());
+        log.debug("To Json operation employees");
+        convertToJson(userDTOS);
         log.debug("Start getting employees");
         return userDTOS;
     }
+
+    public void convertToJson(List<UserDTO> userDTOS) {
+        try(FileWriter writer = new FileWriter("services/src/resources/jsonformatuser")) {
+            new Gson().toJson(userDTOS, writer);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public UserDTO get(long id) {

@@ -1,14 +1,13 @@
 package com.netcracker.denisik.services.implementations;
 
+import com.google.gson.Gson;
 import com.netcracker.denisik.converters.StudentConverter;
 import com.netcracker.denisik.dao.SpecialityRepository;
 import com.netcracker.denisik.dao.StudentRepository;
 import com.netcracker.denisik.dao.SubjectRepository;
 import com.netcracker.denisik.dto.SemesterDTO;
 import com.netcracker.denisik.dto.StudentDTO;
-import com.netcracker.denisik.entities.Speciality;
 import com.netcracker.denisik.entities.Student;
-import com.netcracker.denisik.entities.Subject;
 import com.netcracker.denisik.exteption.ResourceNotFoundException;
 import com.netcracker.denisik.exteption.ServiceException;
 import com.netcracker.denisik.services.CrudService;
@@ -17,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -73,6 +74,8 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
         List<StudentDTO> studentDTOS = studentRepository.getAllByGroupId(number).stream()
                 .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
+        log.debug("To Json operation students by group");
+        convertToJson(studentDTOS);
         log.debug("Start get students by group id: " + number);
         return studentDTOS;
     }
@@ -81,6 +84,8 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
         List<StudentDTO> studentDTOS = studentRepository.getAllBySpecialityName(speciality).stream()
                 .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
+        log.debug("To Json operation students by spec");
+        convertToJson(studentDTOS);
         log.debug("Start get students by speciality name : " + speciality);
         return studentDTOS;
     }
@@ -99,8 +104,18 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
         List<StudentDTO> studentDTOS = StreamSupport.stream(studentRepository.findAll().spliterator(), false)
                 .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
+        log.debug("To Json operation students");
+        convertToJson(studentDTOS);
         log.debug("Getting students from DB");
         return studentDTOS;
+    }
+
+    public void convertToJson(List<StudentDTO> studentDTOS) {
+        try(FileWriter writer = new FileWriter("services/src/resources/jsonformatstudent")) {
+            new Gson().toJson(studentDTOS, writer);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @Override

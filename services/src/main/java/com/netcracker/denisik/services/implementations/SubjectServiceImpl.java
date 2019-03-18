@@ -1,5 +1,6 @@
 package com.netcracker.denisik.services.implementations;
 
+import com.google.gson.Gson;
 import com.netcracker.denisik.converters.SubjectConverter;
 import com.netcracker.denisik.dao.SubjectRepository;
 import com.netcracker.denisik.dto.SubjectDTO;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -56,8 +59,18 @@ public class SubjectServiceImpl implements CrudService<SubjectDTO> {
         List<SubjectDTO> subjectDTOS = StreamSupport.stream(subjectRepository.findAll().spliterator(), false)
                 .map(subject -> subjectConverter.convert(subject))
                 .collect(Collectors.toList());
+        log.debug("To Json operation subjects");
+        convertToJson(subjectDTOS);
         log.debug("Getting subjects from DB");
         return subjectDTOS;
+    }
+
+    public void convertToJson(List<SubjectDTO> subjectDTOS) {
+        try(FileWriter writer = new FileWriter("services/src/resources/jsonformatsubject")) {
+            new Gson().toJson(subjectDTOS, writer);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @Override

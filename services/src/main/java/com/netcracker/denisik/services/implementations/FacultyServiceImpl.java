@@ -1,5 +1,6 @@
 package com.netcracker.denisik.services.implementations;
 
+import com.google.gson.Gson;
 import com.netcracker.denisik.converters.FacultyConverter;
 import com.netcracker.denisik.dao.FacultyRepository;
 import com.netcracker.denisik.dao.SpecialityRepository;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,8 +75,18 @@ public class FacultyServiceImpl implements CrudService<FacultyDTO> {
         List<FacultyDTO> facultyDTOS = StreamSupport.stream(facultyRepository.findAll().spliterator(), false)
                 .map(faculty -> facultyConverter.convert(faculty))
                 .collect(Collectors.toList());
+        log.debug("To Json operation faculties");
+        convertToJson(facultyDTOS);
         log.debug("Getting all faculties from DB");
         return facultyDTOS;
+    }
+
+    public void convertToJson(List<FacultyDTO> facultyDTOS) {
+        try(FileWriter writer = new FileWriter("services/src/resources/jsonformatfaculty")) {
+            new Gson().toJson(facultyDTOS, writer);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
