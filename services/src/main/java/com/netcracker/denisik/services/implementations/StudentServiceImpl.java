@@ -7,6 +7,7 @@ import com.netcracker.denisik.dao.StudentRepository;
 import com.netcracker.denisik.dao.SubjectRepository;
 import com.netcracker.denisik.dto.SemesterDTO;
 import com.netcracker.denisik.dto.StudentDTO;
+import com.netcracker.denisik.dto.dtoxml.Students;
 import com.netcracker.denisik.entities.Student;
 import com.netcracker.denisik.exteption.ResourceNotFoundException;
 import com.netcracker.denisik.exteption.ServiceException;
@@ -16,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -76,6 +80,8 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
                 .collect(Collectors.toList());
         log.debug("To Json operation students by group");
         convertToJson(studentDTOS);
+        log.debug("To XML operation students by group");
+        convertToXml(studentDTOS);
         log.debug("Start get students by group id: " + number);
         return studentDTOS;
     }
@@ -86,7 +92,21 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
                 .collect(Collectors.toList());
         log.debug("To Json operation students by spec");
         convertToJson(studentDTOS);
+        log.debug("To XML operation students by spec");
+        convertToXml(studentDTOS);
         log.debug("Start get students by speciality name : " + speciality);
+        return studentDTOS;
+    }
+
+    public List<StudentDTO> getAllByFaculty(String faculty) {
+        List<StudentDTO> studentDTOS = studentRepository.getAllBySpecialityFacultyName(faculty).stream()
+                .map(student -> studentConverter.convert(student))
+                .collect(Collectors.toList());
+        log.debug("To Json operation students by faculty");
+        convertToJson(studentDTOS);
+        log.debug("To XML operation students by faculty");
+        convertToXml(studentDTOS);
+        log.debug("Start get students by faculty name : " + faculty);
         return studentDTOS;
     }
 
@@ -106,14 +126,29 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
                 .collect(Collectors.toList());
         log.debug("To Json operation students");
         convertToJson(studentDTOS);
+        log.debug("To XML operation students");
+        convertToXml(studentDTOS);
         log.debug("Getting students from DB");
         return studentDTOS;
     }
 
     public void convertToJson(List<StudentDTO> studentDTOS) {
-        try(FileWriter writer = new FileWriter("services/src/resources/jsonformatstudent")) {
+        try (FileWriter writer = new FileWriter("services/src/main/resources/json/jsonformatstudent.json")) {
             new Gson().toJson(studentDTOS, writer);
-        }catch (IOException e){
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void convertToXml(List<StudentDTO> studentDTOS) {
+        try (FileWriter writer = new FileWriter("services/src/main/resources/xml/xmlformatstudent.xml")) {
+            Students students = new Students(studentDTOS);
+            students.getStudentDTOS().forEach(studentDTO -> studentDTO.setPassword(null));
+            JAXBContext context = JAXBContext.newInstance(Students.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.marshal(students, writer);
+        } catch (JAXBException | IOException e) {
             e.printStackTrace();
         }
     }

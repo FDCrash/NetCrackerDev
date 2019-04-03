@@ -5,6 +5,7 @@ import com.netcracker.denisik.converters.UserConverter;
 import com.netcracker.denisik.dao.StudentRepository;
 import com.netcracker.denisik.dao.UserRepository;
 import com.netcracker.denisik.dto.UserDTO;
+import com.netcracker.denisik.dto.dtoxml.Users;
 import com.netcracker.denisik.entities.Role;
 import com.netcracker.denisik.entities.Student;
 import com.netcracker.denisik.entities.User;
@@ -17,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -38,6 +42,10 @@ public class UserServiceImpl implements CrudService<UserDTO> {
         this.userConverter = userConverter;
     }
 
+    public long save(UserDTO userDTO){
+        User user = userRepository.save(userConverter.convert(userDTO));
+        return user.getId();
+    }
 
     @Override
     public long add(UserDTO userDTO) {
@@ -46,8 +54,7 @@ public class UserServiceImpl implements CrudService<UserDTO> {
             log.error("User already exist with login: " + userDTO.getLogin());
             throw new ResourceAlreadyExistException("User exist by login: " + userDTO.getLogin());
         }
-        User user = userRepository.save(userConverter.convert(userDTO));
-        return user.getId();
+        return save(userDTO);
     }
 
     @Override
@@ -70,6 +77,8 @@ public class UserServiceImpl implements CrudService<UserDTO> {
                 .collect(Collectors.toList());
         log.debug("To Json operation users");
         convertToJson(userDTOS);
+        log.debug("To XML operation users");
+        convertToXml(userDTOS);
         log.debug("Getting users from DB");
         return userDTOS;
     }
@@ -81,6 +90,8 @@ public class UserServiceImpl implements CrudService<UserDTO> {
                 .collect(Collectors.toList());
         log.debug("To Json operation admins");
         convertToJson(userDTOS);
+        log.debug("To XML operation admins");
+        convertToXml(userDTOS);
         log.debug("Start getting admins");
         return userDTOS;
     }
@@ -92,18 +103,32 @@ public class UserServiceImpl implements CrudService<UserDTO> {
                 .collect(Collectors.toList());
         log.debug("To Json operation employees");
         convertToJson(userDTOS);
+        log.debug("To XML operation employees");
+        convertToXml(userDTOS);
         log.debug("Start getting employees");
         return userDTOS;
     }
 
     public void convertToJson(List<UserDTO> userDTOS) {
-        try(FileWriter writer = new FileWriter("services/src/resources/jsonformatuser")) {
+        try(FileWriter writer = new FileWriter("services/src/main/resources/json/jsonformatuser.json")) {
             new Gson().toJson(userDTOS, writer);
         }catch (IOException e){
             e.printStackTrace();
         }
     }
 
+    private static void convertToXml(List<UserDTO> userDTOS) {
+        try (FileWriter writer = new FileWriter("services/src/main/resources/xml/xmlformatuser.xml")) {
+            Users users = new Users(userDTOS);
+            users.getUserDTOS().forEach(studentDTO -> studentDTO.setPassword(null));
+            JAXBContext context = JAXBContext.newInstance(Users.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.marshal(users, writer);
+        } catch (JAXBException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public UserDTO get(long id) {

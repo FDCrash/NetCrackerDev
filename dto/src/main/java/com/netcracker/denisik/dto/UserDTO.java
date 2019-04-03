@@ -1,12 +1,15 @@
 package com.netcracker.denisik.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class UserDTO extends UserFormDTO{
+public class UserDTO extends UserFormDTO {
     private RoleDTO roleDTO;
 
     @Builder

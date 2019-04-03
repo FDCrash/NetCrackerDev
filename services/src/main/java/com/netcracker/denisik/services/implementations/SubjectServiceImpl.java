@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.netcracker.denisik.converters.SubjectConverter;
 import com.netcracker.denisik.dao.SubjectRepository;
 import com.netcracker.denisik.dto.SubjectDTO;
+import com.netcracker.denisik.dto.dtoxml.Subjects;
 import com.netcracker.denisik.entities.Subject;
 import com.netcracker.denisik.exteption.ResourceAlreadyExistException;
 import com.netcracker.denisik.exteption.ResourceNotFoundException;
@@ -13,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -61,17 +65,32 @@ public class SubjectServiceImpl implements CrudService<SubjectDTO> {
                 .collect(Collectors.toList());
         log.debug("To Json operation subjects");
         convertToJson(subjectDTOS);
+        log.debug("To XML operation subjects");
+        convertToXml(subjectDTOS);
         log.debug("Getting subjects from DB");
         return subjectDTOS;
     }
 
     public void convertToJson(List<SubjectDTO> subjectDTOS) {
-        try(FileWriter writer = new FileWriter("services/src/resources/jsonformatsubject")) {
+        try(FileWriter writer = new FileWriter("services/src/main/resources/json/jsonformatsubject.json")) {
             new Gson().toJson(subjectDTOS, writer);
         }catch (IOException e){
             e.printStackTrace();
         }
     }
+
+    private static void convertToXml(List<SubjectDTO> subjectDTOS) {
+        try (FileWriter writer = new FileWriter("services/src/main/resources/xml/xmlformatsubject.xml")) {
+            Subjects users = new Subjects(subjectDTOS);
+            JAXBContext context = JAXBContext.newInstance(Subjects.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.marshal(users, writer);
+        } catch (JAXBException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public SubjectDTO get(long id) {

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<students>
+    <student>
+        <id>5</id>
+        <login>den</login>
+        <name>Павел</name>
+        <roleDTO>STUDENT</roleDTO>
+        <groupId>620601</groupId>
+        <speciality>АСОИ</speciality>
+        <specialityId>1</specialityId>
+        <writeBook>
+            <id>1</id>
+            <budget>true</budget>
+            <semester>
+                <mark>9</mark>
+                <subject>
+                    <id>1</id>
+                    <name>Матем</name>
+                </subject>
+            </semester>
+        </writeBook>
+    </student>
+    <student>
+        <id>10</id>
+        <login>max</login>
+        <name>Максим</name>
+        <roleDTO>STUDENT</roleDTO>
+        <groupId>620601</groupId>
+        <speciality>АСОИ</speciality>
+        <specialityId>1</specialityId>
+        <writeBook>
+            <id>3</id>
+            <budget>false</budget>
+            <semester>
+                <mark>9</mark>
+                <subject>
+                    <id>3</id>
+                    <name>Философия</name>
+                </subject>
+            </semester>
+        </writeBook>
+    </student>
+</students>

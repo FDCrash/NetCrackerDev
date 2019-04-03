@@ -5,6 +5,7 @@ import com.netcracker.denisik.converters.SpecialityConverter;
 import com.netcracker.denisik.dao.FacultyRepository;
 import com.netcracker.denisik.dao.SpecialityRepository;
 import com.netcracker.denisik.dto.SpecialityDTO;
+import com.netcracker.denisik.dto.dtoxml.Specialities;
 import com.netcracker.denisik.entities.Faculty;
 import com.netcracker.denisik.entities.Speciality;
 import com.netcracker.denisik.exteption.ResourceAlreadyExistException;
@@ -15,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -70,14 +74,28 @@ public class SpecialityServiceImpl implements CrudService<SpecialityDTO> {
                 .collect(Collectors.toList());
         log.debug("To Json operation specialities");
         convertToJson(specialityDTOS);
+        log.debug("To XML operation students");
+        convertToXml(specialityDTOS);
         log.debug("Getting all specialities from DB");
         return specialityDTOS;
     }
 
     public void convertToJson(List<SpecialityDTO> specialityDTOS) {
-        try(FileWriter writer = new FileWriter("services/src/resources/jsonformatspeciality")) {
+        try(FileWriter writer = new FileWriter("services/src/main/resources/json/jsonformatspeciality.json")) {
             new Gson().toJson(specialityDTOS, writer);
         }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private static void convertToXml(List<SpecialityDTO> specialityDTOS) {
+        try (FileWriter writer = new FileWriter("services/src/main/resources/xml/xmlformatspeciality.xml")) {
+            Specialities specialities = new Specialities(specialityDTOS);
+            JAXBContext context = JAXBContext.newInstance(Specialities.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.marshal(specialities, writer);
+        } catch (JAXBException | IOException e) {
             e.printStackTrace();
         }
     }
