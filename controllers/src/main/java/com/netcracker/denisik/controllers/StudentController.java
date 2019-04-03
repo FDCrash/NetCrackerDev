@@ -102,4 +102,27 @@ public class StudentController {
         }
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Gets all students by faculty", nickname = "StudentController.getAllStudentsByFaculty")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "StudentsByFaculty")})
+    @GetMapping(value = "/searchByFaculty", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<StudentDTO>> getAllStudentsByFaculty(@RequestParam("faculty") String faculty) {
+        List<StudentDTO> student = studentService.getAllByFaculty(faculty);
+        if (CollectionUtils.isEmpty(student)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
+
+//    @ApiOperation(value = "Gets TOP10 students by faculty", nickname = "StudentController.getTop10StudentsByFaculty")
+//    @ApiResponses(value = {@ApiResponse(code = 200, message = "Top10StudentsByFaculty")})
+//    @GetMapping(value = "/searchTop10ByFaculty", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<List<StudentDTO>> getTop10StudentsByFaculty(@RequestParam("faculty") String faculty) {
+//        List<StudentDTO> student = studentService.getTop10ByFaculty(faculty);
+//        if (CollectionUtils.isEmpty(student)) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(student, HttpStatus.OK);
+//    }
+
 }
