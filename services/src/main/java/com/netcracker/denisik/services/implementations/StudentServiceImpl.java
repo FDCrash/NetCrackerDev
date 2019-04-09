@@ -13,6 +13,10 @@ import com.netcracker.denisik.exteption.ResourceNotFoundException;
 import com.netcracker.denisik.exteption.ServiceException;
 import com.netcracker.denisik.services.CrudService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -78,10 +86,7 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
         List<StudentDTO> studentDTOS = studentRepository.getAllByGroupId(number).stream()
                 .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
-        log.debug("To Json operation students by group");
-        convertToJson(studentDTOS);
-        log.debug("To XML operation students by group");
-        convertToXml(studentDTOS);
+        convertTo(studentDTOS);
         log.debug("Start get students by group id: " + number);
         return studentDTOS;
     }
@@ -90,10 +95,7 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
         List<StudentDTO> studentDTOS = studentRepository.getAllBySpecialityName(speciality).stream()
                 .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
-        log.debug("To Json operation students by spec");
-        convertToJson(studentDTOS);
-        log.debug("To XML operation students by spec");
-        convertToXml(studentDTOS);
+        convertTo(studentDTOS);
         log.debug("Start get students by speciality name : " + speciality);
         return studentDTOS;
     }
@@ -102,10 +104,7 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
         List<StudentDTO> studentDTOS = studentRepository.getAllBySpecialityFacultyName(faculty).stream()
                 .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
-        log.debug("To Json operation students by faculty");
-        convertToJson(studentDTOS);
-        log.debug("To XML operation students by faculty");
-        convertToXml(studentDTOS);
+        convertTo(studentDTOS);
         log.debug("Start get students by faculty name : " + faculty);
         return studentDTOS;
     }
@@ -124,14 +123,26 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
         List<StudentDTO> studentDTOS = StreamSupport.stream(studentRepository.findAll().spliterator(), false)
                 .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
-        log.debug("To Json operation students");
-        convertToJson(studentDTOS);
-        log.debug("To XML operation students");
-        convertToXml(studentDTOS);
         log.debug("Getting students from DB");
         return studentDTOS;
     }
 
+    public List<StudentDTO> getAllStudents() {
+        List<StudentDTO> studentDTOS = getAll();
+        convertTo(studentDTOS);
+        return studentDTOS;
+    }
+
+    public void convertTo(List<StudentDTO> studentDTOS) {
+        log.debug("To Json operation students");
+        convertToJson(studentDTOS);
+        log.debug("To XML operation students");
+        convertToXml(studentDTOS);
+        log.debug("To Excel operation students");
+        convertToExcel(studentDTOS);
+    }
+
+    @Override
     public void convertToJson(List<StudentDTO> studentDTOS) {
         try (FileWriter writer = new FileWriter("services/src/main/resources/json/jsonformatstudent.json")) {
             new Gson().toJson(studentDTOS, writer);
@@ -140,7 +151,8 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
         }
     }
 
-    private static void convertToXml(List<StudentDTO> studentDTOS) {
+    @Override
+    public void convertToXml(List<StudentDTO> studentDTOS) {
         try (FileWriter writer = new FileWriter("services/src/main/resources/xml/xmlformatstudent.xml")) {
             Students students = new Students(studentDTOS);
             students.getStudentDTOS().forEach(studentDTO -> studentDTO.setPassword(null));
@@ -151,6 +163,108 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
         } catch (JAXBException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void convertToExcel(List<StudentDTO> studentDTOS) {
+        try {
+            Workbook book = new XSSFWorkbook();
+            Sheet sheet = book.createSheet("Students");
+            Row row = sheet.createRow(0);
+            row.createCell(0).setCellValue("Специальность");
+            row.createCell(1).setCellValue("Группа");
+            row.createCell(2).setCellValue("Имя");
+            row.createCell(3).setCellValue("Номер зачетки");
+            row.createCell(4).setCellValue("Бюджет");
+            row.createCell(5).setCellValue("Предмет");
+            row.createCell(6).setCellValue("Оценка");
+            int i = 1;
+            for (StudentDTO studentDTO : studentDTOS) {
+                row = sheet.createRow(i);
+                row.createCell(0).setCellValue(studentDTO.getSpeciality());
+                row.createCell(1).setCellValue(studentDTO.getGroupId());
+                row.createCell(2).setCellValue(studentDTO.getName());
+                row.createCell(3).setCellValue(studentDTO.getWriteBook().getId());
+                row.createCell(4).setCellValue(studentDTO.getWriteBook().isBudget() ? "+" : "-");
+                for (SemesterDTO semesterDTO : studentDTO.getWriteBook().getSemester()) {
+                    i++;
+                    row = sheet.createRow(i);
+                    row.createCell(5).setCellValue(semesterDTO.getSubject().getName());
+                    row.createCell(6).setCellValue(semesterDTO.getMark());
+                }
+                i++;
+            }
+            sheet.autoSizeColumn(0);
+            sheet.autoSizeColumn(1);
+            sheet.autoSizeColumn(2);
+            sheet.autoSizeColumn(3);
+            sheet.autoSizeColumn(4);
+            sheet.autoSizeColumn(5);
+            sheet.autoSizeColumn(6);
+            book.write(new FileOutputStream("services/src/main/resources/excel/students.xlsx"));
+            book.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public  List<StudentDTO> getTop(int size,int type, String filter){
+        List<StudentDTO> studentDTOS = new ArrayList<>();
+        if (type == 1) {
+            studentDTOS = getAll();
+        } else if (type == 2) {
+            studentDTOS = getAllByFaculty(filter);
+        } else if(type == 3) {
+            studentDTOS = getAllBySpeciality(filter);
+        } else if(type == 4) {
+            studentDTOS = getAllByGroup(Long.parseLong(filter));
+        }
+        return getTopBySpecification(studentDTOS, size);
+    }
+
+    public List<StudentDTO> getTopBySpecification(List<StudentDTO> studentDTOS,int size) {
+        List<Double> avgMarks = new ArrayList<>();
+        for (StudentDTO studentDTO : studentDTOS) {
+            avgMarks.add(getAverage(studentDTO));
+        }
+        studentDTOS = getFilteredStudents(studentDTOS, avgMarks, size);
+        convertTo(studentDTOS);
+        return studentDTOS;
+    }
+
+    public Double getAverage(StudentDTO studentDTO) {
+        long sumOfMarks = 0;
+        for (SemesterDTO semesterDTO : studentDTO.getWriteBook().getSemester()) {
+            sumOfMarks += semesterDTO.getMark();
+        }
+        return ((double) sumOfMarks) / studentDTO.getWriteBook().getSemester().size();
+    }
+
+    public List<StudentDTO> getFilteredStudents(List<StudentDTO> studentDTOS, List<Double> avgMarks, int size) {
+        List<Integer> list = getIdsForMark(avgMarks, size);
+        for (int i = 0; i < studentDTOS.size(); i++) {
+            if (!list.contains(i)) {
+                studentDTOS.remove(i);
+            }
+        }
+        return studentDTOS;
+    }
+
+    public List<Integer> getIdsForMark(List<Double> avgMarks, int size) {
+        List<Integer> list = new ArrayList<>();
+        int k = 0;
+        double max;
+        for (int j = 0; j < size; j++) {
+            max = 0;
+            for (int i = 0; i < avgMarks.size(); i++) {
+                if (max < avgMarks.get(i) && !list.contains(i)) {
+                    max = avgMarks.get(i);
+                    k = i;
+                }
+            }
+            list.add(k);
+        }
+        return list;
     }
 
     @Override

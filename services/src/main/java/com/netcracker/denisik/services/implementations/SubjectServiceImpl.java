@@ -10,6 +10,10 @@ import com.netcracker.denisik.exteption.ResourceAlreadyExistException;
 import com.netcracker.denisik.exteption.ResourceNotFoundException;
 import com.netcracker.denisik.services.CrudService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -67,10 +72,13 @@ public class SubjectServiceImpl implements CrudService<SubjectDTO> {
         convertToJson(subjectDTOS);
         log.debug("To XML operation subjects");
         convertToXml(subjectDTOS);
+        log.debug("To Excel operation subjects");
+        convertToExcel(subjectDTOS);
         log.debug("Getting subjects from DB");
         return subjectDTOS;
     }
 
+    @Override
     public void convertToJson(List<SubjectDTO> subjectDTOS) {
         try(FileWriter writer = new FileWriter("services/src/main/resources/json/jsonformatsubject.json")) {
             new Gson().toJson(subjectDTOS, writer);
@@ -79,7 +87,8 @@ public class SubjectServiceImpl implements CrudService<SubjectDTO> {
         }
     }
 
-    private static void convertToXml(List<SubjectDTO> subjectDTOS) {
+    @Override
+    public void convertToXml(List<SubjectDTO> subjectDTOS) {
         try (FileWriter writer = new FileWriter("services/src/main/resources/xml/xmlformatsubject.xml")) {
             Subjects users = new Subjects(subjectDTOS);
             JAXBContext context = JAXBContext.newInstance(Subjects.class);
@@ -91,6 +100,26 @@ public class SubjectServiceImpl implements CrudService<SubjectDTO> {
         }
     }
 
+    @Override
+    public void convertToExcel(List<SubjectDTO> subjectDTOS) {
+        try {
+            Workbook book = new XSSFWorkbook();
+            Sheet sheet = book.createSheet("Subjects");
+            Row row = sheet.createRow(0);
+            row.createCell(0).setCellValue("Предметы");
+            int i = 1;
+            for (SubjectDTO subjectDTO : subjectDTOS) {
+                row = sheet.createRow(i);
+                row.createCell(0).setCellValue(subjectDTO.getName());
+                i++;
+            }
+            sheet.autoSizeColumn(0);
+            book.write(new FileOutputStream("services/src/main/resources/excel/subjects.xlsx"));
+            book.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public SubjectDTO get(long id) {

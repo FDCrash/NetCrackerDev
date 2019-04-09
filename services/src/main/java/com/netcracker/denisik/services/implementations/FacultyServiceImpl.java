@@ -7,11 +7,14 @@ import com.netcracker.denisik.dao.SpecialityRepository;
 import com.netcracker.denisik.dto.FacultyDTO;
 import com.netcracker.denisik.dto.dtoxml.Faculties;
 import com.netcracker.denisik.entities.Faculty;
-import com.netcracker.denisik.entities.Speciality;
 import com.netcracker.denisik.exteption.ResourceAlreadyExistException;
 import com.netcracker.denisik.exteption.ResourceNotFoundException;
 import com.netcracker.denisik.services.CrudService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -81,21 +84,25 @@ public class FacultyServiceImpl implements CrudService<FacultyDTO> {
                 .collect(Collectors.toList());
         log.debug("To Json operation faculties");
         convertToJson(facultyDTOS);
-        log.debug("To XML operation students");
+        log.debug("To XML operation faculties");
         convertToXml(facultyDTOS);
+        log.debug("To Excel operation faculties");
+        convertToExcel(facultyDTOS);
         log.debug("Getting all faculties from DB");
         return facultyDTOS;
     }
 
+    @Override
     public void convertToJson(List<FacultyDTO> facultyDTOS) {
-        try(FileWriter writer = new FileWriter("services/src/main/resources/json/jsonformatfaculty.json")) {
+        try (FileWriter writer = new FileWriter("services/src/main/resources/json/jsonformatfaculty.json")) {
             new Gson().toJson(facultyDTOS, writer);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void convertToXml(List<FacultyDTO> facultyDTOS) {
+    @Override
+    public void convertToXml(List<FacultyDTO> facultyDTOS) {
         try (FileWriter writer = new FileWriter("services/src/main/resources/xml/xmlformatfaculty.xml")) {
             Faculties faculties = new Faculties(facultyDTOS);
             JAXBContext context = JAXBContext.newInstance(Faculties.class);
@@ -103,6 +110,34 @@ public class FacultyServiceImpl implements CrudService<FacultyDTO> {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(faculties, writer);
         } catch (JAXBException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void convertToExcel(List<FacultyDTO> facultyDTOS) {
+        try {
+            Workbook book = new XSSFWorkbook();
+            Sheet sheet = book.createSheet("Faculties");
+            Row row = sheet.createRow(0);
+            row.createCell(0).setCellValue("Факультеты");
+            row.createCell(1).setCellValue("Специальности");
+            int i = 1;
+            for (FacultyDTO facultyDTO : facultyDTOS) {
+                row = sheet.createRow(i);
+                row.createCell(0).setCellValue(facultyDTO.getName());
+                for (String s : facultyDTO.getSpecialities()) {
+                    row.createCell(1).setCellValue(s);
+                    i++;
+                    row = sheet.createRow(i);
+                }
+                i++;
+            }
+            sheet.autoSizeColumn(0);
+            sheet.autoSizeColumn(1);
+            book.write(new FileOutputStream("services/src/main/resources/excel/faculties.xlsx"));
+            book.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

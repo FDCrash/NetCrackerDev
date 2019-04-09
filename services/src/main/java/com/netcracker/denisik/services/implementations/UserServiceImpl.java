@@ -14,6 +14,10 @@ import com.netcracker.denisik.exteption.ResourceNotFoundException;
 import com.netcracker.denisik.exteption.ServiceException;
 import com.netcracker.denisik.services.CrudService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -42,7 +47,7 @@ public class UserServiceImpl implements CrudService<UserDTO> {
         this.userConverter = userConverter;
     }
 
-    public long save(UserDTO userDTO){
+    public long save(UserDTO userDTO) {
         User user = userRepository.save(userConverter.convert(userDTO));
         return user.getId();
     }
@@ -79,6 +84,8 @@ public class UserServiceImpl implements CrudService<UserDTO> {
         convertToJson(userDTOS);
         log.debug("To XML operation users");
         convertToXml(userDTOS);
+        log.debug("To Excel operation users");
+        convertToExcel(userDTOS);
         log.debug("Getting users from DB");
         return userDTOS;
     }
@@ -92,6 +99,8 @@ public class UserServiceImpl implements CrudService<UserDTO> {
         convertToJson(userDTOS);
         log.debug("To XML operation admins");
         convertToXml(userDTOS);
+        log.debug("To Excel operation admins");
+        convertToExcel(userDTOS);
         log.debug("Start getting admins");
         return userDTOS;
     }
@@ -105,19 +114,23 @@ public class UserServiceImpl implements CrudService<UserDTO> {
         convertToJson(userDTOS);
         log.debug("To XML operation employees");
         convertToXml(userDTOS);
+        log.debug("To Excel operation employees");
+        convertToExcel(userDTOS);
         log.debug("Start getting employees");
         return userDTOS;
     }
 
+    @Override
     public void convertToJson(List<UserDTO> userDTOS) {
-        try(FileWriter writer = new FileWriter("services/src/main/resources/json/jsonformatuser.json")) {
+        try (FileWriter writer = new FileWriter("services/src/main/resources/json/jsonformatuser.json")) {
             new Gson().toJson(userDTOS, writer);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void convertToXml(List<UserDTO> userDTOS) {
+    @Override
+    public void convertToXml(List<UserDTO> userDTOS) {
         try (FileWriter writer = new FileWriter("services/src/main/resources/xml/xmlformatuser.xml")) {
             Users users = new Users(userDTOS);
             users.getUserDTOS().forEach(studentDTO -> studentDTO.setPassword(null));
@@ -126,6 +139,33 @@ public class UserServiceImpl implements CrudService<UserDTO> {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(users, writer);
         } catch (JAXBException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void convertToExcel(List<UserDTO> userDTOS) {
+        try {
+            Workbook book = new XSSFWorkbook();
+            Sheet sheet = book.createSheet("Users");
+            Row row = sheet.createRow(0);
+            row.createCell(0).setCellValue("Логин");
+            row.createCell(1).setCellValue("Имя");
+            row.createCell(2).setCellValue("Роль");
+            int i = 1;
+            for (UserDTO userDTO : userDTOS) {
+                row = sheet.createRow(i);
+                row.createCell(0).setCellValue(userDTO.getLogin());
+                row.createCell(1).setCellValue(userDTO.getName());
+                row.createCell(2).setCellValue(userDTO.getRoleDTO().toString());
+                i++;
+            }
+            sheet.autoSizeColumn(0);
+            sheet.autoSizeColumn(1);
+            sheet.autoSizeColumn(2);
+            book.write(new FileOutputStream("services/src/main/resources/excel/users.xlsx"));
+            book.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
