@@ -12,6 +12,10 @@ import com.netcracker.denisik.exteption.ResourceAlreadyExistException;
 import com.netcracker.denisik.exteption.ResourceNotFoundException;
 import com.netcracker.denisik.services.CrudService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -76,10 +81,13 @@ public class SpecialityServiceImpl implements CrudService<SpecialityDTO> {
         convertToJson(specialityDTOS);
         log.debug("To XML operation students");
         convertToXml(specialityDTOS);
+        log.debug("To Excel operation specialities");
+        convertToExcel(specialityDTOS);
         log.debug("Getting all specialities from DB");
         return specialityDTOS;
     }
 
+    @Override
     public void convertToJson(List<SpecialityDTO> specialityDTOS) {
         try(FileWriter writer = new FileWriter("services/src/main/resources/json/jsonformatspeciality.json")) {
             new Gson().toJson(specialityDTOS, writer);
@@ -88,7 +96,8 @@ public class SpecialityServiceImpl implements CrudService<SpecialityDTO> {
         }
     }
 
-    private static void convertToXml(List<SpecialityDTO> specialityDTOS) {
+    @Override
+    public void convertToXml(List<SpecialityDTO> specialityDTOS) {
         try (FileWriter writer = new FileWriter("services/src/main/resources/xml/xmlformatspeciality.xml")) {
             Specialities specialities = new Specialities(specialityDTOS);
             JAXBContext context = JAXBContext.newInstance(Specialities.class);
@@ -96,6 +105,30 @@ public class SpecialityServiceImpl implements CrudService<SpecialityDTO> {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(specialities, writer);
         } catch (JAXBException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void convertToExcel(List<SpecialityDTO> specialityDTOS) {
+        try {
+            Workbook book = new XSSFWorkbook();
+            Sheet sheet = book.createSheet("Specialities");
+            Row row = sheet.createRow(0);
+            row.createCell(0).setCellValue("Специальность");
+            row.createCell(1).setCellValue("Факультет");
+            int i = 1;
+            for (SpecialityDTO specialityDTO : specialityDTOS) {
+                row = sheet.createRow(i);
+                row.createCell(0).setCellValue(specialityDTO.getName());
+                row.createCell(1).setCellValue(specialityDTO.getFaculty());
+                i++;
+            }
+            sheet.autoSizeColumn(0);
+            sheet.autoSizeColumn(1);
+            book.write(new FileOutputStream("services/src/main/resources/excel/specialities.xlsx"));
+            book.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

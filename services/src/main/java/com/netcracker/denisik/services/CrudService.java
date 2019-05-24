@@ -10,4 +10,10 @@ public interface CrudService<T> {
     List<T> getAll();
 
     T get(long id);
+
+    void convertToXml(List<T> t);
+
+    void convertToJson(List<T> t);
+
+    void convertToExcel(List<T> t);
 }

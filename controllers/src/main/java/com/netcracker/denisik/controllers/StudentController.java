@@ -31,7 +31,7 @@ public class StudentController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Students")})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<StudentDTO>> getAllStudents() {
-        List<StudentDTO> student = studentService.getAll();
+        List<StudentDTO> student = studentService.getAllStudents();
         if (CollectionUtils.isEmpty(student)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -65,7 +65,7 @@ public class StudentController {
         if (studentService.get(student.getId()) == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        if (student.getWriteBook().getSemester().stream()
+        if (student.getWriteBook().getSubjectMarkDTOS().stream()
                 .anyMatch(semesterDTO -> semesterDTO.getMark() >= 10 || semesterDTO.getMark() <= 0)) {
             return new ResponseEntity<>("Error in creation student", HttpStatus.BAD_REQUEST);
         }
@@ -114,15 +114,58 @@ public class StudentController {
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
-//    @ApiOperation(value = "Gets TOP10 students by faculty", nickname = "StudentController.getTop10StudentsByFaculty")
-//    @ApiResponses(value = {@ApiResponse(code = 200, message = "Top10StudentsByFaculty")})
-//    @GetMapping(value = "/searchTop10ByFaculty", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<List<StudentDTO>> getTop10StudentsByFaculty(@RequestParam("faculty") String faculty) {
-//        List<StudentDTO> student = studentService.getTop10ByFaculty(faculty);
-//        if (CollectionUtils.isEmpty(student)) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<>(student, HttpStatus.OK);
-//    }
+    @ApiOperation(value = "Gets TOP10 students", nickname = "StudentController.getTop10Students")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Top10Students")})
+    @GetMapping(value = "/searchTop10", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<StudentDTO>> getTop10Students() {
+        List<StudentDTO> student = studentService.getTop(10, 1, null);
+        if (CollectionUtils.isEmpty(student)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
 
+    @ApiOperation(value = "Gets TOP5 students", nickname = "StudentController.getTop5Students")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Top5Students")})
+    @GetMapping(value = "/searchTop5", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<StudentDTO>> getTop5Students() {
+        List<StudentDTO> student = studentService.getTop(5, 1, null);
+        if (CollectionUtils.isEmpty(student)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Gets TOP10 students by faculty", nickname = "StudentController.getTop10StudentsByFaculty")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Top10StudentsByFaculty")})
+    @GetMapping(value = "/searchTop10ByFaculty", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<StudentDTO>> getTop10StudentsByFaculty(@RequestParam("faculty") String faculty) {
+        List<StudentDTO> student = studentService.getTop(10, 2, faculty);
+        if (CollectionUtils.isEmpty(student)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Gets TOP10 students by speciality", nickname = "StudentController.getTop10StudentsBySpeciality")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Top10StudentsBySpeciality")})
+    @GetMapping(value = "/searchTop10BySpeciality", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<StudentDTO>> getTop10StudentsBySpeciality(@RequestParam("speciality") String speciality) {
+        List<StudentDTO> student = studentService.getTop(10, 3, speciality);
+        if (CollectionUtils.isEmpty(student)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Gets TOP10 students by group", nickname = "StudentController.getTop10StudentsByGroup")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Top10StudentsByGroup")})
+    @GetMapping(value = "/searchTop10ByGroup", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<StudentDTO>> getTop10StudentsByGroup(@RequestParam("groupId") Long groupId) {
+        List<StudentDTO> student = studentService.getTop(10, 4, groupId.toString());
+        if (CollectionUtils.isEmpty(student)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
 }

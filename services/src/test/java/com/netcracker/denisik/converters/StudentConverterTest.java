@@ -39,15 +39,15 @@ public class StudentConverterTest {
                 .id(3)
                 .name("test")
                 .build();
-        Semester semester = Semester.builder()
+        SubjectMark subjectMark = SubjectMark.builder()
                 .mark(10)
                 .subject(subject)
                 .build();
         WriteBook writeBook = WriteBook.builder()
                 .budget(true)
-                .semesters(Collections.singletonList(semester))
+                .subjectMarks(Collections.singletonList(subjectMark))
                 .build();
-        semester.setWriteBook(writeBook);
+        subjectMark.setWriteBook(writeBook);
         student = Student.builderStudent()
                 .user(user)
                 .groupId(13)
@@ -66,13 +66,13 @@ public class StudentConverterTest {
                 .id(3)
                 .name("test")
                 .build();
-        SemesterDTO semesterDTO = SemesterDTO.builder()
+        SubjectMarkDTO subjectMarkDTO = SubjectMarkDTO.builder()
                 .mark(10)
                 .subject(subjectDTO)
                 .build();
         WriteBookDTO writeBookDTO = WriteBookDTO.builder()
                 .budget(true)
-                .semester(Collections.singletonList(semesterDTO))
+                .subjectMarkDTOS(Collections.singletonList(subjectMarkDTO))
                 .build();
         studentDTO = StudentDTO.builderStudent()
                 .userDTO(userDTO)

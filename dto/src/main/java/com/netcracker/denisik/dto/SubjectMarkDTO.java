@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class SemesterDTO {
+public class SubjectMarkDTO {
     private int mark;
     private SubjectDTO subject;
 
     @Builder
-    public SemesterDTO(int mark, SubjectDTO subject) {
+    public SubjectMarkDTO(int mark, SubjectDTO subject) {
         this.mark = mark;
         this.subject = subject;
     }

@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "semesters")
-public class Semester extends BaseEntity {
+@Table(name = "subjectmark")
+public class SubjectMark extends BaseEntity {
 
     @Column(name = "mark")
     private int mark;
@@ -24,7 +24,7 @@ public class Semester extends BaseEntity {
     private WriteBook writeBook;
 
     @Builder
-    public Semester(long id, int mark, Subject subject, WriteBook writeBook) {
+    public SubjectMark(long id, int mark, Subject subject, WriteBook writeBook) {
         super(id);
         this.mark = mark;
         this.subject = subject;

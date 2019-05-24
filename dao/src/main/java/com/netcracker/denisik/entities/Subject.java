@@ -22,12 +22,12 @@ public class Subject extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "subject")
-    private List<Semester> semesters;
+    private List<SubjectMark> subjectMarks;
 
     @Builder
-    public Subject(long id, String name, List<Semester> semesters) {
+    public Subject(long id, String name, List<SubjectMark> subjectMarks) {
         super(id);
         this.name = name;
-        this.semesters = semesters;
+        this.subjectMarks = subjectMarks;
     }
 }

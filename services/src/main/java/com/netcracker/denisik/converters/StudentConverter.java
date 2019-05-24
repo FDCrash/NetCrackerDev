@@ -18,7 +18,7 @@ public class StudentConverter {
     }
 
     public Student convert(StudentDTO studentDTO) {
-        List<Semester> semesterEntities = new ArrayList<>();
+        List<SubjectMark> subjectMarkEntities = new ArrayList<>();
         User user = User.builder()
                 .id(studentDTO.getId())
                 .login(studentDTO.getLogin())
@@ -26,16 +26,16 @@ public class StudentConverter {
                 .role(Role.STUDENT)
                 .name(studentDTO.getName())
                 .build();
-        for (SemesterDTO semesterDTO : studentDTO.getWriteBook().getSemester()) {
-            semesterEntities.add(
-                    Semester.builder()
-                            .mark(semesterDTO.getMark())
-                            .subject(subjectConverter.convert(semesterDTO.getSubject()))
+        for (SubjectMarkDTO subjectMarkDTO : studentDTO.getWriteBook().getSubjectMarkDTOS()) {
+            subjectMarkEntities.add(
+                    SubjectMark.builder()
+                            .mark(subjectMarkDTO.getMark())
+                            .subject(subjectConverter.convert(subjectMarkDTO.getSubject()))
                             .build());
         }
         WriteBook writeBook = WriteBook.builder()
                 .budget(studentDTO.getWriteBook().isBudget())
-                .semesters(semesterEntities)
+                .subjectMarks(subjectMarkEntities)
                 .build();
         Speciality speciality = Speciality.builder()
                 .id(studentDTO.getSpecialityId())
@@ -46,8 +46,8 @@ public class StudentConverter {
                 .writeBook(writeBook)
                 .speciality(speciality)
                 .build();
-        for (Semester semester : student.getWriteBook().getSemesters()) {
-            semester.setWriteBook(student.getWriteBook());
+        for (SubjectMark subjectMark : student.getWriteBook().getSubjectMarks()) {
+            subjectMark.setWriteBook(student.getWriteBook());
         }
         return student;
     }
@@ -56,7 +56,7 @@ public class StudentConverter {
         if (student == null) {
             return null;
         }
-        List<SemesterDTO> semesterDTOS = new ArrayList<>();
+        List<SubjectMarkDTO> subjectMarkDTOS = new ArrayList<>();
         UserDTO userDTO = UserDTO.builder()
                 .id(student.getId())
                 .roleDTO(RoleDTO.STUDENT)
@@ -64,10 +64,10 @@ public class StudentConverter {
                 .password(student.getPassword())
                 .name(student.getName())
                 .build();
-        for (Semester semester : student.getWriteBook().getSemesters()) {
-            semesterDTOS.add(SemesterDTO.builder()
-                    .mark(semester.getMark())
-                    .subject(subjectConverter.convert(semester.getSubject()))
+        for (SubjectMark subjectMark : student.getWriteBook().getSubjectMarks()) {
+            subjectMarkDTOS.add(SubjectMarkDTO.builder()
+                    .mark(subjectMark.getMark())
+                    .subject(subjectConverter.convert(subjectMark.getSubject()))
                     .build());
         }
         return StudentDTO.builderStudent()
@@ -79,7 +79,7 @@ public class StudentConverter {
                         WriteBookDTO.builder()
                                 .id(student.getWriteBook().getId())
                                 .budget(student.getWriteBook().isBudget())
-                                .semester(semesterDTOS)
+                                .subjectMarkDTOS(subjectMarkDTOS)
                                 .build())
                 .build();
     }
