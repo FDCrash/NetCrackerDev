@@ -65,7 +65,7 @@ public class StudentController {
         if (studentService.get(student.getId()) == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        if (student.getWriteBook().getSemester().stream()
+        if (student.getWriteBook().getSubjectMarkDTOS().stream()
                 .anyMatch(semesterDTO -> semesterDTO.getMark() >= 10 || semesterDTO.getMark() <= 0)) {
             return new ResponseEntity<>("Error in creation student", HttpStatus.BAD_REQUEST);
         }

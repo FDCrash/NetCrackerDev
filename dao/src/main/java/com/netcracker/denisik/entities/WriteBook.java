@@ -14,7 +14,7 @@ import java.util.List;
 public class WriteBook extends BaseEntity {
 
     @OneToMany(mappedBy = "writeBook", cascade = CascadeType.ALL)
-    private List<Semester> semesters;
+    private List<SubjectMark> subjectMarks;
 
     @Column(name = "budget")
     private boolean budget;
@@ -23,9 +23,9 @@ public class WriteBook extends BaseEntity {
     private Student student;
 
     @Builder
-    public WriteBook(long id, List<Semester> semesters, boolean budget, Student student) {
+    public WriteBook(long id, List<SubjectMark> subjectMarks, boolean budget, Student student) {
         super(id);
-        this.semesters = semesters;
+        this.subjectMarks = subjectMarks;
         this.budget = budget;
         this.student = student;
     }
@@ -34,7 +34,7 @@ public class WriteBook extends BaseEntity {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (int) getId();
-        result = 31 * result + getSemesters().hashCode();
+        result = 31 * result + this.getSubjectMarks().hashCode();
         result = 31 * result + (isBudget() ? 1 : 0);
         result = 31 * result + (getStudent() != null ? (int) getStudent().getGroupId() : 0);
         return result;

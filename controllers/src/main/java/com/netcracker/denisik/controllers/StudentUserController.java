@@ -47,7 +47,7 @@ public class StudentUserController {
     @ApiOperation(value = "Gets all students by your speciality", nickname = "StudentUserController.getAllStudentsBySpeciality")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "StudentsBySpeciality")})
     @GetMapping(value = "/allBySpeciality", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<StudentDTO>> getAllStudentsBySpeciality() {
+    public ResponseEntity< List<StudentDTO>> getAllStudentsBySpeciality() {
         long userId = ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         List<StudentDTO> student = studentService.getAllBySpeciality(studentService.get(userId).getSpeciality());
         if (CollectionUtils.isEmpty(student)) {

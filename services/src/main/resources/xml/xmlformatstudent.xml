@@ -11,13 +11,13 @@
         <writeBook>
             <id>1</id>
             <budget>true</budget>
-            <semester>
+            <subjectMarkDTOS>
                 <mark>9</mark>
                 <subject>
                     <id>1</id>
                     <name>Матем</name>
                 </subject>
-            </semester>
+            </subjectMarkDTOS>
         </writeBook>
     </student>
     <student>
@@ -31,13 +31,13 @@
         <writeBook>
             <id>2</id>
             <budget>true</budget>
-            <semester>
+            <subjectMarkDTOS>
                 <mark>9</mark>
                 <subject>
                     <id>3</id>
                     <name>Философия</name>
                 </subject>
-            </semester>
+            </subjectMarkDTOS>
         </writeBook>
     </student>
     <student>
@@ -51,13 +51,13 @@
         <writeBook>
             <id>3</id>
             <budget>false</budget>
-            <semester>
+            <subjectMarkDTOS>
                 <mark>9</mark>
                 <subject>
                     <id>3</id>
                     <name>Философия</name>
                 </subject>
-            </semester>
+            </subjectMarkDTOS>
         </writeBook>
     </student>
     <student>
@@ -71,20 +71,39 @@
         <writeBook>
             <id>4</id>
             <budget>true</budget>
-            <semester>
+            <subjectMarkDTOS>
                 <mark>6</mark>
                 <subject>
                     <id>2</id>
                     <name>Физика</name>
                 </subject>
-            </semester>
-            <semester>
+            </subjectMarkDTOS>
+            <subjectMarkDTOS>
                 <mark>9</mark>
                 <subject>
                     <id>4</id>
                     <name>АЭВМ</name>
                 </subject>
-            </semester>
+            </subjectMarkDTOS>
+        </writeBook>
+    </student>
+    <student>
+        <id>26</id>
+        <name>Андрей</name>
+        <roleDTO>STUDENT</roleDTO>
+        <groupId>63425</groupId>
+        <speciality>ВМСиС</speciality>
+        <specialityId>4</specialityId>
+        <writeBook>
+            <id>5</id>
+            <budget>true</budget>
+            <subjectMarkDTOS>
+                <mark>9</mark>
+                <subject>
+                    <id>6</id>
+                    <name>ООП</name>
+                </subject>
+            </subjectMarkDTOS>
         </writeBook>
     </student>
     <student>
@@ -97,34 +116,34 @@
         <writeBook>
             <id>6</id>
             <budget>true</budget>
-            <semester>
+            <subjectMarkDTOS>
                 <mark>9</mark>
                 <subject>
                     <id>1</id>
                     <name>Матем</name>
                 </subject>
-            </semester>
-            <semester>
+            </subjectMarkDTOS>
+            <subjectMarkDTOS>
                 <mark>9</mark>
                 <subject>
                     <id>2</id>
                     <name>Физика</name>
                 </subject>
-            </semester>
-            <semester>
+            </subjectMarkDTOS>
+            <subjectMarkDTOS>
                 <mark>9</mark>
                 <subject>
                     <id>3</id>
                     <name>Философия</name>
                 </subject>
-            </semester>
-            <semester>
+            </subjectMarkDTOS>
+            <subjectMarkDTOS>
                 <mark>9</mark>
                 <subject>
                     <id>5</id>
                     <name>ОАиП</name>
                 </subject>
-            </semester>
+            </subjectMarkDTOS>
         </writeBook>
     </student>
 </students>

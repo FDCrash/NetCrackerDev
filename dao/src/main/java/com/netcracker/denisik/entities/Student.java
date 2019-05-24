@@ -38,6 +38,4 @@ public class Student extends User {
         this.speciality = speciality;
         this.writeBook = writeBook;
     }
-
-
 }

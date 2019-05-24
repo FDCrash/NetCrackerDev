@@ -60,7 +60,7 @@ public class AccountController{
         if (passwordEncoder.matches(oldPassword,userDTO.getPassword())) {
             userDTO.setPassword(passwordEncoder.encode(newPassword));
         }else{
-            return new ResponseEntity<>("Wrong password", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Collections.singletonMap("Exception","Wrong password"), HttpStatus.BAD_REQUEST);
         }
         long id = userService.save(userDTO);
         return new ResponseEntity<>(id, HttpStatus.OK);

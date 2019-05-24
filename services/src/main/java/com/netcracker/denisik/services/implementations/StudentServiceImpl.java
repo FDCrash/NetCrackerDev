@@ -5,7 +5,7 @@ import com.netcracker.denisik.converters.StudentConverter;
 import com.netcracker.denisik.dao.SpecialityRepository;
 import com.netcracker.denisik.dao.StudentRepository;
 import com.netcracker.denisik.dao.SubjectRepository;
-import com.netcracker.denisik.dto.SemesterDTO;
+import com.netcracker.denisik.dto.SubjectMarkDTO;
 import com.netcracker.denisik.dto.StudentDTO;
 import com.netcracker.denisik.dto.dtoxml.Students;
 import com.netcracker.denisik.entities.Student;
@@ -29,8 +29,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -54,7 +52,7 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
 
     @Override
     public long add(StudentDTO studentDTO) {
-        boolean checkRange = studentDTO.getWriteBook().getSemester().stream()
+        boolean checkRange = studentDTO.getWriteBook().getSubjectMarkDTOS().stream()
                 .anyMatch(semesterDTO -> semesterDTO.getMark() > 10 || semesterDTO.getMark() < 0);
         log.debug("Check speciality for student");
         if (!specialityRepository.existsById(studentDTO.getSpecialityId())) {
@@ -67,7 +65,7 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
             throw new ServiceException("Range out of mark");
         }
         log.debug("Check exist subjects in DB");
-        checkSubjects(studentDTO.getWriteBook().getSemester());
+        checkSubjects(studentDTO.getWriteBook().getSubjectMarkDTOS());
         log.debug("Add/update student :" + studentDTO.getName());
         return studentRepository.save(studentConverter.convert(studentDTO)).getId();
     }
@@ -109,13 +107,19 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
         return studentDTOS;
     }
 
-    public void checkSubjects(List<SemesterDTO> semesterDTOS) {
-        for (SemesterDTO semesterDTO : semesterDTOS) {
-            if (!subjectRepository.existsById(semesterDTO.getSubject().getId())) {
+    public void checkSubjects(List<SubjectMarkDTO> subjectMarkDTOS) {
+        for (SubjectMarkDTO subjectMarkDTO : subjectMarkDTOS) {
+            if (!subjectRepository.existsById(subjectMarkDTO.getSubject().getId())) {
                 log.error("Subject not found for student");
                 throw new ResourceNotFoundException("Subject not found");
             }
         }
+    }
+
+    public List<StudentDTO> getAllStudents() {
+        List<StudentDTO> studentDTOS = getAll();
+        convertTo(studentDTOS);
+        return studentDTOS;
     }
 
     @Override
@@ -124,12 +128,6 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
                 .map(student -> studentConverter.convert(student))
                 .collect(Collectors.toList());
         log.debug("Getting students from DB");
-        return studentDTOS;
-    }
-
-    public List<StudentDTO> getAllStudents() {
-        List<StudentDTO> studentDTOS = getAll();
-        convertTo(studentDTOS);
         return studentDTOS;
     }
 
@@ -186,11 +184,11 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
                 row.createCell(2).setCellValue(studentDTO.getName());
                 row.createCell(3).setCellValue(studentDTO.getWriteBook().getId());
                 row.createCell(4).setCellValue(studentDTO.getWriteBook().isBudget() ? "+" : "-");
-                for (SemesterDTO semesterDTO : studentDTO.getWriteBook().getSemester()) {
+                for (SubjectMarkDTO subjectMarkDTO : studentDTO.getWriteBook().getSubjectMarkDTOS()) {
                     i++;
                     row = sheet.createRow(i);
-                    row.createCell(5).setCellValue(semesterDTO.getSubject().getName());
-                    row.createCell(6).setCellValue(semesterDTO.getMark());
+                    row.createCell(5).setCellValue(subjectMarkDTO.getSubject().getName());
+                    row.createCell(6).setCellValue(subjectMarkDTO.getMark());
                 }
                 i++;
             }
@@ -212,11 +210,14 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
         List<StudentDTO> studentDTOS = new ArrayList<>();
         if (type == 1) {
             studentDTOS = getAll();
-        } else if (type == 2) {
+        }
+        if (type == 2) {
             studentDTOS = getAllByFaculty(filter);
-        } else if(type == 3) {
+        }
+        if(type == 3) {
             studentDTOS = getAllBySpeciality(filter);
-        } else if(type == 4) {
+        }
+        if(type == 4) {
             studentDTOS = getAllByGroup(Long.parseLong(filter));
         }
         return getTopBySpecification(studentDTOS, size);
@@ -234,10 +235,10 @@ public class StudentServiceImpl implements CrudService<StudentDTO> {
 
     public Double getAverage(StudentDTO studentDTO) {
         long sumOfMarks = 0;
-        for (SemesterDTO semesterDTO : studentDTO.getWriteBook().getSemester()) {
-            sumOfMarks += semesterDTO.getMark();
+        for (SubjectMarkDTO subjectMarkDTO : studentDTO.getWriteBook().getSubjectMarkDTOS()) {
+            sumOfMarks += subjectMarkDTO.getMark();
         }
-        return ((double) sumOfMarks) / studentDTO.getWriteBook().getSemester().size();
+        return ((double) sumOfMarks) / studentDTO.getWriteBook().getSubjectMarkDTOS().size();
     }
 
     public List<StudentDTO> getFilteredStudents(List<StudentDTO> studentDTOS, List<Double> avgMarks, int size) {
